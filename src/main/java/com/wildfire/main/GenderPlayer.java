@@ -22,6 +22,7 @@ import com.google.gson.JsonObject;
 import com.wildfire.main.config.ConfigKey;
 import com.wildfire.main.config.Configuration;
 import com.wildfire.physics.BreastPhysics;
+import java.util.HashSet;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -52,6 +53,7 @@ public class GenderPlayer {
 	private final Configuration cfg;
 	private final BreastPhysics lBreastPhysics, rBreastPhysics;
 	private final Breasts breasts;
+        private final Bulge bulge;
 
 	public GenderPlayer(UUID uuid) {
 		this(uuid, Configuration.GENDER.getDefault());
@@ -61,6 +63,7 @@ public class GenderPlayer {
 		lBreastPhysics = new BreastPhysics(this);
 		rBreastPhysics = new BreastPhysics(this);
 		breasts = new Breasts();
+                bulge = new Bulge();
 		this.uuid = uuid;
 		this.gender = gender;
 		this.cfg = new Configuration("WildfireGender", this.uuid.toString());
@@ -80,6 +83,8 @@ public class GenderPlayer {
 		this.cfg.setDefault(Configuration.SHOW_IN_ARMOR);
 		this.cfg.setDefault(Configuration.BOUNCE_MULTIPLIER);
 		this.cfg.setDefault(Configuration.FLOPPY_MULTIPLIER);
+                
+                this.cfg.setDefault(Configuration.BULGE_SIZE);
 		this.cfg.finish();
 	}
 
@@ -186,6 +191,9 @@ public class GenderPlayer {
 		Configuration.BREASTS_OFFSET_Z.save(obj, breasts.getZOffset());
 		Configuration.BREASTS_UNIBOOB.save(obj, breasts.isUniboob());
 		Configuration.BREASTS_CLEAVAGE.save(obj, breasts.getCleavage());
+                
+                Bulge bulge = plr.getBulge();
+                Configuration.BULGE_SIZE.save(obj, bulge.getSize());
 		return obj;
 	}
 
@@ -209,6 +217,8 @@ public class GenderPlayer {
 		breasts.updateUniboob(Configuration.BREASTS_UNIBOOB.read(obj));
 		breasts.updateCleavage(Configuration.BREASTS_CLEAVAGE.read(obj));
 
+                Bulge bulge = plr.getBulge();
+                bulge.updateSize(Configuration.BULGE_SIZE.read(obj));
 		return plr;
 	}
 
@@ -236,6 +246,9 @@ public class GenderPlayer {
 			breasts.updateZOffset(config.get(Configuration.BREASTS_OFFSET_Z));
 			breasts.updateUniboob(config.get(Configuration.BREASTS_UNIBOOB));
 			breasts.updateCleavage(config.get(Configuration.BREASTS_CLEAVAGE));
+                        
+                        Bulge bulge = plr.getBulge();
+                        bulge.updateSize(config.get(Configuration.BULGE_SIZE));
 			if (markForSync) {
 				plr.needsSync = true;
 			}
@@ -264,6 +277,8 @@ public class GenderPlayer {
 		config.set(Configuration.BREASTS_UNIBOOB, plr.getBreasts().isUniboob());
 		config.set(Configuration.BREASTS_CLEAVAGE, plr.getBreasts().getCleavage());
 
+                config.set(Configuration.BULGE_SIZE, plr.getBulge().getSize());
+                
 		config.save();
 		plr.needsSync = true;
 	}
@@ -278,6 +293,10 @@ public class GenderPlayer {
 	public BreastPhysics getRightBreastPhysics() {
 		return rBreastPhysics;
 	}
+        
+        public Bulge getBulge() {
+            return bulge;
+        }
 
 	public enum SyncStatus {
 		CACHED, SYNCED, UNKNOWN
@@ -305,5 +324,9 @@ public class GenderPlayer {
 		public boolean canHaveBreasts() {
 			return this != MALE;
 		}
+                
+                public boolean canHaveBulge() {
+                    return this != FEMALE;
+                }
 	}
 }
