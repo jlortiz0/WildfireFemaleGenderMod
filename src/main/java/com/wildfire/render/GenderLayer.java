@@ -90,9 +90,9 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		lBoobArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 		rBoobArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
                 
-                bulgeModel = new BulgeModelBox(64, 64, 22, 26, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
-                bulgeWear = new OverlayModelBox(false, 64, 64, 29, 40, -1F, 0F, 0F, 2, 2, 1, 0F, false);
-                bulgeModelArmor = new BulgeModelBox(64, 32, 22, 26, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
+                bulgeModel = new BulgeModelBox(64, 64, 20, 24, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
+                bulgeWear = new OverlayModelBox(false, 64, 64, 20, 41, -1F, 0F, 0F, 2, 2, 2, 0F, false);
+                bulgeModelArmor = new BulgeModelBox(64, 32, 19, 24, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
 	}
 
 	private static final Map<String, Identifier> ARMOR_LOCATION_CACHE = new HashMap<>();
@@ -145,16 +145,16 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				// to be hidden when wearing armor, we can just exit early rather than doing any calculations
 				return;
 			}
-                        armorStack = ent.getEquippedStack(EquipmentSlot.LEGS);
-                        armorConfig = WildfireHelper.getArmorConfig(armorStack);
+                        ItemStack armorStack2 = ent.getEquippedStack(EquipmentSlot.LEGS);
+                        IGenderArmor armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
                         if (FabricLoader.getInstance().isModLoaded("trinkets")) {
                                 TrinketInventory ti = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("legs").get("cosmetic");
                                 if (ti != null && ti.getStack(0).getItem() != Items.AIR) {
-                                        armorStack = ti.getStack(0);
-					armorConfig = WildfireHelper.getArmorConfig(armorStack);
+                                        armorStack2 = ti.getStack(0);
+					armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
 				}
 			}
-                        boolean isLeggingsOccupied = armorConfig.coversBreasts();
+                        boolean isLeggingsOccupied = armorConfig2.coversBreasts();
 
 			PlayerEntityRenderer rend = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(ent);
 			PlayerEntityModel<AbstractClientPlayerEntity> model = rend.getModel();
@@ -189,7 +189,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (buSize < 0.84f) reducer++;
 			if (buSize < 0.72f) reducer++;
                         if (preBulgeSize != buSize) {
-                            bulgeModel = new BulgeModelBox(64, 64, 22, 26, -1F, 0.0F, 0F, 2, 2, (int) (2 - bulgeOffsetZ - reducer), 0.0F, false);
+                            bulgeModel = new BulgeModelBox(64, 64, 20, 26, -1F, 0.0F, 0F, 2, 2, (int) (2 - bulgeOffsetZ - reducer), 0.0F, false);
                             preBulgeSize = buSize;
                         }
 
@@ -258,7 +258,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
                                         -outwardAngle, breasts.isUniboob(), isChestplateOccupied, breathingAnimation, false);
                         }
                         if (bulgeSize >= 0.02f) {
-                                renderBulgeWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
+                                renderBulgeWithTransforms(ent, model.body, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
                                         overlayBlue, overlayAlpha, bulgeOffsetX, bulgeSize, bulgeOffsetY, 
                                         bulgeOffsetZ, zBuOff, isLeggingsOccupied);
                         }
@@ -398,7 +398,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 
 
-			matrixStack.translate(0, 0.80f + (breastOffsetY * 0.0625f), zOff - 0.2 + (breastOffsetZ * 0.0625f)); //shift down to correct position
+			matrixStack.translate(0, 0.75f + (breastOffsetY * 0.0625f), zOff - 0.2 + (breastOffsetZ * 0.0625f)); //shift down to correct position
 
 			float totalRotation = breastSize * 0.75f + bounceRotation - (float)Math.PI / 2 - 0.25f;
 
@@ -443,7 +443,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				armorB = (float) (color & 255) / 255.0F;
 			}
 			matrixStack.push();
-			matrixStack.translate(0, 0.015f, -0.015f);
+			matrixStack.translate(0, -0.015f, -0.015f);
 			matrixStack.scale(1.05f, 1, 1);
 			WildfireModelRenderer.BulgeModelBox armor = bulgeModelArmor;
 			RenderLayer armorType = RenderLayer.getArmorCutoutNoCull(armorTexture);
