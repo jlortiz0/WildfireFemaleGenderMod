@@ -109,22 +109,17 @@ public class WildfireEventHandler {
 			ClientPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "hurt"),
 					(client2, handler, buf, responseSender) -> {
 						UUID uuid = buf.readUuid();
-						GenderPlayer.Pronouns pronouns = buf.readEnumConstant(GenderPlayer.Pronouns.class);
 						boolean hurtSounds = buf.readBoolean();
+						if (!hurtSounds) return;
 
 						//Vector3d pos = new Vector3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
 
-						SoundEvent hurtSound = null;
-						if(pronouns == GenderPlayer.Pronouns.SHE_HER) {
-							hurtSound = Math.random() > 0.5f ? WildfireSounds.FEMALE_HURT1 : WildfireSounds.FEMALE_HURT2;
-						}
+						SoundEvent hurtSound = Math.random() > 0.5f ? WildfireSounds.FEMALE_HURT1 : WildfireSounds.FEMALE_HURT2;
 						if(hurtSound == null) return;
 
-						if(hurtSounds) {
-							PlayerEntity ent = MinecraftClient.getInstance().world.getPlayerByUuid(uuid);
-							if (ent != null) {
-								client.getSoundManager().play(new EntityTrackingSoundInstance(hurtSound, SoundCategory.PLAYERS, 1f, 1f, ent));
-							}
+						PlayerEntity ent = MinecraftClient.getInstance().world.getPlayerByUuid(uuid);
+						if (ent != null) {
+							client.getSoundManager().play(new EntityTrackingSoundInstance(hurtSound, SoundCategory.PLAYERS, 1f, 1f, ent));
 						}
 					});
 
