@@ -38,7 +38,7 @@ public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
     private WildfireSlider bulgeSlider;
 
     public WildfireBulgeCustomizationScreen(Screen parent, UUID uuid) {
-        super(new TranslatableText("wildfire_gender.appearance_settings.title"), parent, uuid);
+        super(new TranslatableText("wildfire_gender.bulge_settings.title"), parent, uuid);
     }
 
     @Override

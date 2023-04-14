@@ -20,7 +20,7 @@
 
 	"wildfire_gender.appearance_settings.title": "Appearance Settings",
 	"wildfire_gender.char_settings.title": "Character Settings",
-        "wildfire_gender.bulge_settings.title": "Appearance Settings",
+        "wildfire_gender.bulge_settings.title": "Bulge Settings",
 	"wildfire_gender.char_settings.physics": "Breast Physics: %s",
 	"wildfire_gender.tooltip.breast_physics": "Enables Breast Physics",
 	"wildfire_gender.char_settings.armor_physics": "Armor Physics: %s",

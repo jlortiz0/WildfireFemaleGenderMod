@@ -73,7 +73,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	private BreastModelBox lBreast, rBreast;
 	private OverlayModelBox lBreastWear, rBreastWear;
 	private BreastModelBox lBoobArmor, rBoobArmor;
-        private BulgeModelBox bulgeModel, bulgeModelArrmor;
+        private BulgeModelBox bulgeModel, bulgeModelArmor;
         private OverlayModelBox bulgeWear;
 
 	private float preBreastSize = 0f;
@@ -89,6 +89,10 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 		lBoobArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 		rBoobArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
+                
+                bulgeModel = new BulgeModelBox(64, 64, 22, 28, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
+                bulgeWear = new OverlayModelBox(false, 64, 64, 29, 40, -1F, 0F, 0F, 2, 2, 1, 0F, false);
+                bulgeModelArmor = new BulgeModelBox(64, 32, 22, 28, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
 	}
 
 	private static final Map<String, Identifier> ARMOR_LOCATION_CACHE = new HashMap<>();
@@ -167,13 +171,16 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
                         
                         Bulge bulge = plr.getBulge();
-                        float bulgeOffsetX = Math.round((Math.round(breasts.getXOffset() * 100f) / 100f) * 10) / 10f;
-			float bulgeOffsetY = -Math.round((Math.round(breasts.getYOffset() * 100f) / 100f) * 10) / 10f;
-			float bulgeOffsetZ = -Math.round((Math.round(breasts.getZOffset() * 100f) / 100f) * 10) / 10f;
-                        final float bulgeSize = bulge.getSize();
-                        if (preBulgeSize != bulgeSize) {
-                            bulgeModel = new BulgeModelBox(64, 64, 16, 17, -4F, 0.0F, 0F, 4, 5, (int) (4 - bulgeOffsetZ), 0.0F, false);
-                            preBulgeSize = bulgeSize;
+                        float bulgeOffsetX = Math.round((Math.round(bulge.getXOffset() * 100f) / 100f) * 10) / 10f;
+			float bulgeOffsetY = -Math.round((Math.round(bulge.getYOffset() * 100f) / 100f) * 10) / 10f;
+			float bulgeOffsetZ = -Math.round((Math.round(bulge.getZOffset() * 100f) / 100f) * 10) / 10f;
+                        final float buSize = bulge.getSize();
+                        reducer = 0;
+			if (buSize < 0.84f) reducer++;
+			if (buSize < 0.72f) reducer++;
+                        if (preBulgeSize != buSize) {
+                            bulgeModel = new BulgeModelBox(64, 64, 22, 26, -1F, 0.0F, 0F, 2, 2, (int) (2 - bulgeOffsetZ - reducer), 0.0F, false);
+                            preBulgeSize = buSize;
                         }
 
 			//DEPENDENCIES
@@ -206,11 +213,18 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (bSize > 0.7f) {
 				breastSize = bSize;
 			}
-
-			if (breastSize < 0.02f) return;
+                        float bulgeSize = buSize * 1.5f;
+			if (bulgeSize > 0.7f) bulgeSize = 0.7f;
+			if (buSize > 0.7f) {
+				bulgeSize = buSize;
+			}
+                        
+                        if (breastSize < 0.02f && bulgeSize < 0.02f) return;
+			if (breastSize >= 0.02f) breastSize = bSize + 0.5f * Math.abs(bSize - 0.7f) * 2f;
+                        if (bulgeSize >= 0.02f) bulgeSize = buSize + 0.5f * Math.abs(buSize - 0.7f) * 2f;
 
 			float zOff = 0.0625f - (bSize * 0.0625f);
-			breastSize = bSize + 0.5f * Math.abs(bSize - 0.7f) * 2f;
+                        float zBuOff = 0.0625f - (buSize * 0.0625f);
 
 			//matrixStack.translate(0, 0, zOff);
 			//System.out.println(bounceRotation);
@@ -225,12 +239,19 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 			int combineTex = LivingEntityRenderer.getOverlay(ent, 0);
 			RenderLayer type = RenderLayer.getEntityTranslucent(rend.getTexture(ent));
-			renderBreastWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-				overlayBlue, overlayAlpha, bounceEnabled, lTotalX, lTotal, leftBounceRotation, breastSize, breastOffsetX, breastOffsetY, breastOffsetZ, zOff,
-				outwardAngle, breasts.isUniboob(), isChestplateOccupied, breathingAnimation, true);
-			renderBreastWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-				overlayBlue, overlayAlpha, bounceEnabled, rTotalX, rTotal, rightBounceRotation, breastSize, -breastOffsetX, breastOffsetY, breastOffsetZ, zOff,
-				-outwardAngle, breasts.isUniboob(), isChestplateOccupied, breathingAnimation, false);
+                        if (breastSize >= 0.02f) {
+                                renderBreastWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
+                                        overlayBlue, overlayAlpha, bounceEnabled, lTotalX, lTotal, leftBounceRotation, breastSize, breastOffsetX, breastOffsetY, breastOffsetZ, zOff,
+                                        outwardAngle, breasts.isUniboob(), isChestplateOccupied, breathingAnimation, true);
+                                renderBreastWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
+                                        overlayBlue, overlayAlpha, bounceEnabled, rTotalX, rTotal, rightBounceRotation, breastSize, -breastOffsetX, breastOffsetY, breastOffsetZ, zOff,
+                                        -outwardAngle, breasts.isUniboob(), isChestplateOccupied, breathingAnimation, false);
+                        }
+                        if (bulgeSize >= 0.02f) {
+                                renderBulgeWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
+                                        overlayBlue, overlayAlpha, bulgeOffsetX, bulgeSize, bulgeOffsetY, 
+                                        bulgeOffsetZ, zBuOff, isChestplateOccupied);
+                        }
 			RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -336,6 +357,85 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			matrixStack.translate(left ? 0.001f : -0.001f, 0.015f, -0.015f);
 			matrixStack.scale(1.05f, 1, 1);
 			WildfireModelRenderer.BreastModelBox armor = left ? lBoobArmor : rBoobArmor;
+			RenderLayer armorType = RenderLayer.getArmorCutoutNoCull(armorTexture);
+			VertexConsumer armorVertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, armorType, false, armorStack.hasGlint());
+			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, 1);
+			if (overlayTexture != null) {
+				RenderLayer overlayType = RenderLayer.getArmorCutoutNoCull(overlayTexture);
+				VertexConsumer overlayVertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, overlayType, false, armorStack.hasGlint());
+				renderBox(armor, matrixStack, overlayVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
+			}
+			matrixStack.pop();
+		}
+	}
+        
+        private void renderBulgeWithTransforms(AbstractClientPlayerEntity entity, ModelPart body, ItemStack armorStack, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider,
+											RenderLayer breastRenderType, int packedLightIn, int combineTex, float red, float green, float blue, float alpha,
+											float bounceRotation, float breastSize, float breastOffsetY, float breastOffsetZ, float zOff,
+											boolean isChestplateOccupied) {
+		matrixStack.push();
+		//Surround with a try/catch to fix for essential mod.
+		try {
+			matrixStack.translate(body.pivotX * 0.0625f, body.pivotY * 0.0625f, body.pivotZ * 0.0625f);
+			if (body.roll != 0.0F) {
+				matrixStack.multiply(new Quaternion(0f, 0f, body.roll, false));
+			}
+			if (body.yaw != 0.0F) {
+				matrixStack.multiply(new Quaternion(0f, body.yaw, 0f, false));
+			}
+			if (body.pitch != 0.0F) {
+				matrixStack.multiply(new Quaternion(body.pitch, 0f, 0f, false));
+			}
+
+
+			matrixStack.translate(0, 0.80f + (breastOffsetY * 0.0625f), zOff - 0.2 + (breastOffsetZ * 0.0625f)); //shift down to correct position
+
+			float totalRotation = breastSize * 0.5f + bounceRotation - (float)Math.PI / 2 - 0.5f;
+
+			if (isChestplateOccupied) {
+				matrixStack.translate(0, 0, 0.01f);
+			}
+
+			matrixStack.multiply(new Quaternion(-35f * totalRotation, 0, 0, true));
+
+			matrixStack.scale(0.9995f, 1f, 1f); //z-fighting FIXXX
+
+			renderBulge(entity, armorStack, matrixStack, vertexConsumerProvider, breastRenderType, packedLightIn, combineTex, red, green, blue, alpha);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		matrixStack.pop();
+	}
+        
+        private void renderBulge(AbstractClientPlayerEntity entity, ItemStack armorStack, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, RenderLayer breastRenderType,
+		int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(breastRenderType);
+		renderBox(bulgeModel, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		if (entity.isPartVisible(PlayerModelPart.JACKET)) {
+			matrixStack.translate(0, 0, -0.015f);
+			matrixStack.scale(1.05f, 1.05f, 1.05f);
+			renderBox(bulgeWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		}
+		//TODO: Eventually we may want to expose a way via the API for mods to be able to override rendering
+		// be it because they are not an armor item or the way they render their armor item is custom
+		//Render Breast Armor
+		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
+			Identifier armorTexture = getArmorResource(armorItem, false, null);
+			Identifier overlayTexture = null;
+			float armorR = 1f;
+			float armorG = 1f;
+			float armorB = 1f;
+			if (armorItem instanceof DyeableArmorItem dyeableItem) {
+				//overlayTexture = getArmorResource(entity, armorStack, EquipmentSlot.CHEST, "overlay");
+				int color = dyeableItem.getColor(armorStack);
+				armorR = (float) (color >> 16 & 255) / 255.0F;
+				armorG = (float) (color >> 8 & 255) / 255.0F;
+				armorB = (float) (color & 255) / 255.0F;
+			}
+			matrixStack.push();
+			matrixStack.translate(0, 0.015f, -0.015f);
+			matrixStack.scale(1.05f, 1, 1);
+			WildfireModelRenderer.BulgeModelBox armor = bulgeModelArmor;
 			RenderLayer armorType = RenderLayer.getArmorCutoutNoCull(armorTexture);
 			VertexConsumer armorVertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, armorType, false, armorStack.hasGlint());
 			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, 1);
