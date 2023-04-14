@@ -53,7 +53,7 @@ public class GenderPlayer {
 	private final Configuration cfg;
 	private final BreastPhysics lBreastPhysics, rBreastPhysics;
 	private final Breasts breasts;
-        private final Bulge bulge;
+	private final Bulge bulge;
 
 	public GenderPlayer(UUID uuid) {
 		this(uuid, Configuration.GENDER.getDefault());
@@ -63,7 +63,7 @@ public class GenderPlayer {
 		lBreastPhysics = new BreastPhysics(this);
 		rBreastPhysics = new BreastPhysics(this);
 		breasts = new Breasts();
-                bulge = new Bulge();
+		bulge = new Bulge();
 		this.uuid = uuid;
 		this.pronouns = pronouns;
 		this.cfg = new Configuration("WildfireGender", this.uuid.toString());
@@ -84,10 +84,10 @@ public class GenderPlayer {
 		this.cfg.setDefault(Configuration.BOUNCE_MULTIPLIER);
 		this.cfg.setDefault(Configuration.FLOPPY_MULTIPLIER);
                 
-                this.cfg.setDefault(Configuration.BULGE_SIZE);
-                this.cfg.setDefault(Configuration.BULGE_OFFSET_X);
-                this.cfg.setDefault(Configuration.BULGE_OFFSET_Y);
-                this.cfg.setDefault(Configuration.BULGE_OFFSET_Z);
+		this.cfg.setDefault(Configuration.BULGE_SIZE);
+		this.cfg.setDefault(Configuration.BULGE_OFFSET_X);
+		this.cfg.setDefault(Configuration.BULGE_OFFSET_Y);
+		this.cfg.setDefault(Configuration.BULGE_OFFSET_Z);
 		this.cfg.finish();
 	}
 
@@ -195,11 +195,11 @@ public class GenderPlayer {
 		Configuration.BREASTS_UNIBOOB.save(obj, breasts.isUniboob());
 		Configuration.BREASTS_CLEAVAGE.save(obj, breasts.getCleavage());
                 
-                Bulge bulge = plr.getBulge();
-                Configuration.BULGE_SIZE.save(obj, bulge.getSize());
-                Configuration.BULGE_OFFSET_X.save(obj, bulge.getXOffset());
-                Configuration.BULGE_OFFSET_Y.save(obj, bulge.getYOffset());
-                Configuration.BULGE_OFFSET_Z.save(obj, bulge.getZOffset());
+		Bulge bulge = plr.getBulge();
+		Configuration.BULGE_SIZE.save(obj, bulge.getSize());
+		Configuration.BULGE_OFFSET_X.save(obj, bulge.getXOffset());
+		Configuration.BULGE_OFFSET_Y.save(obj, bulge.getYOffset());
+		Configuration.BULGE_OFFSET_Z.save(obj, bulge.getZOffset());
 		return obj;
 	}
 
@@ -223,11 +223,11 @@ public class GenderPlayer {
 		breasts.updateUniboob(Configuration.BREASTS_UNIBOOB.read(obj));
 		breasts.updateCleavage(Configuration.BREASTS_CLEAVAGE.read(obj));
 
-                Bulge bulge = plr.getBulge();
-                bulge.updateSize(Configuration.BULGE_SIZE.read(obj));
-                bulge.updateXOffset(Configuration.BULGE_OFFSET_X.read(obj));
-                bulge.updateYOffset(Configuration.BULGE_OFFSET_Y.read(obj));
-                bulge.updateZOffset(Configuration.BULGE_OFFSET_Z.read(obj));
+		Bulge bulge = plr.getBulge();
+		bulge.updateSize(Configuration.BULGE_SIZE.read(obj));
+		bulge.updateXOffset(Configuration.BULGE_OFFSET_X.read(obj));
+		bulge.updateYOffset(Configuration.BULGE_OFFSET_Y.read(obj));
+		bulge.updateZOffset(Configuration.BULGE_OFFSET_Z.read(obj));
 		return plr;
 	}
 
@@ -256,11 +256,11 @@ public class GenderPlayer {
 			breasts.updateUniboob(config.get(Configuration.BREASTS_UNIBOOB));
 			breasts.updateCleavage(config.get(Configuration.BREASTS_CLEAVAGE));
                         
-                        Bulge bulge = plr.getBulge();
-                        bulge.updateSize(config.get(Configuration.BULGE_SIZE));
-                        bulge.updateXOffset(config.get(Configuration.BULGE_OFFSET_X));
-                        bulge.updateYOffset(config.get(Configuration.BULGE_OFFSET_Y));
-                        bulge.updateZOffset(config.get(Configuration.BULGE_OFFSET_Z));
+			Bulge bulge = plr.getBulge();
+			bulge.updateSize(config.get(Configuration.BULGE_SIZE));
+			bulge.updateXOffset(config.get(Configuration.BULGE_OFFSET_X));
+			bulge.updateYOffset(config.get(Configuration.BULGE_OFFSET_Y));
+			bulge.updateZOffset(config.get(Configuration.BULGE_OFFSET_Z));
 			if (markForSync) {
 				plr.needsSync = true;
 			}
@@ -289,10 +289,10 @@ public class GenderPlayer {
 		config.set(Configuration.BREASTS_UNIBOOB, plr.getBreasts().isUniboob());
 		config.set(Configuration.BREASTS_CLEAVAGE, plr.getBreasts().getCleavage());
 
-                config.set(Configuration.BULGE_SIZE, plr.getBulge().getSize());
-                config.set(Configuration.BULGE_OFFSET_X, plr.getBulge().getXOffset());
-                config.set(Configuration.BULGE_OFFSET_Y, plr.getBulge().getYOffset());
-                config.set(Configuration.BULGE_OFFSET_Z, plr.getBulge().getZOffset());
+		config.set(Configuration.BULGE_SIZE, plr.getBulge().getSize());
+		config.set(Configuration.BULGE_OFFSET_X, plr.getBulge().getXOffset());
+		config.set(Configuration.BULGE_OFFSET_Y, plr.getBulge().getYOffset());
+		config.set(Configuration.BULGE_OFFSET_Z, plr.getBulge().getZOffset());
                 
 		config.save();
 		plr.needsSync = true;

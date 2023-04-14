@@ -78,8 +78,8 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 
 		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j + 8, 158, 20, new TranslatableText("wildfire_gender.char_settings.title").append("..."),
 			button -> MinecraftClient.getInstance().setScreen(new WildfireCharacterSettingsScreen(WardrobeBrowserScreen.this, this.playerUUID))));
-                
-                this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 12, 158, 20, new TranslatableText("wildfire_gender.bulge_settings.title").append("..."),
+
+		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 12, 158, 20, new TranslatableText("wildfire_gender.bulge_settings.title").append("..."),
 			button -> MinecraftClient.getInstance().setScreen(new WildfireBulgeCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
 
 		this.addDrawableChild(new WildfireButton(this.width / 2 + 111, j - 63, 9, 9, new TranslatableText("wildfire_gender.label.exit"),

@@ -90,9 +90,9 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		lBoobArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 		rBoobArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
                 
-                bulgeModel = new BulgeModelBox(64, 64, 20, 24, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
-                bulgeWear = new OverlayModelBox(false, 64, 64, 20, 41, -1F, 0F, 0F, 2, 2, 2, 0F, false);
-                bulgeModelArmor = new BulgeModelBox(64, 32, 19, 24, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
+		bulgeModel = new BulgeModelBox(64, 64, 20, 24, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
+		bulgeWear = new OverlayModelBox(false, 64, 64, 20, 41, -1F, 0F, 0F, 2, 2, 2, 0F, false);
+		bulgeModelArmor = new BulgeModelBox(64, 32, 19, 24, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
 	}
 
 	private static final Map<String, Identifier> ARMOR_LOCATION_CACHE = new HashMap<>();
@@ -132,9 +132,9 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 			//Cosmetic armor
 			if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-                                TrinketInventory ti = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("chest").get("cosmetic");
-                                if (ti != null && ti.getStack(0).getItem() != Items.AIR) {
-                                        armorStack = ti.getStack(0);
+				TrinketInventory ti = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("chest").get("cosmetic");
+				if (ti != null && ti.getStack(0).getItem() != Items.AIR) {
+					armorStack = ti.getStack(0);
 					armorConfig = WildfireHelper.getArmorConfig(armorStack);
 				}
 			}
@@ -145,16 +145,16 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				// to be hidden when wearing armor, we can just exit early rather than doing any calculations
 				return;
 			}
-                        ItemStack armorStack2 = ent.getEquippedStack(EquipmentSlot.LEGS);
-                        IGenderArmor armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
-                        if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-                                TrinketInventory ti = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("legs").get("cosmetic");
-                                if (ti != null && ti.getStack(0).getItem() != Items.AIR) {
-                                        armorStack2 = ti.getStack(0);
+			ItemStack armorStack2 = ent.getEquippedStack(EquipmentSlot.LEGS);
+			IGenderArmor armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
+			if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+				TrinketInventory ti = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("legs").get("cosmetic");
+				if (ti != null && ti.getStack(0).getItem() != Items.AIR) {
+					armorStack2 = ti.getStack(0);
 					armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
 				}
 			}
-                        boolean isLeggingsOccupied = armorConfig2.coversBreasts();
+			boolean isLeggingsOccupied = armorConfig2.coversBreasts();
 
 			PlayerEntityRenderer rend = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(ent);
 			PlayerEntityModel<AbstractClientPlayerEntity> model = rend.getModel();
@@ -180,18 +180,18 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				preBreastSize = bSize;
 			}
                         
-                        Bulge bulge = plr.getBulge();
-                        float bulgeOffsetX = Math.round((Math.round(bulge.getXOffset() * 100f) / 100f) * 10) / 10f;
+			Bulge bulge = plr.getBulge();
+			float bulgeOffsetX = Math.round((Math.round(bulge.getXOffset() * 100f) / 100f) * 10) / 10f;
 			float bulgeOffsetY = -Math.round((Math.round(bulge.getYOffset() * 100f) / 100f) * 10) / 10f;
 			float bulgeOffsetZ = -Math.round((Math.round(bulge.getZOffset() * 100f) / 100f) * 10) / 10f;
                         final float buSize = bulge.getSize();
                         reducer = 0;
 			if (buSize < 0.84f) reducer++;
 			if (buSize < 0.72f) reducer++;
-                        if (preBulgeSize != buSize) {
-                            bulgeModel = new BulgeModelBox(64, 64, 20, 26, -1F, 0.0F, 0F, 2, 2, (int) (2 - bulgeOffsetZ - reducer), 0.0F, false);
-                            preBulgeSize = buSize;
-                        }
+			if (preBulgeSize != buSize) {
+				bulgeModel = new BulgeModelBox(64, 64, 20, 26, -1F, 0.0F, 0F, 2, 2, (int) (2 - bulgeOffsetZ - reducer), 0.0F, false);
+				preBulgeSize = buSize;
+			}
 
 			//DEPENDENCIES
 			float overlayRed = 1;
@@ -223,18 +223,18 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (bSize > 0.7f) {
 				breastSize = bSize;
 			}
-                        float bulgeSize = buSize * 1.5f;
+			float bulgeSize = buSize * 1.5f;
 			if (bulgeSize > 0.7f) bulgeSize = 0.7f;
 			if (buSize > 0.7f) {
 				bulgeSize = buSize;
 			}
                         
-                        if (breastSize < 0.02f && bulgeSize < 0.02f) return;
+			if (breastSize < 0.02f && bulgeSize < 0.02f) return;
 			if (breastSize >= 0.02f) breastSize = bSize + 0.5f * Math.abs(bSize - 0.7f) * 2f;
-                        if (bulgeSize >= 0.02f) bulgeSize = buSize + 0.5f * Math.abs(buSize - 0.7f) * 2f;
+			if (bulgeSize >= 0.02f) bulgeSize = buSize + 0.5f * Math.abs(buSize - 0.7f) * 2f;
 
 			float zOff = 0.0625f - (bSize * 0.0625f);
-                        float zBuOff = 0.0625f - (buSize * 0.0625f);
+			float zBuOff = 0.0625f - (buSize * 0.0625f);
 
 			//matrixStack.translate(0, 0, zOff);
 			//System.out.println(bounceRotation);
@@ -249,19 +249,19 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 			int combineTex = LivingEntityRenderer.getOverlay(ent, 0);
 			RenderLayer type = RenderLayer.getEntityTranslucent(rend.getTexture(ent));
-                        if (breastSize >= 0.02f) {
-                                renderBreastWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-                                        overlayBlue, overlayAlpha, bounceEnabled, lTotalX, lTotal, leftBounceRotation, breastSize, breastOffsetX, breastOffsetY, breastOffsetZ, zOff,
-                                        outwardAngle, breasts.isUniboob(), isChestplateOccupied, breathingAnimation, true);
-                                renderBreastWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-                                        overlayBlue, overlayAlpha, bounceEnabled, rTotalX, rTotal, rightBounceRotation, breastSize, -breastOffsetX, breastOffsetY, breastOffsetZ, zOff,
-                                        -outwardAngle, breasts.isUniboob(), isChestplateOccupied, breathingAnimation, false);
-                        }
-                        if (bulgeSize >= 0.02f) {
-                                renderBulgeWithTransforms(ent, model.body, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-                                        overlayBlue, overlayAlpha, bulgeOffsetX, bulgeSize, bulgeOffsetY, 
-                                        bulgeOffsetZ, zBuOff, isLeggingsOccupied);
-                        }
+			if (breastSize >= 0.02f) {
+				renderBreastWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
+						overlayBlue, overlayAlpha, bounceEnabled, lTotalX, lTotal, leftBounceRotation, breastSize, breastOffsetX, breastOffsetY, breastOffsetZ, zOff,
+						outwardAngle, breasts.isUniboob(), isChestplateOccupied, breathingAnimation, true);
+				renderBreastWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
+						overlayBlue, overlayAlpha, bounceEnabled, rTotalX, rTotal, rightBounceRotation, breastSize, -breastOffsetX, breastOffsetY, breastOffsetZ, zOff,
+						-outwardAngle, breasts.isUniboob(), isChestplateOccupied, breathingAnimation, false);
+			}
+			if (bulgeSize >= 0.02f) {
+				renderBulgeWithTransforms(ent, model.body, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
+						overlayBlue, overlayAlpha, bulgeOffsetX, bulgeSize, bulgeOffsetY,
+						bulgeOffsetZ, zBuOff, isLeggingsOccupied);
+			}
 			RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 		} catch(Exception e) {
 			e.printStackTrace();
