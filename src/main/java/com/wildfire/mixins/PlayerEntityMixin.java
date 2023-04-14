@@ -77,10 +77,10 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         IGenderArmor armorConfig = WildfireHelper.getArmorConfig(armorStack);
 
         //Cosmetic armor
-        // TODO: This crashes, figure out why
         if(FabricLoader.getInstance().isModLoaded("trinkets")) {
-            if (TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("chest").get("cosmetic").getStack(0).getItem() != Items.AIR) {
-                armorStack = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("chest").get("cosmetic").getStack(0);
+            TrinketInventory ti = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("chest").get("cosmetic");
+            if (ti != null && ti.getStack(0).getItem() != Items.AIR) {
+                armorStack = ti.getStack(0);
                 armorConfig = WildfireHelper.getArmorConfig(armorStack);
             }
         }

@@ -72,6 +72,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	private BreastModelBox lBoobArmor, rBoobArmor;
 
 	private float preBreastSize = 0f;
+        private float preBulgeSize = 0f;
 
 	public GenderLayer(FeatureRendererContext render) {
 		super(render);
@@ -122,8 +123,9 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 			//Cosmetic armor
 			if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-				if (TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("chest").get("cosmetic").getStack(0).getItem() != Items.AIR) {
-					armorStack = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("chest").get("cosmetic").getStack(0);
+                                TrinketInventory ti = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("chest").get("cosmetic");
+                                if (ti != null && ti.getStack(0).getItem() != Items.AIR) {
+                                        armorStack = ti.getStack(0);
 					armorConfig = WildfireHelper.getArmorConfig(armorStack);
 				}
 			}
