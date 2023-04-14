@@ -16,9 +16,11 @@
 	"wildfire_gender.wardrobe.slider.height": "Hauteur: %s",
 	"wildfire_gender.wardrobe.slider.depth": "Profondeur: %s",
 	"wildfire_gender.wardrobe.slider.rotation": "Rotation: %s degrés",
+        "wildfire_gender.wardrobe.slider.bulge": "Taille du renflement: %s%%",
 
-	"wildfire_gender.appearance_settings.title": "Paramètres d'Apparence",
+	"wildfire_gender.appearance_settings.title": "Paramètres de la Poitrine",
 	"wildfire_gender.char_settings.title": "Paramètres de Personnage",
+        "wildfire_gender.bulge_settings.title": "Param�tres de renflement",
 	"wildfire_gender.char_settings.physics": "Physiques de la Poitrine: %s",
 	"wildfire_gender.tooltip.breast_physics": "Activer Physique de la Poitrine",
 	"wildfire_gender.char_settings.armor_physics": "Physique d'Armure: %s",

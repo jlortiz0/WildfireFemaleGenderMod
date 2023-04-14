@@ -16,8 +16,10 @@
 	"wildfire_gender.wardrobe.slider.height": "HÃ¶he: %s",
 	"wildfire_gender.wardrobe.slider.depth": "Tiefe: %s",
 	"wildfire_gender.wardrobe.slider.rotation": "Drehung: %s Grad",
+        "wildfire_gender.wardrobe.slider.bulge": "Leistengröße: %s%%",
 
-	"wildfire_gender.appearance_settings.title": "Aussehen",
+	"wildfire_gender.appearance_settings.title": "Brüste",
+        "wildfire_gender.bulge_settings.title": "Leiste",
 	"wildfire_gender.char_settings.title": "Charakter-Einstellungen",
 	"wildfire_gender.char_settings.physics": "Brustphysik: %s",
 	"wildfire_gender.tooltip.breast_physics": "Schaltet Brustphysik an",
