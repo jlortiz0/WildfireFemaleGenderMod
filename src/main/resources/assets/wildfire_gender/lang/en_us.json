@@ -40,10 +40,7 @@
 
 	"wildfire_gender.acknowledge.confirm": "Okay",
 
-	"wildfire_gender.label.gender": "Gender",
-	"wildfire_gender.label.female": "Female",
-	"wildfire_gender.label.male": "Male",
-	"wildfire_gender.label.other": "Other",
+	"wildfire_gender.label.gender": "Pronouns",
 
 	"wildfire_gender.label.enabled": "Enabled",
 	"wildfire_gender.label.disabled": "Disabled",

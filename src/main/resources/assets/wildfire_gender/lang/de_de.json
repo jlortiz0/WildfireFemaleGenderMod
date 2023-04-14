@@ -16,9 +16,9 @@
 	"wildfire_gender.wardrobe.slider.height": "HÃ¶he: %s",
 	"wildfire_gender.wardrobe.slider.depth": "Tiefe: %s",
 	"wildfire_gender.wardrobe.slider.rotation": "Drehung: %s Grad",
-        "wildfire_gender.wardrobe.slider.bulge": "Leistengröße: %s%%",
+        "wildfire_gender.wardrobe.slider.bulge": "Leistengrï¿½ï¿½e: %s%%",
 
-	"wildfire_gender.appearance_settings.title": "Brüste",
+	"wildfire_gender.appearance_settings.title": "Brï¿½ste",
         "wildfire_gender.bulge_settings.title": "Leiste",
 	"wildfire_gender.char_settings.title": "Charakter-Einstellungen",
 	"wildfire_gender.char_settings.physics": "Brustphysik: %s",
@@ -41,9 +41,6 @@
 	"wildfire_gender.acknowledge.confirm": "Okay",
 
 	"wildfire_gender.label.gender": "Geschlecht",
-	"wildfire_gender.label.female": "Weiblich",
-	"wildfire_gender.label.male": "MÃ¤nnlich",
-	"wildfire_gender.label.other": "Andere",
 
 	"wildfire_gender.label.enabled": "An",
 	"wildfire_gender.label.disabled": "Aus",

@@ -20,7 +20,7 @@
 
 	"wildfire_gender.appearance_settings.title": "Paramètres de la Poitrine",
 	"wildfire_gender.char_settings.title": "Paramètres de Personnage",
-        "wildfire_gender.bulge_settings.title": "Param�tres de renflement",
+        "wildfire_gender.bulge_settings.title": "Param�tres de renflement",
 	"wildfire_gender.char_settings.physics": "Physiques de la Poitrine: %s",
 	"wildfire_gender.tooltip.breast_physics": "Activer Physique de la Poitrine",
 	"wildfire_gender.char_settings.armor_physics": "Physique d'Armure: %s",
@@ -41,9 +41,6 @@
 	"wildfire_gender.acknowledge.confirm": "Ok",
 
 	"wildfire_gender.label.gender": "Genre",
-	"wildfire_gender.label.female": "Féminin",
-	"wildfire_gender.label.male": "Masculin",
-	"wildfire_gender.label.other": "Autre",
 
 	"wildfire_gender.label.enabled": "Activé",
 	"wildfire_gender.label.disabled": "Desactivé",

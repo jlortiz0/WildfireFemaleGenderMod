@@ -22,7 +22,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfirePlayerList;
 import com.wildfire.main.GenderPlayer;
-import com.wildfire.main.GenderPlayer.Gender;
+import com.wildfire.main.GenderPlayer.Pronouns;
 import com.wildfire.main.WildfireGender;
 import javax.annotation.Nullable;
 import net.minecraft.client.MinecraftClient;
@@ -136,9 +136,9 @@ public class WildfirePlayerListScreen extends Screen {
 				this.textRenderer.drawWithShadow(m, pEntity.getDisplayName().copy().formatted(Formatting.UNDERLINE), dialogX, dialogY - 2, 0xFFFFFF);
 			}
 
-			Gender gender = HOVER_PLAYER.getGender();
-			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.label.gender").append(" ").append(gender.getDisplayName()), dialogX, dialogY + 10, 0xBBBBBB);
-			if (gender.canHaveBreasts()) {
+			Pronouns pronouns = HOVER_PLAYER.getGender();
+			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.label.gender").append(" ").append(pronouns.getDisplayName()), dialogX, dialogY + 10, 0xBBBBBB);
+			if (pronouns.canHaveBreasts()) {
 				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.breast_size", Math.round(HOVER_PLAYER.getBustSize() * 100)), dialogX, dialogY + 20, 0xBBBBBB);
 				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.char_settings.physics", new TranslatableText(HOVER_PLAYER.hasBreastPhysics() ? "wildfire_gender.label.enabled" : "wildfire_gender.label.disabled")), dialogX, dialogY + 40, 0xBBBBBB);
 				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);

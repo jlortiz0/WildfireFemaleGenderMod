@@ -21,35 +21,35 @@ package com.wildfire.main.config;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.wildfire.main.GenderPlayer.Gender;
+import com.wildfire.main.GenderPlayer.Pronouns;
 
-public class GenderConfigKey extends ConfigKey<Gender> {
+public class GenderConfigKey extends ConfigKey<Pronouns> {
 
     //Do not modify
-    private static final Gender[] GENDERS = Gender.values();
+    private static final Pronouns[] PRONOUNS = Pronouns.values();
 
     public GenderConfigKey(String key) {
-        super(key, Gender.MALE);
+        super(key, Pronouns.THEY_THEM);
     }
 
     @Override
-    protected Gender read(JsonElement element) {
+    protected Pronouns read(JsonElement element) {
         if (element.isJsonPrimitive()) {
             JsonPrimitive primitive = element.getAsJsonPrimitive();
             if (primitive.isNumber()) {
                 int ordinal = primitive.getAsInt();
-                if (ordinal >= 0 && ordinal < GENDERS.length) {
-                    return GENDERS[ordinal];
+                if (ordinal >= 0 && ordinal < PRONOUNS.length) {
+                    return PRONOUNS[ordinal];
                 }
             } else {
-                return primitive.getAsBoolean() ? Gender.MALE : Gender.FEMALE;
+                return primitive.getAsBoolean() ? Pronouns.HE_HIM : Pronouns.SHE_HER;
             }
         }
         return defaultValue;
     }
 
     @Override
-    public void save(JsonObject object, Gender value) {
+    public void save(JsonObject object, Pronouns value) {
         object.addProperty(key, value.ordinal());
     }
 }

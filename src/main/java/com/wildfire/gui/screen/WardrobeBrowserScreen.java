@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.gui.screen;
 
-import com.wildfire.main.GenderPlayer.Gender;
+import com.wildfire.main.GenderPlayer.Pronouns;
 import com.wildfire.main.WildfireGender;
 import java.util.UUID;
 
@@ -56,13 +56,19 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		GenderPlayer plr = getPlayer();
 
 		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 52, 158, 20, getGenderLabel(plr.getGender()), button -> {
-			Gender gender = switch (plr.getGender()) {
-				case MALE -> Gender.FEMALE;
-				case FEMALE -> Gender.OTHER;
-				case OTHER -> Gender.MALE;
+			Pronouns pronouns = switch (plr.getGender()) {
+				case THEY_THEM -> Pronouns.HE_HIM;
+				case HE_HIM -> Pronouns.SHE_HER;
+				case SHE_HER -> Pronouns.HE_THEY;
+				case HE_THEY -> Pronouns.SHE_THEY;
+				case SHE_THEY -> Pronouns.THEY_HE;
+				case THEY_HE -> Pronouns.THEY_SHE;
+				case THEY_SHE -> Pronouns.ANY;
+				case ANY -> Pronouns.ASK;
+				case ASK -> Pronouns.THEY_THEM;
 			};
-			if (plr.updateGender(gender)) {
-				button.setMessage(getGenderLabel(gender));
+			if (plr.updateGender(pronouns)) {
+				button.setMessage(getGenderLabel(pronouns));
 				GenderPlayer.saveGenderInfo(plr);
 			}
 		}));
@@ -86,8 +92,8 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 	    super.init();
   	}
 
-	private Text getGenderLabel(Gender gender) {
-		return new TranslatableText("wildfire_gender.label.gender").append(" - ").append(gender.getDisplayName());
+	private Text getGenderLabel(Pronouns pronouns) {
+		return new TranslatableText("wildfire_gender.label.gender").append(" - ").append(pronouns.getDisplayName());
 	}
 
   	@Override

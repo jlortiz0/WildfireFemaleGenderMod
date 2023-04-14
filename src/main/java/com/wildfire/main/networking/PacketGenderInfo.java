@@ -20,14 +20,14 @@ package com.wildfire.main.networking;
 
 import com.wildfire.main.Breasts;
 import com.wildfire.main.GenderPlayer;
-import com.wildfire.main.GenderPlayer.Gender;
+import com.wildfire.main.GenderPlayer.Pronouns;
 import net.minecraft.network.PacketByteBuf;
 
 import java.util.UUID;
 
 public abstract class PacketGenderInfo {
     protected final UUID uuid;
-    private final Gender gender;
+    private final Pronouns pronouns;
     private final float bust_size;
 
     //physics variables
@@ -45,7 +45,7 @@ public abstract class PacketGenderInfo {
 
     protected PacketGenderInfo(GenderPlayer plr) {
         this.uuid = plr.uuid;
-        this.gender = plr.getGender();
+        this.pronouns = plr.getGender();
         this.bust_size = plr.getBustSize();
         this.hurtSounds = plr.hasHurtSounds();
 
@@ -67,7 +67,7 @@ public abstract class PacketGenderInfo {
 
     protected PacketGenderInfo(PacketByteBuf buffer) {
         this.uuid = buffer.readUuid();
-        this.gender = buffer.readEnumConstant(Gender.class);
+        this.pronouns = buffer.readEnumConstant(Pronouns.class);
         this.bust_size = buffer.readFloat();
         this.hurtSounds = buffer.readBoolean();
 
@@ -87,7 +87,7 @@ public abstract class PacketGenderInfo {
 
     public void encode(PacketByteBuf buffer) {
         buffer.writeUuid(this.uuid);
-        buffer.writeEnumConstant(this.gender);
+        buffer.writeEnumConstant(this.pronouns);
         buffer.writeFloat(this.bust_size);
         buffer.writeBoolean(this.hurtSounds);
         buffer.writeBoolean(this.breast_physics);
@@ -104,7 +104,7 @@ public abstract class PacketGenderInfo {
     }
 
     protected void updatePlayerFromPacket(GenderPlayer plr) {
-        plr.updateGender(gender);
+        plr.updateGender(pronouns);
         plr.updateBustSize(bust_size);
         plr.updateHurtSounds(hurtSounds);
 

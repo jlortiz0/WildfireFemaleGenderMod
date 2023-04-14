@@ -109,13 +109,13 @@ public class WildfireEventHandler {
 			ClientPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "hurt"),
 					(client2, handler, buf, responseSender) -> {
 						UUID uuid = buf.readUuid();
-						GenderPlayer.Gender gender = buf.readEnumConstant(GenderPlayer.Gender.class);
+						GenderPlayer.Pronouns pronouns = buf.readEnumConstant(GenderPlayer.Pronouns.class);
 						boolean hurtSounds = buf.readBoolean();
 
 						//Vector3d pos = new Vector3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
 
 						SoundEvent hurtSound = null;
-						if(gender == GenderPlayer.Gender.FEMALE) {
+						if(pronouns == GenderPlayer.Pronouns.SHE_HER) {
 							hurtSound = Math.random() > 0.5f ? WildfireSounds.FEMALE_HURT1 : WildfireSounds.FEMALE_HURT2;
 						}
 						if(hurtSound == null) return;

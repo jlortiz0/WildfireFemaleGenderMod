@@ -22,7 +22,7 @@ import com.google.gson.JsonObject;
 import com.wildfire.main.config.ConfigKey;
 import com.wildfire.main.config.Configuration;
 import com.wildfire.physics.BreastPhysics;
-import java.util.HashSet;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -34,7 +34,7 @@ public class GenderPlayer {
 
 	public boolean needsSync;
 	public final UUID uuid;
-	private Gender gender;
+	private Pronouns pronouns;
 	private float pBustSize = Configuration.BUST_SIZE.getDefault();
 
 	private boolean hurtSounds = Configuration.HURT_SOUNDS.getDefault();
@@ -59,13 +59,13 @@ public class GenderPlayer {
 		this(uuid, Configuration.GENDER.getDefault());
 	}
 
-	public GenderPlayer(UUID uuid, Gender gender) {
+	public GenderPlayer(UUID uuid, Pronouns pronouns) {
 		lBreastPhysics = new BreastPhysics(this);
 		rBreastPhysics = new BreastPhysics(this);
 		breasts = new Breasts();
                 bulge = new Bulge();
 		this.uuid = uuid;
-		this.gender = gender;
+		this.pronouns = pronouns;
 		this.cfg = new Configuration("WildfireGender", this.uuid.toString());
 		this.cfg.set(Configuration.USERNAME, this.uuid);
 		this.cfg.setDefault(Configuration.GENDER);
@@ -103,12 +103,12 @@ public class GenderPlayer {
 		return false;
 	}
 
-	public Gender getGender() {
-		return gender;
+	public Pronouns getGender() {
+		return pronouns;
 	}
 
-	public boolean updateGender(Gender value) {
-		return updateValue(Configuration.GENDER, value, v -> this.gender = v);
+	public boolean updateGender(Pronouns value) {
+		return updateValue(Configuration.GENDER, value, v -> this.pronouns = v);
 	}
 
 	public float getBustSize() {
@@ -317,14 +317,20 @@ public class GenderPlayer {
 		CACHED, SYNCED, UNKNOWN
 	}
 
-	public enum Gender {
-		FEMALE(new TranslatableText("wildfire_gender.label.female").formatted(Formatting.LIGHT_PURPLE)),
-		MALE(new TranslatableText("wildfire_gender.label.male").formatted(Formatting.BLUE)),
-		OTHER(new TranslatableText("wildfire_gender.label.other").formatted(Formatting.GREEN));
+	public enum Pronouns {
+		THEY_THEM(new LiteralText("they/them").formatted(Formatting.GREEN)),
+		HE_HIM(new LiteralText("he/him").formatted(Formatting.BLUE)),
+		SHE_HER(new LiteralText("she/her").formatted(Formatting.LIGHT_PURPLE)),
+		HE_THEY(new LiteralText("he/they").formatted(Formatting.DARK_BLUE)),
+		SHE_THEY(new LiteralText("she/they").formatted(Formatting.DARK_PURPLE)),
+		THEY_HE(new LiteralText("they/he").formatted(Formatting.GREEN)),
+		THEY_SHE(new LiteralText("they/she").formatted(Formatting.GREEN)),
+		ANY(new LiteralText("any/all").formatted(Formatting.GOLD)),
+		ASK(new LiteralText("please ask").formatted(Formatting.WHITE));
 
 		private final Text name;
 
-		Gender(Text name) {
+		Pronouns(Text name) {
 			this.name = name;
 		}
 
@@ -332,15 +338,10 @@ public class GenderPlayer {
 			return name;
 		}
 
-		public boolean hasFemaleHurtSounds() {
-			return this == FEMALE;
-		}
-
 		public boolean canHaveBreasts() {
 			return true;
 		}
-                
-                public boolean canHaveBulge() {
+		public boolean canHaveBulge() {
                     return true;
                 }
 	}
