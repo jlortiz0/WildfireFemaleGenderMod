@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 
 public class Bulge {
 
+    private float xOffset = Configuration.BULGE_OFFSET_X.getDefault(), yOffset = Configuration.BULGE_OFFSET_Y.getDefault(), zOffset = Configuration.BULGE_OFFSET_Z.getDefault();
     private float size = Configuration.BULGE_SIZE.getDefault();
 
     private <VALUE> boolean updateValue(ConfigKey<VALUE> key, VALUE value, Consumer<VALUE> setter) {
@@ -34,6 +35,30 @@ public class Bulge {
         return false;
     }
 
+    public float getXOffset() {
+        return xOffset;
+    }
+
+    public boolean updateXOffset(float value) {
+        return updateValue(Configuration.BULGE_OFFSET_X, value, v -> this.xOffset = v);
+    }
+
+    public float getYOffset() {
+        return yOffset;
+    }
+
+    public boolean updateYOffset(float value) {
+        return updateValue(Configuration.BULGE_OFFSET_Y, value, v -> this.yOffset = v);
+    }
+
+    public float getZOffset() {
+        return zOffset;
+    }
+
+    public boolean updateZOffset(float value) {
+        return updateValue(Configuration.BULGE_OFFSET_Z, value, v -> this.zOffset = v);
+    }
+    
     public float getSize() {
         return size;
     }

@@ -54,7 +54,10 @@ public class Configuration {
 	public static final FloatConfigKey BOUNCE_MULTIPLIER = new FloatConfigKey("bounce_multiplier", 0.34F, 0, 1);
 	public static final FloatConfigKey FLOPPY_MULTIPLIER = new FloatConfigKey("floppy_multiplier", 0.95F, 0, 1);
         
-        public static final FloatConfigKey BULGE_SIZE = new FloatConfigKey("bulge_size", 0, 0, 2);
+        public static final FloatConfigKey BULGE_SIZE = new FloatConfigKey("bulge_size", 0, 0, 1);
+        public static final FloatConfigKey BULGE_OFFSET_X = new FloatConfigKey("bulge_xOffset", 0, -1, 1);
+        public static final FloatConfigKey BULGE_OFFSET_Y = new FloatConfigKey("bulge_yOffset", 0, -1, 1);
+        public static final FloatConfigKey BULGE_OFFSET_Z = new FloatConfigKey("bulge_zOffset", 0, -1, 1);
 
 	private static final TypeAdapter<JsonObject> ADAPTER = new Gson().getAdapter(JsonObject.class);
 

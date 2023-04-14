@@ -24,6 +24,7 @@ import com.wildfire.main.WildfireGender;
 import com.wildfire.main.WildfireHelper;
 import com.wildfire.render.armor.EmptyGenderArmor;
 import dev.emi.trinkets.api.TrinketsApi;
+import dev.emi.trinkets.api.TrinketInventory;
 import moe.kawaaii.TransparentCosmetics.TransparentArmorMaterial;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

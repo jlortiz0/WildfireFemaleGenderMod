@@ -21,6 +21,7 @@ package com.wildfire.render;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.wildfire.api.IGenderArmor;
 import com.wildfire.main.Breasts;
+import com.wildfire.main.Bulge;
 import com.wildfire.main.WildfireHelper;
 import com.wildfire.physics.BreastPhysics;
 import com.wildfire.render.WildfireModelRenderer.BreastModelBox;
@@ -30,10 +31,12 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.WildfireGender;
+import com.wildfire.render.WildfireModelRenderer.BulgeModelBox;
 import com.wildfire.render.armor.EmptyGenderArmor;
 import dev.emi.trinkets.api.SlotGroup;
 import dev.emi.trinkets.api.SlotType;
 import dev.emi.trinkets.api.TrinketsApi;
+import dev.emi.trinkets.api.TrinketInventory;
 import moe.kawaaii.TransparentCosmetics.TransparentArmorMaterial;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Blocks;
@@ -70,6 +73,8 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	private BreastModelBox lBreast, rBreast;
 	private OverlayModelBox lBreastWear, rBreastWear;
 	private BreastModelBox lBoobArmor, rBoobArmor;
+        private BulgeModelBox bulgeModel, bulgeModelArrmor;
+        private OverlayModelBox bulgeWear;
 
 	private float preBreastSize = 0f;
         private float preBulgeSize = 0f;
@@ -160,6 +165,16 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				rBreast = new BreastModelBox(64, 64, 20, 17, 0, 0.0F, 0F, 4, 5, (int) (4 - breastOffsetZ - reducer), 0.0F, false);
 				preBreastSize = bSize;
 			}
+                        
+                        Bulge bulge = plr.getBulge();
+                        float bulgeOffsetX = Math.round((Math.round(breasts.getXOffset() * 100f) / 100f) * 10) / 10f;
+			float bulgeOffsetY = -Math.round((Math.round(breasts.getYOffset() * 100f) / 100f) * 10) / 10f;
+			float bulgeOffsetZ = -Math.round((Math.round(breasts.getZOffset() * 100f) / 100f) * 10) / 10f;
+                        final float bulgeSize = bulge.getSize();
+                        if (preBulgeSize != bulgeSize) {
+                            bulgeModel = new BulgeModelBox(64, 64, 16, 17, -4F, 0.0F, 0F, 4, 5, (int) (4 - bulgeOffsetZ), 0.0F, false);
+                            preBulgeSize = bulgeSize;
+                        }
 
 			//DEPENDENCIES
 			float overlayRed = 1;

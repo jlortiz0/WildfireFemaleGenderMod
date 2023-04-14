@@ -16,10 +16,11 @@
 	"wildfire_gender.wardrobe.slider.height": "Height: %s",
 	"wildfire_gender.wardrobe.slider.depth": "Depth: %s",
 	"wildfire_gender.wardrobe.slider.rotation": "Rotation: %s degrees",
-        "wildfire_gender.wardrobe.slider.bulge": "Bulge Size: %s",
+        "wildfire_gender.wardrobe.slider.bulge": "Bulge Size: %s%%",
 
 	"wildfire_gender.appearance_settings.title": "Appearance Settings",
 	"wildfire_gender.char_settings.title": "Character Settings",
+        "wildfire_gender.bulge_settings.title": "Appearance Settings",
 	"wildfire_gender.char_settings.physics": "Breast Physics: %s",
 	"wildfire_gender.tooltip.breast_physics": "Enables Breast Physics",
 	"wildfire_gender.char_settings.armor_physics": "Armor Physics: %s",

@@ -85,6 +85,9 @@ public class GenderPlayer {
 		this.cfg.setDefault(Configuration.FLOPPY_MULTIPLIER);
                 
                 this.cfg.setDefault(Configuration.BULGE_SIZE);
+                this.cfg.setDefault(Configuration.BULGE_OFFSET_X);
+                this.cfg.setDefault(Configuration.BULGE_OFFSET_Y);
+                this.cfg.setDefault(Configuration.BULGE_OFFSET_Z);
 		this.cfg.finish();
 	}
 
@@ -194,6 +197,9 @@ public class GenderPlayer {
                 
                 Bulge bulge = plr.getBulge();
                 Configuration.BULGE_SIZE.save(obj, bulge.getSize());
+                Configuration.BULGE_OFFSET_X.save(obj, bulge.getXOffset());
+                Configuration.BULGE_OFFSET_Y.save(obj, bulge.getYOffset());
+                Configuration.BULGE_OFFSET_Z.save(obj, bulge.getZOffset());
 		return obj;
 	}
 
@@ -219,6 +225,9 @@ public class GenderPlayer {
 
                 Bulge bulge = plr.getBulge();
                 bulge.updateSize(Configuration.BULGE_SIZE.read(obj));
+                bulge.updateXOffset(Configuration.BULGE_OFFSET_X.read(obj));
+                bulge.updateYOffset(Configuration.BULGE_OFFSET_Y.read(obj));
+                bulge.updateZOffset(Configuration.BULGE_OFFSET_Z.read(obj));
 		return plr;
 	}
 
@@ -249,6 +258,9 @@ public class GenderPlayer {
                         
                         Bulge bulge = plr.getBulge();
                         bulge.updateSize(config.get(Configuration.BULGE_SIZE));
+                        bulge.updateXOffset(config.get(Configuration.BULGE_OFFSET_X));
+                        bulge.updateYOffset(config.get(Configuration.BULGE_OFFSET_Y));
+                        bulge.updateZOffset(config.get(Configuration.BULGE_OFFSET_Z));
 			if (markForSync) {
 				plr.needsSync = true;
 			}
@@ -278,6 +290,9 @@ public class GenderPlayer {
 		config.set(Configuration.BREASTS_CLEAVAGE, plr.getBreasts().getCleavage());
 
                 config.set(Configuration.BULGE_SIZE, plr.getBulge().getSize());
+                config.set(Configuration.BULGE_OFFSET_X, plr.getBulge().getXOffset());
+                config.set(Configuration.BULGE_OFFSET_Y, plr.getBulge().getYOffset());
+                config.set(Configuration.BULGE_OFFSET_Z, plr.getBulge().getZOffset());
                 
 		config.save();
 		plr.needsSync = true;

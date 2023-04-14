@@ -34,6 +34,7 @@ import java.util.UUID;
 
 public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
 
+    private WildfireSlider xOffsetBulgeSlider, yOffsetBulgeSlider, zOffsetBulgeSlider;
     private WildfireSlider bulgeSlider;
 
     public WildfireBulgeCustomizationScreen(Screen parent, UUID uuid) {
@@ -56,7 +57,14 @@ public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
 
         //Customization
         this.addDrawableChild(this.bulgeSlider = new WildfireSlider(this.width / 2 + 30, j - 48, 158, 20, Configuration.BULGE_SIZE, bulge.getSize(),
-                bulge::updateSize, value -> new TranslatableText("wildfire_gender.wardrobe.slider.bulge", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
+                bulge::updateSize, value -> new TranslatableText("wildfire_gender.wardrobe.slider.bulge", Math.round(value * 100)), onSave));
+        
+        this.addDrawableChild(this.xOffsetBulgeSlider = new WildfireSlider(this.width / 2 + 30, j - 27, 158, 20, Configuration.BULGE_OFFSET_X, bulge.getXOffset(),
+              bulge::updateXOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.rotation", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
+        this.addDrawableChild(this.yOffsetBulgeSlider = new WildfireSlider(this.width / 2 + 30, j - 6, 158, 20, Configuration.BULGE_OFFSET_Y, bulge.getYOffset(),
+              bulge::updateYOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.height", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
+        this.addDrawableChild(this.zOffsetBulgeSlider = new WildfireSlider(this.width / 2 + 30, j + 15, 158, 20, Configuration.BULGE_OFFSET_Z, bulge.getZOffset(),
+              bulge::updateZOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.depth", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
 
         super.init();
     }
@@ -88,6 +96,9 @@ public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
 
         boolean canHaveBulge = plr.getGender().canHaveBulge();
         bulgeSlider.visible = canHaveBulge;
+        xOffsetBulgeSlider.visible = canHaveBulge;
+        yOffsetBulgeSlider.visible = canHaveBulge;
+        zOffsetBulgeSlider.visible = canHaveBulge;
 
         int x = this.width / 2;
         int y = this.height / 2;
@@ -101,6 +112,9 @@ public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
     public boolean mouseReleased(double mouseX, double mouseY, int state) {
         //Ensure all sliders are saved
         bulgeSlider.save();
+        xOffsetBulgeSlider.save();
+        yOffsetBulgeSlider.save();
+        zOffsetBulgeSlider.save();
         return super.mouseReleased(mouseX, mouseY, state);
     }
 }
