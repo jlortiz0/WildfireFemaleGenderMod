@@ -132,7 +132,11 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 			//Cosmetic armor
 			if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-				TrinketInventory ti = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("chest").get("cosmetic");
+				Map<String, TrinketInventory> tm = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("chest");
+				TrinketInventory ti = null;
+				if (tm != null) {
+					ti = tm.get("cosmetic");
+				}
 				if (ti != null && ti.getStack(0).getItem() != Items.AIR) {
 					armorStack = ti.getStack(0);
 					armorConfig = WildfireHelper.getArmorConfig(armorStack);
@@ -148,7 +152,11 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			ItemStack armorStack2 = ent.getEquippedStack(EquipmentSlot.LEGS);
 			IGenderArmor armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
 			if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-				TrinketInventory ti = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("legs").get("cosmetic");
+				Map<String, TrinketInventory> tm = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("legs");
+				TrinketInventory ti = null;
+				if (tm != null) {
+					ti = tm.get("cosmetic");
+				}
 				if (ti != null && ti.getStack(0).getItem() != Items.AIR) {
 					armorStack2 = ti.getStack(0);
 					armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);

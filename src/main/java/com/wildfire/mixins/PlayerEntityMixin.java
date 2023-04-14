@@ -44,6 +44,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Map;
+
 @Environment(EnvType.CLIENT)
 @Mixin(value = PlayerEntity.class, priority = 900)
 public abstract class PlayerEntityMixin extends LivingEntity {
@@ -79,7 +81,11 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
         //Cosmetic armor
         if(FabricLoader.getInstance().isModLoaded("trinkets")) {
-            TrinketInventory ti = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("chest").get("cosmetic");
+            Map<String, TrinketInventory> tm = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("chest");
+            TrinketInventory ti = null;
+            if (tm != null) {
+                ti = tm.get("cosmetic");
+            }
             if (ti != null && ti.getStack(0).getItem() != Items.AIR) {
                 armorStack = ti.getStack(0);
                 armorConfig = WildfireHelper.getArmorConfig(armorStack);
