@@ -322,11 +322,11 @@ public class GenderPlayer {
 		}
 
 		public boolean canHaveBreasts() {
-			return this != MALE;
+			return true;
 		}
                 
                 public boolean canHaveBulge() {
-                    return this != FEMALE;
+                    return true;
                 }
 	}
 }

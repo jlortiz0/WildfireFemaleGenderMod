@@ -55,7 +55,7 @@ public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
               button -> MinecraftClient.getInstance().setScreen(parent)));
 
         //Customization
-        this.addDrawableChild(this.bulgeSlider = new WildfireSlider(this.width / 2 + 30, j + 15, 158, 20, Configuration.BULGE_SIZE, bulge.getSize(),
+        this.addDrawableChild(this.bulgeSlider = new WildfireSlider(this.width / 2 + 30, j - 48, 158, 20, Configuration.BULGE_SIZE, bulge.getSize(),
                 bulge::updateSize, value -> new TranslatableText("wildfire_gender.wardrobe.slider.bulge", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
 
         super.init();
@@ -73,7 +73,7 @@ public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
         try {
             RenderSystem.setShaderColor(1f,1.0F, 1.0F, 1.0F);
             int xP = this.width / 2 - 102;
-            int yP = this.height / 2; // + 275;
+            int yP = this.height / 2 + 75;
             PlayerEntity ent = MinecraftClient.getInstance().world.getPlayerByUuid(this.playerUUID);
             if(ent != null) {
                 WardrobeBrowserScreen.drawEntityOnScreen(xP, yP, 200, -20, -20, ent);
