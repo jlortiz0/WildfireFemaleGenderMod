@@ -44,7 +44,7 @@ public class WildfireGender implements ClientModInitializer {
 		}
 
 		WildfireEventHandler.registerClientEvents();
-		WildfireSounds.register();
+		HurtSoundBank.registerAll();
     }
 
 	@Nullable

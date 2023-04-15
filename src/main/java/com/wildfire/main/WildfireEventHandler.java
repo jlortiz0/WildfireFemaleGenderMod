@@ -68,7 +68,7 @@ public class WildfireEventHandler {
 					return;
 				}
 			}
-			/*if(!world.isClient) return;
+            /*if(!world.isClient) return;
 
 			if(entity instanceof AbstractClientPlayerEntity plr) {
 				UUID uuid = plr.getUuid();
@@ -109,12 +109,11 @@ public class WildfireEventHandler {
 			ClientPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "hurt"),
 					(client2, handler, buf, responseSender) -> {
 						UUID uuid = buf.readUuid();
-						boolean hurtSounds = buf.readBoolean();
-						if (!hurtSounds) return;
+						HurtSoundBank hurtSounds = buf.readEnumConstant(HurtSoundBank.class);
 
 						//Vector3d pos = new Vector3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
 
-						SoundEvent hurtSound = Math.random() > 0.5f ? WildfireSounds.FEMALE_HURT1 : WildfireSounds.FEMALE_HURT2;
+						SoundEvent hurtSound = hurtSounds.getSnd();
 						if(hurtSound == null) return;
 
 						PlayerEntity ent = MinecraftClient.getInstance().world.getPlayerByUuid(uuid);
@@ -129,17 +128,17 @@ public class WildfireEventHandler {
 		});
 
 		ClientPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "sync"),
-		(client, handler, buf, responseSender) -> {
-			PacketSync.handle(client, handler, buf, responseSender);
-		});
+				(client, handler, buf, responseSender) -> {
+					PacketSync.handle(client, handler, buf, responseSender);
+				});
 	}
 
 	//TODO: Eventually we may want to replace this with a map or something and replace things like drowning sounds with other drowning sounds
 	private final Set<SoundEvent> playerHurtSounds = Set.of(SoundEvents.ENTITY_PLAYER_HURT,
-		SoundEvents.ENTITY_PLAYER_HURT_DROWN,
-		SoundEvents.ENTITY_PLAYER_HURT_FREEZE,
-		SoundEvents.ENTITY_PLAYER_HURT_ON_FIRE,
-		SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH
+			SoundEvents.ENTITY_PLAYER_HURT_DROWN,
+			SoundEvents.ENTITY_PLAYER_HURT_FREEZE,
+			SoundEvents.ENTITY_PLAYER_HURT_ON_FIRE,
+			SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH
 	);
 /*
 	@SubscribeEvent(priority = EventPriority.LOWEST)

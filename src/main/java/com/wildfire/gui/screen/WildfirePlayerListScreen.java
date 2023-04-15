@@ -32,6 +32,7 @@ import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -144,7 +145,7 @@ public class WildfirePlayerListScreen extends Screen {
 				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);
 				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.breast_momentum", Math.round(HOVER_PLAYER.getFloppiness() * 100)), dialogX + 6, dialogY + 60, 0xBBBBBB);
 
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.female_sounds", new TranslatableText(HOVER_PLAYER.hasHurtSounds() ? "wildfire_gender.label.enabled" : "wildfire_gender.label.disabled")), dialogX, dialogY + 80, 0xBBBBBB);
+				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(HOVER_PLAYER.getHurtSounds().getName())), dialogX, dialogY + 80, 0xBBBBBB);
 			}
 			if(pEntity != null) {
 				WardrobeBrowserScreen.drawEntityOnScreen(x - 110, y + 45, 45, (x - 300), (y - 26 - f2), pEntity);

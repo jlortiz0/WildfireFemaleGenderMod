@@ -21,6 +21,7 @@ package com.wildfire.main.networking;
 import com.wildfire.main.Breasts;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.GenderPlayer.Pronouns;
+import com.wildfire.main.HurtSoundBank;
 import net.minecraft.network.PacketByteBuf;
 
 import java.util.UUID;
@@ -41,13 +42,13 @@ public abstract class PacketGenderInfo {
     private final boolean uniboob;
     private final float cleavage;
 
-    private final boolean hurtSounds;
+    private final HurtSoundBank hurtSounds;
 
     protected PacketGenderInfo(GenderPlayer plr) {
         this.uuid = plr.uuid;
         this.pronouns = plr.getGender();
         this.bust_size = plr.getBustSize();
-        this.hurtSounds = plr.hasHurtSounds();
+        this.hurtSounds = plr.getHurtSounds();
 
         //physics variables
         this.breast_physics = plr.hasBreastPhysics();
@@ -69,7 +70,7 @@ public abstract class PacketGenderInfo {
         this.uuid = buffer.readUuid();
         this.pronouns = buffer.readEnumConstant(Pronouns.class);
         this.bust_size = buffer.readFloat();
-        this.hurtSounds = buffer.readBoolean();
+        this.hurtSounds = buffer.readEnumConstant(HurtSoundBank.class);
 
         //physics variables
         this.breast_physics = buffer.readBoolean();
@@ -89,7 +90,7 @@ public abstract class PacketGenderInfo {
         buffer.writeUuid(this.uuid);
         buffer.writeEnumConstant(this.pronouns);
         buffer.writeFloat(this.bust_size);
-        buffer.writeBoolean(this.hurtSounds);
+        buffer.writeEnumConstant(this.hurtSounds);
         buffer.writeBoolean(this.breast_physics);
         buffer.writeBoolean(this.breast_physics_armor);
         buffer.writeBoolean(this.show_in_armor);

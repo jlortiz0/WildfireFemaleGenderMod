@@ -21,16 +21,41 @@ package com.wildfire.main;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.lwjgl.system.CallbackI;
 
-public class WildfireSounds {
-	private static Identifier SND1 = new Identifier(WildfireGender.MODID, "female_hurt1");
-	public static SoundEvent FEMALE_HURT1 = new SoundEvent(SND1);
+import java.util.Random;
 
-	private static Identifier SND2 = new Identifier(WildfireGender.MODID, "female_hurt2");
-	public static SoundEvent FEMALE_HURT2 = new SoundEvent(SND2);
+public enum HurtSoundBank {
+	NONE("Disabled", null),
+	MASCULINE1("Masculine 1", "male_hurt1"),
+	FEMININE1("Feminine 1", "female_hurt1");
+	private final String name;
+	private final Identifier id;
+	private final SoundEvent snd;
+	HurtSoundBank(String name, String prefix) {
+		this.name = name;
+		if (prefix == null) {
+			this.id = null;
+			this.snd = null;
+		} else {
+			this.id = new Identifier(WildfireGender.MODID, prefix);
+			this.snd = new SoundEvent(this.id);
+		}
+	}
 
-	public static void register() {
-		Registry.register(Registry.SOUND_EVENT, SND1, FEMALE_HURT1);
-		Registry.register(Registry.SOUND_EVENT, SND2, FEMALE_HURT2);
+	public SoundEvent getSnd() {
+		return snd;
+	}
+
+	private void register() {
+		Registry.register(Registry.SOUND_EVENT, id, snd);
+	}
+	public String getName() {
+		return name;
+	}
+	public static void registerAll() {
+		for (HurtSoundBank h : HurtSoundBank.values()) {
+			h.register();
+		}
 	}
 }

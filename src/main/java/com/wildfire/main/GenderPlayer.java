@@ -37,7 +37,7 @@ public class GenderPlayer {
 	private Pronouns pronouns;
 	private float pBustSize = Configuration.BUST_SIZE.getDefault();
 
-	private boolean hurtSounds = Configuration.HURT_SOUNDS.getDefault();
+	private HurtSoundBank hurtSounds = Configuration.HURT_SOUNDS.getDefault();
 
 	//physics variables
 	private boolean breastPhysics = Configuration.BREAST_PHYSICS.getDefault();
@@ -119,11 +119,11 @@ public class GenderPlayer {
 		return updateValue(Configuration.BUST_SIZE, value, v -> this.pBustSize = v);
 	}
 
-	public boolean hasHurtSounds() {
+	public HurtSoundBank getHurtSounds() {
 		return hurtSounds;
 	}
 
-	public boolean updateHurtSounds(boolean value) {
+	public boolean updateHurtSounds(HurtSoundBank value) {
 		return updateValue(Configuration.HURT_SOUNDS, value, v -> this.hurtSounds = v);
 	}
 
@@ -180,7 +180,7 @@ public class GenderPlayer {
 		Configuration.USERNAME.save(obj, plr.uuid);
 		Configuration.GENDER.save(obj, plr.getGender());
 		Configuration.BUST_SIZE.save(obj, plr.getBustSize());
-		Configuration.HURT_SOUNDS.save(obj, plr.hasHurtSounds());
+		Configuration.HURT_SOUNDS.save(obj, plr.getHurtSounds());
 
 		Configuration.BREAST_PHYSICS.save(obj, plr.hasBreastPhysics());
 		Configuration.BREAST_PHYSICS_ARMOR.save(obj, plr.hasArmorBreastPhysics());
@@ -274,7 +274,7 @@ public class GenderPlayer {
 		config.set(Configuration.USERNAME, plr.uuid);
 		config.set(Configuration.GENDER, plr.getGender());
 		config.set(Configuration.BUST_SIZE, plr.getBustSize());
-		config.set(Configuration.HURT_SOUNDS, plr.hasHurtSounds());
+		config.set(Configuration.HURT_SOUNDS, plr.getHurtSounds());
 
 		//physics
 		config.set(Configuration.BREAST_PHYSICS, plr.hasBreastPhysics());

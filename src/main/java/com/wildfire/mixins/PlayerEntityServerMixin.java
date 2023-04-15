@@ -61,7 +61,7 @@ public abstract class PlayerEntityServerMixin extends LivingEntity {
                 if (plr != null) {
                     PacketByteBuf buf = PacketByteBufs.create();
                     buf.writeUuid(plr.uuid);
-                    buf.writeBoolean(plr.hasHurtSounds());
+                    buf.writeEnumConstant(plr.getHurtSounds());
                     for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, world.getPlayerByUuid(plr.uuid).getBlockPos())) {
                         if (ServerPlayNetworking.canSend(player, new Identifier("wildfire_gender", "hurt"))) {
                             ServerPlayNetworking.send(player, new Identifier("wildfire_gender", "hurt"), buf);

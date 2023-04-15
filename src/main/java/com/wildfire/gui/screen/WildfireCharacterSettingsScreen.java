@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package com.wildfire.gui.screen;
 
 import com.wildfire.gui.WildfireSlider;
+import com.wildfire.main.HurtSoundBank;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.config.Configuration;
 import java.util.UUID;
@@ -29,8 +30,11 @@ import com.wildfire.main.GenderPlayer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.sound.AbstractSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -115,10 +119,15 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         }));
 
         this.addDrawableChild(new WildfireButton(xPos, yPos + 100, 157, 20,
-              new TranslatableText("wildfire_gender.char_settings.hurt_sounds", aPlr.hasHurtSounds() ? ENABLED : DISABLED), button -> {
-            boolean enableHurtSounds = !aPlr.hasHurtSounds();
-            if (aPlr.updateHurtSounds(enableHurtSounds)) {
-                button.setMessage(new TranslatableText("wildfire_gender.char_settings.hurt_sounds", enableHurtSounds ? ENABLED : DISABLED));
+              new LiteralText(aPlr.getHurtSounds().getName()), button -> {
+            int ind = aPlr.getHurtSounds().ordinal();
+            HurtSoundBank hurtSounds = HurtSoundBank.NONE;
+            if (ind + 1 < HurtSoundBank.values().length) {
+                hurtSounds = HurtSoundBank.values()[ind + 1];
+            }
+            if (aPlr.updateHurtSounds(hurtSounds)) {
+                client.player.playSound(hurtSounds.getSnd(), SoundCategory.PLAYERS, 1, 1);
+                button.setMessage(new LiteralText(aPlr.getHurtSounds().getName()));
                 GenderPlayer.saveGenderInfo(aPlr);
             }
         }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, new TranslatableText("wildfire_gender.tooltip.hurt_sounds"), mouseX, mouseY)));
