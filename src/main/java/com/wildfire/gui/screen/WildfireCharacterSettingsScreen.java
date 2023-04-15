@@ -119,15 +119,17 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         }));
 
         this.addDrawableChild(new WildfireButton(xPos, yPos + 100, 157, 20,
-              new LiteralText(aPlr.getHurtSounds().getName()), button -> {
+                new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(aPlr.getHurtSounds().getName())), button -> {
             int ind = aPlr.getHurtSounds().ordinal();
             HurtSoundBank hurtSounds = HurtSoundBank.NONE;
             if (ind + 1 < HurtSoundBank.values().length) {
                 hurtSounds = HurtSoundBank.values()[ind + 1];
             }
             if (aPlr.updateHurtSounds(hurtSounds)) {
-                client.player.playSound(hurtSounds.getSnd(), SoundCategory.PLAYERS, 1, 1);
-                button.setMessage(new LiteralText(aPlr.getHurtSounds().getName()));
+                if (hurtSounds.getSnd() != null) {
+                    client.player.playSound(hurtSounds.getSnd(), SoundCategory.PLAYERS, 1, 1);
+                }
+                button.setMessage(new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(aPlr.getHurtSounds().getName())));
                 GenderPlayer.saveGenderInfo(aPlr);
             }
         }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, new TranslatableText("wildfire_gender.tooltip.hurt_sounds"), mouseX, mouseY)));

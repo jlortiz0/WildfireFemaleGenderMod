@@ -8,5 +8,15 @@
 		"category": "block",
 		"subtitle": "wildfire_gender.hurt.male",
 		"sounds": [ "wildfire_gender:male_damage" ]
+	},
+	"female_hurt2": {
+		"category": "block",
+		"subtitle": "wildfire_gender.hurt.female",
+		"sounds": [ "wildfire_gender:female2_damage1", "wildfire_gender:female2_damage2", "wildfire_gender:female2_damage3" ]
+	},
+	"male_hurt2": {
+		"category": "block",
+		"subtitle": "wildfire_gender.hurt.male",
+		"sounds": [ "wildfire_gender:male2_damage1", "wildfire_gender:male2_damage2", "wildfire_gender:male2_damage3" ]
 	}
 }

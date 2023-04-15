@@ -28,7 +28,9 @@ import java.util.Random;
 public enum HurtSoundBank {
 	NONE("Disabled", null),
 	MASCULINE1("Masculine 1", "male_hurt1"),
-	FEMININE1("Feminine 1", "female_hurt1");
+	FEMININE1("Feminine 1", "female_hurt1"),
+	MASCULINE2("Masculine 2", "male_hurt2"),
+	FEMININE2("Feminine 2", "female_hurt2");
 	private final String name;
 	private final Identifier id;
 	private final SoundEvent snd;
@@ -48,7 +50,9 @@ public enum HurtSoundBank {
 	}
 
 	private void register() {
-		Registry.register(Registry.SOUND_EVENT, id, snd);
+		if (snd != null) {
+			Registry.register(Registry.SOUND_EVENT, id, snd);
+		}
 	}
 	public String getName() {
 		return name;
