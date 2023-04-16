@@ -5,7 +5,7 @@
 	},
 	"male_hurt1": {
 		"subtitle": "wildfire_gender.hurt.male",
-		"sounds": [ "wildfire_gender:male_damage" ]
+		"sounds": [ "wildfire_gender:male_damage", "wildfire_gender:male_damage2" ]
 	},
 	"female_hurt2": {
 		"subtitle": "wildfire_gender.hurt.female",
@@ -33,7 +33,7 @@
 	},
 	"female_hurt4": {
 		"subtitle": "wildfire_gender.hurt.female",
-		"sounds": [ "wildfire_gender:female3_damage1", "wildfire_gender:female3_damage2" ]
+		"sounds": [ "wildfire_gender:female5_damage1", "wildfire_gender:female5_damage2" ]
 	},
 	"male_hurt4": {
 		"subtitle": "wildfire_gender.hurt.male",
