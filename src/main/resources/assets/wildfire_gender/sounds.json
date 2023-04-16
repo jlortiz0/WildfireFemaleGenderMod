@@ -18,5 +18,15 @@
 		"category": "block",
 		"subtitle": "wildfire_gender.hurt.male",
 		"sounds": [ "wildfire_gender:male2_damage1", "wildfire_gender:male2_damage2", "wildfire_gender:male2_damage3" ]
+	},
+	"robo_hurt": {
+		"category": "block",
+		"subtitle": "wildfire_gender.hurt.other",
+		"sounds": [ "wildfire_gender:robo_damage1", "wildfire_gender:robo_damage2", "wildfire_gender:robo_damage3" ]
+	},
+	"male_hurt3": {
+		"category": "block",
+		"subtitle": "wildfire_gender.hurt.male",
+		"sounds": [ "wildfire_gender:male3_damage" ]
 	}
 }

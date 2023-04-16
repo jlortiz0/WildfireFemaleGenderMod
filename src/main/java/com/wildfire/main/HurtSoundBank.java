@@ -30,7 +30,9 @@ public enum HurtSoundBank {
 	MASCULINE1("Masculine 1", "male_hurt1"),
 	FEMININE1("Feminine 1", "female_hurt1"),
 	MASCULINE2("Masculine 2", "male_hurt2"),
-	FEMININE2("Feminine 2", "female_hurt2");
+	FEMININE2("Feminine 2", "female_hurt2"),
+	MASCULINE3("Masculine 3", "male_hurt3"),
+	ROBOT("Robot", "robo_hurt");
 	private final String name;
 	private final Identifier id;
 	private final SoundEvent snd;
