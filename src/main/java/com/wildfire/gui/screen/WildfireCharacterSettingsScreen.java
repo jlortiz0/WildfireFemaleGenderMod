@@ -99,7 +99,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
             float bounceText = 3 * value;
             float v = Math.round(bounceText * 10) / 10f;
             bounceWarning = v > 1;
-            if (v == 3) {
+            if (v == 6) {
                 return new TranslatableText("wildfire_gender.slider.max_bounce");
             } else if (Math.round(bounceText * 100) / 100f == 0) {
                 return new TranslatableText("wildfire_gender.slider.min_bounce");

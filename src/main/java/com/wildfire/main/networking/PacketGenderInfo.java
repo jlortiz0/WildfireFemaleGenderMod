@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package com.wildfire.main.networking;
 
 import com.wildfire.main.Breasts;
+import com.wildfire.main.Bulge;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.GenderPlayer.Pronouns;
 import com.wildfire.main.HurtSoundBank;
@@ -43,6 +44,10 @@ public abstract class PacketGenderInfo {
     private final float cleavage;
 
     private final HurtSoundBank hurtSounds;
+    private final float bulgeX;
+    private final float bulgeY;
+    private final float bulgeZ;
+    private final float bulgeSize;
 
     protected PacketGenderInfo(GenderPlayer plr) {
         this.uuid = plr.uuid;
@@ -64,6 +69,12 @@ public abstract class PacketGenderInfo {
 
         this.uniboob = breasts.isUniboob();
         this.cleavage = breasts.getCleavage();
+
+        Bulge bulge = plr.getBulge();
+        this.bulgeX = bulge.getXOffset();
+        this.bulgeY = bulge.getYOffset();
+        this.bulgeZ = bulge.getZOffset();
+        this.bulgeSize = bulge.getSize();
     }
 
     protected PacketGenderInfo(PacketByteBuf buffer) {
@@ -84,6 +95,11 @@ public abstract class PacketGenderInfo {
         this.zOffset = buffer.readFloat();
         this.uniboob = buffer.readBoolean();
         this.cleavage = buffer.readFloat();
+
+        this.bulgeX = buffer.readFloat();
+        this.bulgeY = buffer.readFloat();
+        this.bulgeZ = buffer.readFloat();
+        this.bulgeSize = buffer.readFloat();
     }
 
     public void encode(PacketByteBuf buffer) {
@@ -102,6 +118,11 @@ public abstract class PacketGenderInfo {
         buffer.writeFloat(this.zOffset);
         buffer.writeBoolean(this.uniboob);
         buffer.writeFloat(this.cleavage);
+
+        buffer.writeFloat(this.bulgeX);
+        buffer.writeFloat(this.bulgeY);
+        buffer.writeFloat(this.bulgeZ);
+        buffer.writeFloat(this.bulgeSize);
     }
 
     protected void updatePlayerFromPacket(GenderPlayer plr) {
@@ -123,5 +144,11 @@ public abstract class PacketGenderInfo {
         breasts.updateZOffset(zOffset);
         breasts.updateUniboob(uniboob);
         breasts.updateCleavage(cleavage);
+
+        Bulge bulge = plr.getBulge();
+        bulge.updateXOffset(bulgeX);
+        bulge.updateYOffset(bulgeY);
+        bulge.updateZOffset(bulgeZ);
+        bulge.updateSize(bulgeSize);
     }
 }

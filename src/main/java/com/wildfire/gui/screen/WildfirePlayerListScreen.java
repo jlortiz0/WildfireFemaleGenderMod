@@ -144,8 +144,9 @@ public class WildfirePlayerListScreen extends Screen {
 				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.char_settings.physics", new TranslatableText(HOVER_PLAYER.hasBreastPhysics() ? "wildfire_gender.label.enabled" : "wildfire_gender.label.disabled")), dialogX, dialogY + 40, 0xBBBBBB);
 				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);
 				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.breast_momentum", Math.round(HOVER_PLAYER.getFloppiness() * 100)), dialogX + 6, dialogY + 60, 0xBBBBBB);
+				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.bulge", Math.round(HOVER_PLAYER.getBulge().getSize() * 100)), dialogX, dialogY + 80, 0xBBBBBB);
 
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(HOVER_PLAYER.getHurtSounds().getName())), dialogX, dialogY + 80, 0xBBBBBB);
+				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(HOVER_PLAYER.getHurtSounds().getName())), dialogX, dialogY + 100, 0xBBBBBB);
 			}
 			if(pEntity != null) {
 				WardrobeBrowserScreen.drawEntityOnScreen(x - 110, y + 45, 45, (x - 300), (y - 26 - f2), pEntity);
