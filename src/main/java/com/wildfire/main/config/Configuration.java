@@ -40,7 +40,7 @@ public class Configuration {
 
 	public static final UUIDConfigKey USERNAME = new UUIDConfigKey("username", UUID.nameUUIDFromBytes("UNKNOWN".getBytes(StandardCharsets.UTF_8)));
 	public static final GenderConfigKey GENDER = new GenderConfigKey("gender");
-	public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0.6F, 0, 1);
+	public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0, 0, 1.5f);
 	public static final HurtSoundConfigKey HURT_SOUNDS = new HurtSoundConfigKey("hurt_sounds");
 
 	public static final FloatConfigKey BREASTS_OFFSET_X = new FloatConfigKey("breasts_xOffset", 0.0F, -1, 1);
@@ -52,10 +52,10 @@ public class Configuration {
 	public static final BooleanConfigKey BREAST_PHYSICS = new BooleanConfigKey("breast_physics", false);
 	public static final BooleanConfigKey BREAST_PHYSICS_ARMOR = new BooleanConfigKey("breast_physics_armor", false);
 	public static final BooleanConfigKey SHOW_IN_ARMOR = new BooleanConfigKey("show_in_armor", true);
-	public static final FloatConfigKey BOUNCE_MULTIPLIER = new FloatConfigKey("bounce_multiplier", 0.34F, 0, 1);
-	public static final FloatConfigKey FLOPPY_MULTIPLIER = new FloatConfigKey("floppy_multiplier", 0.95F, 0, 1);
+	public static final FloatConfigKey BOUNCE_MULTIPLIER = new FloatConfigKey("bounce_multiplier", 0.34F, 0, 2);
+	public static final FloatConfigKey FLOPPY_MULTIPLIER = new FloatConfigKey("floppy_multiplier", 0.95F, 0, 2);
         
-	public static final FloatConfigKey BULGE_SIZE = new FloatConfigKey("bulge_size", 0, 0, 1);
+	public static final FloatConfigKey BULGE_SIZE = new FloatConfigKey("bulge_size", 0, 0, 1.5f);
 	public static final FloatConfigKey BULGE_OFFSET_X = new FloatConfigKey("bulge_xOffset", 0, -1, 1);
 	public static final FloatConfigKey BULGE_OFFSET_Y = new FloatConfigKey("bulge_yOffset", 0, -1, 1);
 	public static final FloatConfigKey BULGE_OFFSET_Z = new FloatConfigKey("bulge_zOffset", 0, -1, 1);
