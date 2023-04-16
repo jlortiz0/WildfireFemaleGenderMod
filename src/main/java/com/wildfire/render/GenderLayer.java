@@ -90,7 +90,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		lBoobArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 		rBoobArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
                 
-		bulgeModel = new BulgeModelBox(64, 64, 20, 24, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
+		bulgeModel = new BulgeModelBox(64, 64, 0, 17, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
 		bulgeWear = new OverlayModelBox(false, 64, 64, 20, 41, -1F, 0F, 0F, 2, 2, 2, 0F, false);
 		bulgeModelArmor = new BulgeModelBox(64, 32, 19, 24, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
 	}
@@ -197,7 +197,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (buSize < 0.84f) reducer++;
 			if (buSize < 0.72f) reducer++;
 			if (preBulgeSize != buSize) {
-				bulgeModel = new BulgeModelBox(64, 64, 20, 26, -1F, 0.0F, 0F, 2, 2, (int) (2 - bulgeOffsetZ - reducer), 0.0F, false);
+				bulgeModel = new BulgeModelBox(64, 64, 0, 17, -1F, 0.0F, 0F, 2, 2, (int) (2 - bulgeOffsetZ - reducer), 0.0F, false);
 				preBulgeSize = buSize;
 			}
 
