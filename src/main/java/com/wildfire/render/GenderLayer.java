@@ -197,7 +197,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				Origin or = component.getOrigin(layer);
 				if (lastOrigin == null || !or.getIdentifier().equals(lastOrigin)) {
 					lastOrigin = or.getIdentifier();
-					Identifier searching = new Identifier("origins", "model_color");
+					this.modelColor = null;
 					for (PowerType<? extends Power> p : or.getPowerTypes()) {
 						if (p.get(ent) instanceof ModelColorPower) {
 							this.modelColor = (ModelColorPower) p.get(ent);
