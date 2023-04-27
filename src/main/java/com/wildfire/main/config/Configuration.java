@@ -23,7 +23,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonWriter;
-import com.wildfire.main.HurtSoundBank;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.File;
@@ -41,6 +40,7 @@ public class Configuration {
 	public static final UUIDConfigKey USERNAME = new UUIDConfigKey("username", UUID.nameUUIDFromBytes("UNKNOWN".getBytes(StandardCharsets.UTF_8)));
 	public static final GenderConfigKey GENDER = new GenderConfigKey("gender");
 	public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0, 0, 1.5f);
+	public static final FloatConfigKey BUNS_SIZE = new FloatConfigKey("buns_size", 0, 0, 1.5f);
 	public static final HurtSoundConfigKey HURT_SOUNDS = new HurtSoundConfigKey("hurt_sounds");
 
 	public static final FloatConfigKey BREASTS_OFFSET_X = new FloatConfigKey("breasts_xOffset", 0.0F, -1, 1);
@@ -59,6 +59,12 @@ public class Configuration {
 	public static final FloatConfigKey BULGE_OFFSET_X = new FloatConfigKey("bulge_xOffset", 0, -1, 1);
 	public static final FloatConfigKey BULGE_OFFSET_Y = new FloatConfigKey("bulge_yOffset", 0, -1, 1);
 	public static final FloatConfigKey BULGE_OFFSET_Z = new FloatConfigKey("bulge_zOffset", 0, -1, 1);
+
+	public static final FloatConfigKey BUNS_OFFSET_X = new FloatConfigKey("buns_xOffset", 0.0F, -1, 1);
+	public static final FloatConfigKey BUNS_OFFSET_Y = new FloatConfigKey("buns_yOffset", 0.0F, -1, 1);
+	public static final FloatConfigKey BUNS_OFFSET_Z = new FloatConfigKey("buns_zOffset", 0.0F, -1, 0);
+	public static final BooleanConfigKey BUNS_UNIBUN = new BooleanConfigKey("buns_unibun", true);
+	public static final FloatConfigKey BUNS_GAP = new FloatConfigKey("buns_gap", 0.05F, 0, 0.1F);
 
 	private static final TypeAdapter<JsonObject> ADAPTER = new Gson().getAdapter(JsonObject.class);
 

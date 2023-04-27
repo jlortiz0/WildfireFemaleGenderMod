@@ -18,11 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.main.networking;
 
-import com.wildfire.main.Breasts;
-import com.wildfire.main.Bulge;
-import com.wildfire.main.GenderPlayer;
+import com.wildfire.main.*;
 import com.wildfire.main.GenderPlayer.Pronouns;
-import com.wildfire.main.HurtSoundBank;
 import net.minecraft.network.PacketByteBuf;
 
 import java.util.UUID;
@@ -31,6 +28,7 @@ public abstract class PacketGenderInfo {
     protected final UUID uuid;
     private final Pronouns pronouns;
     private final float bust_size;
+    private final float buns_size;
 
     //physics variables
     private final boolean breast_physics;
@@ -49,10 +47,17 @@ public abstract class PacketGenderInfo {
     private final float bulgeZ;
     private final float bulgeSize;
 
+    private final float bunsX;
+    private final float bunsY;
+    private final float bunsZ;
+    private final boolean unibun;
+    private final float bunGap;
+
     protected PacketGenderInfo(GenderPlayer plr) {
         this.uuid = plr.uuid;
         this.pronouns = plr.getGender();
         this.bust_size = plr.getBustSize();
+        this.buns_size = plr.getBunsSize();
         this.hurtSounds = plr.getHurtSounds();
 
         //physics variables
@@ -75,12 +80,21 @@ public abstract class PacketGenderInfo {
         this.bulgeY = bulge.getYOffset();
         this.bulgeZ = bulge.getZOffset();
         this.bulgeSize = bulge.getSize();
+
+        Buns buns = plr.getBuns();
+        this.bunsX = buns.getXOffset();
+        this.bunsY = buns.getYOffset();
+        this.bunsZ = buns.getZOffset();
+
+        this.unibun = buns.isUnibun();
+        this.bunGap = buns.getGap();
     }
 
     protected PacketGenderInfo(PacketByteBuf buffer) {
         this.uuid = buffer.readUuid();
         this.pronouns = buffer.readEnumConstant(Pronouns.class);
         this.bust_size = buffer.readFloat();
+        this.buns_size = buffer.readFloat();
         this.hurtSounds = buffer.readEnumConstant(HurtSoundBank.class);
 
         //physics variables
@@ -100,13 +114,21 @@ public abstract class PacketGenderInfo {
         this.bulgeY = buffer.readFloat();
         this.bulgeZ = buffer.readFloat();
         this.bulgeSize = buffer.readFloat();
+
+        this.bunsX = buffer.readFloat();
+        this.bunsY = buffer.readFloat();
+        this.bunsZ = buffer.readFloat();
+        this.unibun = buffer.readBoolean();
+        this.bunGap = buffer.readFloat();
     }
 
     public void encode(PacketByteBuf buffer) {
         buffer.writeUuid(this.uuid);
         buffer.writeEnumConstant(this.pronouns);
         buffer.writeFloat(this.bust_size);
+        buffer.writeFloat(this.buns_size);
         buffer.writeEnumConstant(this.hurtSounds);
+
         buffer.writeBoolean(this.breast_physics);
         buffer.writeBoolean(this.breast_physics_armor);
         buffer.writeBoolean(this.show_in_armor);
@@ -123,6 +145,12 @@ public abstract class PacketGenderInfo {
         buffer.writeFloat(this.bulgeY);
         buffer.writeFloat(this.bulgeZ);
         buffer.writeFloat(this.bulgeSize);
+
+        buffer.writeFloat(this.bunsX);
+        buffer.writeFloat(this.bunsY);
+        buffer.writeFloat(this.bunsZ);
+        buffer.writeBoolean(this.unibun);
+        buffer.writeFloat(this.bunGap);
     }
 
     protected void updatePlayerFromPacket(GenderPlayer plr) {
@@ -150,5 +178,12 @@ public abstract class PacketGenderInfo {
         bulge.updateYOffset(bulgeY);
         bulge.updateZOffset(bulgeZ);
         bulge.updateSize(bulgeSize);
+
+        Buns buns = plr.getBuns();
+        buns.updateXOffset(bunsX);
+        buns.updateYOffset(bunsY);
+        buns.updateZOffset(bunsZ);
+        buns.updateUnibun(unibun);
+        buns.updateGap(bunGap);
     }
 }

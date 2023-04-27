@@ -24,7 +24,6 @@ import com.wildfire.main.config.Configuration;
 import com.wildfire.physics.BreastPhysics;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
 import java.util.UUID;
@@ -36,6 +35,7 @@ public class GenderPlayer {
 	public final UUID uuid;
 	private Pronouns pronouns;
 	private float pBustSize = Configuration.BUST_SIZE.getDefault();
+	private float pBunSize = Configuration.BUNS_SIZE.getDefault();
 
 	private HurtSoundBank hurtSounds = Configuration.HURT_SOUNDS.getDefault();
 
@@ -55,6 +55,8 @@ public class GenderPlayer {
 	private final Breasts breasts;
 	private final Bulge bulge;
 
+	private final Buns buns;
+
 	public GenderPlayer(UUID uuid) {
 		this(uuid, Configuration.GENDER.getDefault());
 	}
@@ -64,12 +66,14 @@ public class GenderPlayer {
 		rBreastPhysics = new BreastPhysics(this);
 		breasts = new Breasts();
 		bulge = new Bulge();
+		buns = new Buns();
 		this.uuid = uuid;
 		this.pronouns = pronouns;
 		this.cfg = new Configuration("WildfireGender", this.uuid.toString());
 		this.cfg.set(Configuration.USERNAME, this.uuid);
 		this.cfg.setDefault(Configuration.GENDER);
 		this.cfg.setDefault(Configuration.BUST_SIZE);
+		this.cfg.setDefault(Configuration.BUNS_SIZE);
 		this.cfg.setDefault(Configuration.HURT_SOUNDS);
 
 		this.cfg.setDefault(Configuration.BREASTS_OFFSET_X);
@@ -88,6 +92,12 @@ public class GenderPlayer {
 		this.cfg.setDefault(Configuration.BULGE_OFFSET_X);
 		this.cfg.setDefault(Configuration.BULGE_OFFSET_Y);
 		this.cfg.setDefault(Configuration.BULGE_OFFSET_Z);
+
+		this.cfg.setDefault(Configuration.BUNS_OFFSET_X);
+		this.cfg.setDefault(Configuration.BUNS_OFFSET_Y);
+		this.cfg.setDefault(Configuration.BUNS_OFFSET_Z);
+		this.cfg.setDefault(Configuration.BUNS_UNIBUN);
+		this.cfg.setDefault(Configuration.BUNS_GAP);
 		this.cfg.finish();
 	}
 
@@ -117,6 +127,12 @@ public class GenderPlayer {
 
 	public boolean updateBustSize(float value) {
 		return updateValue(Configuration.BUST_SIZE, value, v -> this.pBustSize = v);
+	}
+
+	public float getBunsSize() { return pBunSize; }
+
+	public boolean updateBunsSize(float value) {
+		return updateValue(Configuration.BUNS_SIZE, value, v -> this.pBunSize = v);
 	}
 
 	public HurtSoundBank getHurtSounds() {
@@ -180,6 +196,7 @@ public class GenderPlayer {
 		Configuration.USERNAME.save(obj, plr.uuid);
 		Configuration.GENDER.save(obj, plr.getGender());
 		Configuration.BUST_SIZE.save(obj, plr.getBustSize());
+		Configuration.BUNS_SIZE.save(obj, plr.getBunsSize());
 		Configuration.HURT_SOUNDS.save(obj, plr.getHurtSounds());
 
 		Configuration.BREAST_PHYSICS.save(obj, plr.hasBreastPhysics());
@@ -200,6 +217,13 @@ public class GenderPlayer {
 		Configuration.BULGE_OFFSET_X.save(obj, bulge.getXOffset());
 		Configuration.BULGE_OFFSET_Y.save(obj, bulge.getYOffset());
 		Configuration.BULGE_OFFSET_Z.save(obj, bulge.getZOffset());
+
+		Buns buns = plr.getBuns();
+		Configuration.BUNS_OFFSET_X.save(obj, buns.getXOffset());
+		Configuration.BUNS_OFFSET_Y.save(obj, buns.getYOffset());
+		Configuration.BUNS_OFFSET_Z.save(obj, buns.getZOffset());
+		Configuration.BUNS_UNIBUN.save(obj, buns.isUnibun());
+		Configuration.BUNS_GAP.save(obj, buns.getGap());
 		return obj;
 	}
 
@@ -207,6 +231,7 @@ public class GenderPlayer {
 		GenderPlayer plr = new GenderPlayer(Configuration.USERNAME.read(obj));
 		plr.updateGender(Configuration.GENDER.read(obj));
 		plr.updateBustSize(Configuration.BUST_SIZE.read(obj));
+		plr.updateBunsSize(Configuration.BUNS_SIZE.read(obj));
 		plr.updateHurtSounds(Configuration.HURT_SOUNDS.read(obj));
 
 		//physics
@@ -228,6 +253,13 @@ public class GenderPlayer {
 		bulge.updateXOffset(Configuration.BULGE_OFFSET_X.read(obj));
 		bulge.updateYOffset(Configuration.BULGE_OFFSET_Y.read(obj));
 		bulge.updateZOffset(Configuration.BULGE_OFFSET_Z.read(obj));
+
+		Buns buns = plr.getBuns();
+		buns.updateXOffset(Configuration.BUNS_OFFSET_X.read(obj));
+		buns.updateYOffset(Configuration.BUNS_OFFSET_Y.read(obj));
+		buns.updateZOffset(Configuration.BUNS_OFFSET_Z.read(obj));
+		buns.updateUnibun(Configuration.BUNS_UNIBUN.read(obj));
+		buns.updateGap(Configuration.BUNS_GAP.read(obj));
 		return plr;
 	}
 
@@ -240,6 +272,7 @@ public class GenderPlayer {
 			Configuration config = plr.getConfig();
 			plr.updateGender(config.get(Configuration.GENDER));
 			plr.updateBustSize(config.get(Configuration.BUST_SIZE));
+			plr.updateBunsSize(config.get(Configuration.BUNS_SIZE));
 			plr.updateHurtSounds(config.get(Configuration.HURT_SOUNDS));
 
 			//physics
@@ -261,6 +294,13 @@ public class GenderPlayer {
 			bulge.updateXOffset(config.get(Configuration.BULGE_OFFSET_X));
 			bulge.updateYOffset(config.get(Configuration.BULGE_OFFSET_Y));
 			bulge.updateZOffset(config.get(Configuration.BULGE_OFFSET_Z));
+
+			Buns buns = plr.getBuns();
+			buns.updateXOffset(config.get(Configuration.BUNS_OFFSET_X));
+			buns.updateYOffset(config.get(Configuration.BUNS_OFFSET_Y));
+			buns.updateZOffset(config.get(Configuration.BUNS_OFFSET_Z));
+			buns.updateUnibun(config.get(Configuration.BUNS_UNIBUN));
+			buns.updateGap(config.get(Configuration.BUNS_GAP));
 			if (markForSync) {
 				plr.needsSync = true;
 			}
@@ -274,6 +314,7 @@ public class GenderPlayer {
 		config.set(Configuration.USERNAME, plr.uuid);
 		config.set(Configuration.GENDER, plr.getGender());
 		config.set(Configuration.BUST_SIZE, plr.getBustSize());
+		config.set(Configuration.BUNS_SIZE, plr.getBunsSize());
 		config.set(Configuration.HURT_SOUNDS, plr.getHurtSounds());
 
 		//physics
@@ -283,17 +324,26 @@ public class GenderPlayer {
 		config.set(Configuration.BOUNCE_MULTIPLIER, plr.getBounceMultiplierRaw());
 		config.set(Configuration.FLOPPY_MULTIPLIER, plr.getFloppiness());
 
-		config.set(Configuration.BREASTS_OFFSET_X, plr.getBreasts().getXOffset());
-		config.set(Configuration.BREASTS_OFFSET_Y, plr.getBreasts().getYOffset());
-		config.set(Configuration.BREASTS_OFFSET_Z, plr.getBreasts().getZOffset());
-		config.set(Configuration.BREASTS_UNIBOOB, plr.getBreasts().isUniboob());
-		config.set(Configuration.BREASTS_CLEAVAGE, plr.getBreasts().getCleavage());
+		Breasts breasts = plr.getBreasts();
+		config.set(Configuration.BREASTS_OFFSET_X, breasts.getXOffset());
+		config.set(Configuration.BREASTS_OFFSET_Y, breasts.getYOffset());
+		config.set(Configuration.BREASTS_OFFSET_Z, breasts.getZOffset());
+		config.set(Configuration.BREASTS_UNIBOOB, breasts.isUniboob());
+		config.set(Configuration.BREASTS_CLEAVAGE, breasts.getCleavage());
 
-		config.set(Configuration.BULGE_SIZE, plr.getBulge().getSize());
-		config.set(Configuration.BULGE_OFFSET_X, plr.getBulge().getXOffset());
-		config.set(Configuration.BULGE_OFFSET_Y, plr.getBulge().getYOffset());
-		config.set(Configuration.BULGE_OFFSET_Z, plr.getBulge().getZOffset());
-                
+		Bulge bulge = plr.getBulge();
+		config.set(Configuration.BULGE_SIZE, bulge.getSize());
+		config.set(Configuration.BULGE_OFFSET_X, bulge.getXOffset());
+		config.set(Configuration.BULGE_OFFSET_Y, bulge.getYOffset());
+		config.set(Configuration.BULGE_OFFSET_Z, bulge.getZOffset());
+
+		Buns buns = plr.getBuns();
+		config.set(Configuration.BUNS_OFFSET_X, buns.getXOffset());
+		config.set(Configuration.BUNS_OFFSET_Y, buns.getYOffset());
+		config.set(Configuration.BUNS_OFFSET_Z, buns.getZOffset());
+		config.set(Configuration.BUNS_UNIBUN, buns.isUnibun());
+		config.set(Configuration.BUNS_GAP, buns.getGap());
+
 		config.save();
 		plr.needsSync = true;
 	}
@@ -308,10 +358,11 @@ public class GenderPlayer {
 	public BreastPhysics getRightBreastPhysics() {
 		return rBreastPhysics;
 	}
-        
-        public Bulge getBulge() {
+
+	public Bulge getBulge() {
             return bulge;
         }
+	public Buns getBuns() { return buns; }
 
 	public enum SyncStatus {
 		CACHED, SYNCED, UNKNOWN
@@ -344,5 +395,6 @@ public class GenderPlayer {
 		public boolean canHaveBulge() {
                     return true;
                 }
+		public boolean canHaveBuns() { return true; }
 	}
 }
