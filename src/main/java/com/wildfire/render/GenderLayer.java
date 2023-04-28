@@ -22,6 +22,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.wildfire.api.IGenderArmor;
 import com.wildfire.main.*;
 import com.wildfire.physics.BreastPhysics;
+import com.wildfire.physics.BunPhysics;
 import com.wildfire.render.WildfireModelRenderer.BreastModelBox;
 import com.wildfire.render.WildfireModelRenderer.OverlayModelBox;
 import com.wildfire.render.WildfireModelRenderer.PositionTextureVertex;
@@ -244,7 +245,8 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			float bunsOffsetX = Math.round((Math.round(buns.getXOffset() * 100f) / 100f) * 10) / 10f;
 			float bunsOffsetY = -Math.round((Math.round(buns.getYOffset() * 100f) / 100f) * 10) / 10f;
 			float bunsOffsetZ = -Math.round((Math.round(buns.getZOffset() * 100f) / 100f) * 10) / 10f;
-			final float btSize = plr.getBunsSize();
+			BunPhysics leftBunPhysics = plr.getLeftBunPhysics();
+			final float btSize = leftBunPhysics.getBunsSize(partialTicks);
 			float bOutwardAngle = (Math.round(buns.getGap() * 100f) / 100f) * 100f;
 			bOutwardAngle = Math.min(bOutwardAngle, 10);
 			reducer = 0;
@@ -287,6 +289,23 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				rTotalX = MathHelper.lerp(partialTicks, rightBreastPhysics.getPreBounceX(), rightBreastPhysics.getBounceX());
 				rightBounceRotation = MathHelper.lerp(partialTicks, rightBreastPhysics.getPreBounceRotation(), rightBreastPhysics.getBounceRotation());
 			}
+			float lBTotal = MathHelper.lerp(partialTicks, leftBunPhysics.getPreBounceY(), leftBunPhysics.getBounceY());
+			float lBTotalX = MathHelper.lerp(partialTicks, leftBunPhysics.getPreBounceX(), leftBunPhysics.getBounceX());
+			float leftBBounceRotation = MathHelper.lerp(partialTicks, leftBunPhysics.getPreBounceRotation(), leftBunPhysics.getBounceRotation());
+			float rBTotal;
+			float rBTotalX;
+			float rightBBounceRotation;
+			if (buns.isUnibun()) {
+				rBTotal = lBTotal;
+				rBTotalX = lBTotalX;
+				rightBBounceRotation = leftBBounceRotation;
+			} else {
+				BunPhysics rightBunPhysics = plr.getRightBunPhysics();
+				rBTotal = MathHelper.lerp(partialTicks, rightBunPhysics.getPreBounceY(), rightBunPhysics.getBounceY());
+				rBTotalX = MathHelper.lerp(partialTicks, rightBunPhysics.getPreBounceX(), rightBunPhysics.getBounceX());
+				rightBBounceRotation = MathHelper.lerp(partialTicks, rightBunPhysics.getPreBounceRotation(), rightBunPhysics.getBounceRotation());
+			}
+
 			float breastSize = bSize * 1.5f;
 			if (breastSize > 0.7f) breastSize = 0.7f;
 			if (bSize > 0.7f) {
@@ -340,10 +359,10 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 			if (bunsSize >= 0.02f) {
 				renderBunWithTransforms(ent, model.body, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-						overlayBlue, overlayAlpha, false, lTotalX, lTotal, leftBounceRotation, bunsSize, bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
+						overlayBlue, overlayAlpha, bounceEnabled, lBTotalX, lBTotal, leftBBounceRotation, bunsSize, bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
 						bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, false, true);
 				renderBunWithTransforms(ent, model.body, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-						overlayBlue, overlayAlpha, false, rTotalX, rTotal, rightBounceRotation, bunsSize, -bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
+						overlayBlue, overlayAlpha, bounceEnabled, rBTotalX, rBTotal, rightBBounceRotation, bunsSize, -bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
 						-bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, false, false);
 			}
 			RenderSystem.setShaderColor(1f, 1f, 1f, 1f);

@@ -94,6 +94,8 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
         aPlr.getLeftBreastPhysics().update(plr, armorConfig);
         aPlr.getRightBreastPhysics().update(plr, armorConfig);
+        aPlr.getLeftBunPhysics().update(plr, armorConfig);
+        aPlr.getRightBunPhysics().update(plr, armorConfig);
 
 
     }

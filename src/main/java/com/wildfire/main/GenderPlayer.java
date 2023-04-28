@@ -22,6 +22,7 @@ import com.google.gson.JsonObject;
 import com.wildfire.main.config.ConfigKey;
 import com.wildfire.main.config.Configuration;
 import com.wildfire.physics.BreastPhysics;
+import com.wildfire.physics.BunPhysics;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -56,6 +57,7 @@ public class GenderPlayer {
 	private final Bulge bulge;
 
 	private final Buns buns;
+	private final BunPhysics lBunPhysics, rBunPhysics;
 
 	public GenderPlayer(UUID uuid) {
 		this(uuid, Configuration.GENDER.getDefault());
@@ -66,6 +68,8 @@ public class GenderPlayer {
 		rBreastPhysics = new BreastPhysics(this);
 		breasts = new Breasts();
 		bulge = new Bulge();
+		lBunPhysics = new BunPhysics(this);
+		rBunPhysics = new BunPhysics(this);
 		buns = new Buns();
 		this.uuid = uuid;
 		this.pronouns = pronouns;
@@ -363,6 +367,8 @@ public class GenderPlayer {
             return bulge;
         }
 	public Buns getBuns() { return buns; }
+	public BunPhysics getLeftBunPhysics() { return lBunPhysics; }
+	public BunPhysics getRightBunPhysics() { return rBunPhysics; }
 
 	public enum SyncStatus {
 		CACHED, SYNCED, UNKNOWN
