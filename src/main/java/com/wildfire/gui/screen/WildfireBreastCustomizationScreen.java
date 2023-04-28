@@ -38,7 +38,7 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
     private WildfireSlider cleavageSlider;
 
     public WildfireBreastCustomizationScreen(Screen parent, UUID uuid) {
-        super(new TranslatableText("wildfire_gender.bulge_settings.title"), parent, uuid);
+        super(new TranslatableText("wildfire_gender.breast_settings.title"), parent, uuid);
     }
 
     @Override

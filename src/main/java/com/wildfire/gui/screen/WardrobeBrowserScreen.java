@@ -67,14 +67,17 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 			}
 		}));
 
-		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 32, 158, 20, new TranslatableText("wildfire_gender.appearance_settings.title").append("..."),
+		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 32, 158, 20, new TranslatableText("wildfire_gender.breast_settings.title").append("..."),
 				button -> MinecraftClient.getInstance().setScreen(new WildfireBreastCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
 
-		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j + 8, 158, 20, new TranslatableText("wildfire_gender.char_settings.title").append("..."),
+		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j + 28, 158, 20, new TranslatableText("wildfire_gender.char_settings.title").append("..."),
 				button -> MinecraftClient.getInstance().setScreen(new WildfireCharacterSettingsScreen(WardrobeBrowserScreen.this, this.playerUUID))));
 
 		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 12, 158, 20, new TranslatableText("wildfire_gender.bulge_settings.title").append("..."),
 				button -> MinecraftClient.getInstance().setScreen(new WildfireBulgeCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
+
+		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j + 8, 158, 20, new TranslatableText("wildfire_gender.buns_settings.title").append("..."),
+				button -> MinecraftClient.getInstance().setScreen(new WildfireBunsCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
 
 		this.addDrawableChild(new WildfireButton(this.width / 2 + 111, j - 63, 9, 9, new TranslatableText("wildfire_gender.label.exit"),
 				button -> MinecraftClient.getInstance().setScreen(parent)));
@@ -134,6 +137,10 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 	}
 
 	public static void drawEntityOnScreen(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity) {
+		drawEntityOnScreen(x, y, size, mouseX, mouseY, entity, 180.0f);
+	}
+
+	public static void drawEntityOnScreen(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity, float initialYaw) {
 		float f = (float)Math.atan((mouseX / 40.0F));
 		float g = (float)Math.atan((mouseY / 40.0F));
 		MatrixStack matrixStack = RenderSystem.getModelViewStack();
@@ -153,8 +160,8 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		float j = entity.getPitch();
 		float k = entity.prevHeadYaw;
 		float l = entity.headYaw;
-		entity.bodyYaw = 180.0F + f * 20.0F;
-		entity.setYaw(180.0F + f * 40.0F);
+		entity.bodyYaw = initialYaw + f * 20.0F;
+		entity.setYaw(initialYaw + f * 40.0F);
 		entity.setPitch(-g * 20.0F);
 		entity.headYaw = entity.getYaw();
 		entity.prevHeadYaw = entity.getYaw();

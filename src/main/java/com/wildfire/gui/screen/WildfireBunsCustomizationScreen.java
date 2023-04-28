@@ -21,7 +21,7 @@ package com.wildfire.gui.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfireSlider;
-import com.wildfire.main.Bulge;
+import com.wildfire.main.Buns;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.config.Configuration;
 import it.unimi.dsi.fastutil.floats.FloatConsumer;
@@ -30,15 +30,16 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.TranslatableText;
+
 import java.util.UUID;
 
-public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
+public class WildfireBunsCustomizationScreen extends BaseWildfireScreen {
 
-    private WildfireSlider xOffsetBulgeSlider, yOffsetBulgeSlider, zOffsetBulgeSlider;
-    private WildfireSlider bulgeSlider;
+    private WildfireSlider bunsSlider, xOffsetBunSlider, yOffsetBunSlider, zOffsetBunSlider; //rotateSlider
+    private WildfireSlider gapSlider;
 
-    public WildfireBulgeCustomizationScreen(Screen parent, UUID uuid) {
-        super(new TranslatableText("wildfire_gender.bulge_settings.title"), parent, uuid);
+    public WildfireBunsCustomizationScreen(Screen parent, UUID uuid) {
+        super(new TranslatableText("wildfire_gender.buns_settings.title"), parent, uuid);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
         int j = this.height / 2;
 
         GenderPlayer plr = getPlayer();
-        Bulge bulge = plr.getBulge();
+        Buns buns = plr.getBuns();
         FloatConsumer onSave = value -> {
             //Just save as we updated the actual value in value change
             GenderPlayer.saveGenderInfo(plr);
@@ -55,16 +56,28 @@ public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
         this.addDrawableChild(new WildfireButton(this.width / 2 + 178, j - 61, 9, 9, new TranslatableText("wildfire_gender.label.exit"),
               button -> MinecraftClient.getInstance().setScreen(parent)));
 
+        this.addDrawableChild(this.bunsSlider = new WildfireSlider(this.width / 2 + 30, j - 48, 158, 20, Configuration.BUNS_SIZE, plr.getBunsSize(),
+              plr::updateBunsSize, value -> new TranslatableText("wildfire_gender.wardrobe.slider.buns_size", Math.round(value * 100)), onSave));
+
         //Customization
-        this.addDrawableChild(this.bulgeSlider = new WildfireSlider(this.width / 2 + 30, j - 48, 158, 20, Configuration.BULGE_SIZE, bulge.getSize(),
-                bulge::updateSize, value -> new TranslatableText("wildfire_gender.wardrobe.slider.bulge_size", Math.round(value * 100)), onSave));
-        
-        this.addDrawableChild(this.xOffsetBulgeSlider = new WildfireSlider(this.width / 2 + 30, j - 27, 158, 20, Configuration.BULGE_OFFSET_X, bulge.getXOffset(),
-              bulge::updateXOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.rotation", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
-        this.addDrawableChild(this.yOffsetBulgeSlider = new WildfireSlider(this.width / 2 + 30, j - 6, 158, 20, Configuration.BULGE_OFFSET_Y, bulge.getYOffset(),
-              bulge::updateYOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.height", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
-        this.addDrawableChild(this.zOffsetBulgeSlider = new WildfireSlider(this.width / 2 + 30, j + 15, 158, 20, Configuration.BULGE_OFFSET_Z, bulge.getZOffset(),
-              bulge::updateZOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.depth", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
+        this.addDrawableChild(this.xOffsetBunSlider = new WildfireSlider(this.width / 2 + 30, j - 27, 158, 20, Configuration.BUNS_OFFSET_X, buns.getXOffset(),
+              buns::updateXOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.separation", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
+        this.addDrawableChild(this.yOffsetBunSlider = new WildfireSlider(this.width / 2 + 30, j - 6, 158, 20, Configuration.BUNS_OFFSET_Y, buns.getYOffset(),
+              buns::updateYOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.height", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
+        this.addDrawableChild(this.zOffsetBunSlider = new WildfireSlider(this.width / 2 + 30, j + 15, 158, 20, Configuration.BUNS_OFFSET_Z, buns.getZOffset(),
+              buns::updateZOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.depth", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
+
+        this.addDrawableChild(this.gapSlider = new WildfireSlider(this.width / 2 + 30, j + 36, 158, 20, Configuration.BUNS_GAP, buns.getGap(),
+              buns::updateGap, value -> new TranslatableText("wildfire_gender.wardrobe.slider.rotation", Math.round((Math.round(value * 100f) / 100f) * 100)), onSave));
+
+        this.addDrawableChild(new WildfireButton(this.width / 2 + 30, j + 57, 158, 20,
+              new TranslatableText("wildfire_gender.breast_customization.dual_physics", new TranslatableText(buns.isUnibun() ? "wildfire_gender.label.no" : "wildfire_gender.label.yes")), button -> {
+            boolean isUnibun = !buns.isUnibun();
+            if (buns.updateUnibun(isUnibun)) {
+                button.setMessage(new TranslatableText("wildfire_gender.breast_customization.dual_physics", new TranslatableText(isUnibun ? "wildfire_gender.label.no" : "wildfire_gender.label.yes")));
+                GenderPlayer.saveGenderInfo(plr);
+            }
+        }));
 
         super.init();
     }
@@ -84,7 +97,7 @@ public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
             int yP = this.height / 2 + 75;
             PlayerEntity ent = MinecraftClient.getInstance().world.getPlayerByUuid(this.playerUUID);
             if(ent != null) {
-                WardrobeBrowserScreen.drawEntityOnScreen(xP, yP, 200, -20, -20, ent);
+                WardrobeBrowserScreen.drawEntityOnScreen(xP, yP, 200, 20, -20, ent, 0);
             } else {
                 //player left, fallback
                 minecraft.setScreen(new WildfirePlayerListScreen(minecraft));
@@ -94,11 +107,12 @@ public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
             minecraft.setScreen(new WildfirePlayerListScreen(minecraft));
         }
 
-        boolean canHaveBulge = plr.getGender().canHaveBulge();
-        bulgeSlider.visible = canHaveBulge;
-        xOffsetBulgeSlider.visible = canHaveBulge;
-        yOffsetBulgeSlider.visible = canHaveBulge;
-        zOffsetBulgeSlider.visible = canHaveBulge;
+        boolean canHaveBuns = plr.getGender().canHaveBuns();
+        bunsSlider.visible = canHaveBuns;
+        xOffsetBunSlider.visible = canHaveBuns;
+        yOffsetBunSlider.visible = canHaveBuns;
+        zOffsetBunSlider.visible = canHaveBuns;
+        gapSlider.visible = canHaveBuns;
 
         int x = this.width / 2;
         int y = this.height / 2;
@@ -111,10 +125,11 @@ public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int state) {
         //Ensure all sliders are saved
-        bulgeSlider.save();
-        xOffsetBulgeSlider.save();
-        yOffsetBulgeSlider.save();
-        zOffsetBulgeSlider.save();
+        bunsSlider.save();
+        xOffsetBunSlider.save();
+        yOffsetBunSlider.save();
+        zOffsetBunSlider.save();
+        gapSlider.save();
         return super.mouseReleased(mouseX, mouseY, state);
     }
 }
