@@ -107,15 +107,15 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 		bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
 		bulgeWear = new OverlayModelBox(false, 64, 64, 20, 41, -1F, 0F, 0F, 2, 2, 2, 0F, false);
-		bulgeModelArmor = new BulgeModelBox(64, 32, 19, 24, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
+		bulgeModelArmor = new BulgeModelBox(64, 32, 5, 20, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
 
 		lBun = new BunModelBox(64, 64, 28, 24, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 		rBun = new BunModelBox(64, 64, 32, 24, 0, 0.0F, 0F, 4, 4, 4, 0.0F, true);
 		lBunWear = new OverlayModelBox(true,64, 64, 0, 34, -4F, 0.0F, 0F, 4, 4, 3, 0.0F, false);
 		rBunWear = new OverlayModelBox(false,64, 64, 0, 34, 0, 0.0F, 0F, 4, 4, 3, 0.0F, true);
 
-		lBunArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 4, 3, 0.0F, false);
-		rBunArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 4, 3, 0.0F, false);
+		lBunArmor = new BreastModelBox(64, 32, 0, 16, -4F, 0.0F, 0F, 4, 4, 3, 0.0F, false);
+		rBunArmor = new BreastModelBox(64, 32, 0, 16, 0, 0.0F, 0F, 4, 4, 3, 0.0F, false);
 	}
 
 	private static final Map<String, Identifier> ARMOR_LOCATION_CACHE = new HashMap<>();
@@ -339,10 +339,10 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 						bulgeOffsetZ, zBuOff, isLeggingsOccupied);
 			}
 			if (bunsSize >= 0.02f) {
-				renderBunWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
+				renderBunWithTransforms(ent, model.body, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
 						overlayBlue, overlayAlpha, false, lTotalX, lTotal, leftBounceRotation, bunsSize, bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
 						bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, false, true);
-				renderBunWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
+				renderBunWithTransforms(ent, model.body, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
 						overlayBlue, overlayAlpha, false, rTotalX, rTotal, rightBounceRotation, bunsSize, -bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
 						-bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, false, false);
 			}
@@ -514,7 +514,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		// be it because they are not an armor item or the way they render their armor item is custom
 		//Render Breast Armor
 		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
-			Identifier armorTexture = getArmorResource(armorItem, false, null);
+			Identifier armorTexture = getArmorResource(armorItem, true, null);
 			Identifier overlayTexture = null;
 			float armorR = 1f;
 			float armorG = 1f;
@@ -528,7 +528,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 			matrixStack.push();
 			matrixStack.translate(0, -0.015f, -0.015f);
-			matrixStack.scale(1.05f, 1, 1);
+			matrixStack.scale(1.05f, 1.1f, 1);
 			WildfireModelRenderer.BulgeModelBox armor = bulgeModelArmor;
 			RenderLayer armorType = RenderLayer.getArmorCutoutNoCull(armorTexture);
 			VertexConsumer armorVertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, armorType, false, armorStack.hasGlint());
@@ -616,7 +616,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 							  int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha, boolean left) {
 		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(breastRenderType);
 		renderBox(left ? lBun : rBun, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-		if (entity.isPartVisible(PlayerModelPart.JACKET)) {
+		if (entity.isPartVisible(left ? PlayerModelPart.LEFT_PANTS_LEG : PlayerModelPart.RIGHT_PANTS_LEG)) {
 			matrixStack.translate(0, 0, -0.015f);
 			matrixStack.scale(1.05f, 1.05f, 1.05f);
 			renderBox(left ? lBunWear: rBunWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
@@ -625,7 +625,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		// be it because they are not an armor item or the way they render their armor item is custom
 		//Render Breast Armor
 		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
-			Identifier armorTexture = getArmorResource(armorItem, false, null);
+			Identifier armorTexture = getArmorResource(armorItem, true, null);
 			Identifier overlayTexture = null;
 			float armorR = 1f;
 			float armorG = 1f;
@@ -638,8 +638,8 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				armorB = (float) (color & 255) / 255.0F;
 			}
 			matrixStack.push();
-			matrixStack.translate(left ? 0.001f : -0.001f, 0.015f, -0.015f);
-			matrixStack.scale(1.05f, 1, 1);
+			matrixStack.translate(left ? 0.001f : -0.001f, -0.015f, -0.015f);
+			matrixStack.scale(1.05f, 1.1f, 1);
 			WildfireModelRenderer.BreastModelBox armor = left ? lBunArmor : rBunArmor;
 			RenderLayer armorType = RenderLayer.getArmorCutoutNoCull(armorTexture);
 			VertexConsumer armorVertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, armorType, false, armorStack.hasGlint());
