@@ -62,7 +62,7 @@ public class Configuration {
 
 	public static final FloatConfigKey BUNS_OFFSET_X = new FloatConfigKey("buns_xOffset", 0.0F, -1, 1);
 	public static final FloatConfigKey BUNS_OFFSET_Y = new FloatConfigKey("buns_yOffset", 0.0F, -1, 1);
-	public static final FloatConfigKey BUNS_OFFSET_Z = new FloatConfigKey("buns_zOffset", 0.0F, -1, 0);
+	public static final FloatConfigKey BUNS_OFFSET_Z = new FloatConfigKey("buns_zOffset", 0.0F, 0, 1);
 	public static final BooleanConfigKey BUNS_UNIBUN = new BooleanConfigKey("buns_unibun", true);
 	public static final FloatConfigKey BUNS_GAP = new FloatConfigKey("buns_gap", 0.05F, 0, 0.1F);
 
