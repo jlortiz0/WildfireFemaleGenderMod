@@ -16,10 +16,12 @@
 	"wildfire_gender.wardrobe.slider.height": "Höhe: %s",
 	"wildfire_gender.wardrobe.slider.depth": "Tiefe: %s",
 	"wildfire_gender.wardrobe.slider.rotation": "Drehung: %s Grad",
-        "wildfire_gender.wardrobe.slider.bulge": "Leistengr��e: %s%%",
+	"wildfire_gender.wardrobe.slider.bulge_size": "Leistengegend: %s%%",
+	"wildfire_gender.wardrobe.slider.buns_size": "Hintern: %s%%",
 
-	"wildfire_gender.appearance_settings.title": "Br�ste",
-        "wildfire_gender.bulge_settings.title": "Leiste",
+	"wildfire_gender.breast_settings.title": "Br�ste",
+	"wildfire_gender.bulge_settings.title": "Leiste",
+	"wildfire_gender.buns_settings.title": "Hintern",
 	"wildfire_gender.char_settings.title": "Charakter-Einstellungen",
 	"wildfire_gender.char_settings.physics": "Brustphysik: %s",
 	"wildfire_gender.tooltip.breast_physics": "Schaltet Brustphysik an",
@@ -57,5 +59,7 @@
 	"wildfire_gender.tooltip.bounce_warning": "Wenn Sie die 'Bounce-Intensität' zu hoch einstellen, könnte es sehr unnatürlich aus!",
 
 	"wildfire_gender.cancer_awareness.title": "Hey, es ist Brustkrebsmonat!",
-	"wildfire_gender.cancer_awareness.description": "Klicken hier um der §dSusan G. Komen Foundation§f zu spenden!"
+	"wildfire_gender.cancer_awareness.description": "Klicken hier um der §dSusan G. Komen Foundation§f zu spenden!",
+	"wildfire_gender.hurt.male": "Player Hurt",
+	"wildfire_gender.hurt.other": "Player Hurt"
 }
