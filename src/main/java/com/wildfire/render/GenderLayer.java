@@ -109,13 +109,13 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		bulgeWear = new OverlayModelBox(false, 64, 64, 20, 41, -1F, 0F, 0F, 2, 2, 2, 0F, false);
 		bulgeModelArmor = new BulgeModelBox(64, 32, 19, 24, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
 
-		lBun = new BunModelBox(64, 64, 8, 16, -4F, 0.0F, 0F, 4, 5, 4, 0.0F, false);
-		rBun = new BunModelBox(64, 64, 8, 16, 0, 0.0F, 0F, 4, 5, 4, 0.0F, true);
-		lBunWear = new OverlayModelBox(true,64, 64, 0, 34, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
-		rBunWear = new OverlayModelBox(false,64, 64, 0, 34, 0, 0.0F, 0F, 4, 5, 3, 0.0F, true);
+		lBun = new BunModelBox(64, 64, 28, 24, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
+		rBun = new BunModelBox(64, 64, 32, 24, 0, 0.0F, 0F, 4, 4, 4, 0.0F, true);
+		lBunWear = new OverlayModelBox(true,64, 64, 0, 34, -4F, 0.0F, 0F, 4, 4, 3, 0.0F, false);
+		rBunWear = new OverlayModelBox(false,64, 64, 0, 34, 0, 0.0F, 0F, 4, 4, 3, 0.0F, true);
 
-		lBunArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
-		rBunArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
+		lBunArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 4, 3, 0.0F, false);
+		rBunArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 4, 3, 0.0F, false);
 	}
 
 	private static final Map<String, Identifier> ARMOR_LOCATION_CACHE = new HashMap<>();
@@ -251,8 +251,8 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (btSize < 0.84f) reducer++;
 			if (btSize < 0.72f) reducer++;
 			if (preBunSize != btSize) {
-				lBun = new BunModelBox(64, 64, 8, 16, -4F, 0.0F, 0F, 4, 5, (int) (4 - bunsOffsetZ - reducer), 0.0F, false);
-				rBun = new BunModelBox(64, 64, 8, 16, 0, 0.0F, 0F, 4, 5, (int) (4 - bunsOffsetZ - reducer), 0.0F, true);
+				lBun = new BunModelBox(64, 64, 28, 24, -4F, 0.0F, 0F, 4, 4, (int) (4 - bunsOffsetZ - reducer), 0.0F, false);
+				rBun = new BunModelBox(64, 64, 32, 24, 0, 0.0F, 0F, 4, 4, (int) (4 - bunsOffsetZ - reducer), 0.0F, true);
 				preBunSize = btSize;
 			}
 

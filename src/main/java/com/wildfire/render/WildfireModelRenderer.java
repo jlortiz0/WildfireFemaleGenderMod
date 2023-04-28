@@ -166,27 +166,31 @@ public class WildfireModelRenderer {
 	public static class BunModelBox extends ModelBox {
 
 		public BunModelBox(int tW, int tH, int texU, int texV, float x, float y, float z, int dx, int dy, int dz, float delta, boolean mirror) {
-			super(tW, tH, texU, texV, x, y, z, dx, dy, dz, delta, mirror);
+			super(tW, tH, texU, texV, x, y, z, dx, dy, dz, delta, false, 5, mirror);
 		}
 
 		@Override
 		protected void initQuads(int tW, int tH, int texU, int texV, int dx, int dy, int dz, boolean mirror, boolean extra, PositionTextureVertex vertex,
 								 PositionTextureVertex vertex1, PositionTextureVertex vertex2, PositionTextureVertex vertex3, PositionTextureVertex vertex4, PositionTextureVertex vertex5,
 								 PositionTextureVertex vertex6, PositionTextureVertex vertex7) {
-			this.quads[0] = new TexturedQuad(texU + 4, texV + 4, texU + 4, texV + 4 + dy, tW, tH, mirror, Direction.EAST,
-					vertex4, vertex, vertex1, vertex5);
-			this.quads[1] = new TexturedQuad(texU, texV + 4, texU + 4, texV + 4 + dy, tW, tH, mirror, Direction.WEST,
-					vertex7, vertex3, vertex6, vertex2);
-			if (mirror) {
-				this.quads[2] = new TexturedQuad(texU + 28, texV + 11, texU + 28 + dx, texV + 11 + dy, tW, tH, false, Direction.DOWN,
-						vertex4, vertex3, vertex7, vertex);
+			if (extra) {
+				this.quads[0] = new TexturedQuad(texU - 16, texV + 4, texU - 16 + dx, texV + 4 + dy, tW, tH, true, Direction.EAST,
+						vertex4, vertex, vertex1, vertex5);
+				this.quads[1] = new TexturedQuad(texU - 16, texV + 4, texU - 16 + dx, texV + 4 + dy, tW, tH, false, Direction.WEST,
+						vertex7, vertex3, vertex6, vertex2);
+				this.quads[3] = new TexturedQuad(texU - 20, texV - 4, texU - 20 + dx, texV - 4 + dy, tW, tH, mirror, Direction.UP,
+						vertex1, vertex2, vertex6, vertex5);
 			} else {
-				this.quads[2] = new TexturedQuad(texU + 24, texV + 11, texU + 24 + dx, texV + 11 + dy, tW, tH, false, Direction.DOWN,
-						vertex4, vertex3, vertex7, vertex);
+				this.quads[0] = new TexturedQuad(texU + 4, texV + 4, texU + 4 + dx, texV + 4 + dy, tW, tH, false, Direction.EAST,
+						vertex4, vertex, vertex1, vertex5);
+				this.quads[1] = new TexturedQuad(texU + 4, texV + 4, texU + 4 + dx, texV + 4 + dy, tW, tH, true, Direction.WEST,
+						vertex7, vertex3, vertex6, vertex2);
+				this.quads[3] = new TexturedQuad(texU - 16, texV - 4, texU - 16 + dx, texV - 4 + dy, tW, tH, mirror, Direction.UP,
+						vertex1, vertex2, vertex6, vertex5);
 			}
-			this.quads[3] = new TexturedQuad(texU + 4, texV + 4, texU + 4 + dx, texV + 4 + dy, tW, tH, mirror, Direction.UP,
-					vertex1, vertex2, vertex6, vertex5);
-			this.quads[4] = new TexturedQuad(texU + 4, texV + 4, texU + 4 + dx, texV + 4 + dy, tW, tH, mirror, Direction.NORTH,
+			this.quads[2] = new TexturedQuad(texU + 4, texV, texU + 4 + dx, texV + dy, tW, tH, mirror, Direction.DOWN,
+					vertex4, vertex3, vertex7, vertex);
+			this.quads[4] = new TexturedQuad(texU + 4, texV + 4, texU + 4 + dx, texV + 4 + dy, tW, tH, false, Direction.NORTH,
 					vertex, vertex7, vertex2, vertex1);
 			//this.quads[5] = new TexturedQuad(new PositionTextureVertex[]{vertex3, vertex4, vertex5, vertex6}, texU + dz + dx + dz, texV + dz, texU + dz + dx + dz + dx, texV + dz + dy, tW, tH, mirror, Direction.SOUTH);
 
