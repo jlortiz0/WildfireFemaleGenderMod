@@ -20,18 +20,16 @@ package com.wildfire.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.wildfire.api.IGenderArmor;
-import com.wildfire.main.Breasts;
-import com.wildfire.main.Bulge;
-import com.wildfire.main.WildfireHelper;
+import com.wildfire.main.*;
 import com.wildfire.physics.BreastPhysics;
 import com.wildfire.render.WildfireModelRenderer.BreastModelBox;
 import com.wildfire.render.WildfireModelRenderer.OverlayModelBox;
 import com.wildfire.render.WildfireModelRenderer.PositionTextureVertex;
 import java.util.UUID;
 import javax.annotation.Nonnull;
-import com.wildfire.main.GenderPlayer;
-import com.wildfire.main.WildfireGender;
+
 import com.wildfire.render.WildfireModelRenderer.BulgeModelBox;
+import com.wildfire.render.WildfireModelRenderer.BunModelBox;
 import com.wildfire.render.armor.EmptyGenderArmor;
 import dev.emi.trinkets.api.SlotGroup;
 import dev.emi.trinkets.api.SlotType;
@@ -85,9 +83,13 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	private BreastModelBox lBoobArmor, rBoobArmor;
 	private BulgeModelBox bulgeModel, bulgeModelArmor;
 	private OverlayModelBox bulgeWear;
+	private BunModelBox lBun, rBun;
+	private OverlayModelBox lBunWear, rBunWear;
+	private BreastModelBox lBunArmor, rBunArmor;
 
 	private float preBreastSize = 0f;
 	private float preBulgeSize = 0f;
+	private float preBunSize = 0f;
 
 	private ModelColorPower modelColor = null;
 	private Identifier lastOrigin = null;
@@ -103,9 +105,17 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		lBoobArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 		rBoobArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 
-		bulgeModel = new BulgeModelBox(64, 64, 0, 17, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
+		bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
 		bulgeWear = new OverlayModelBox(false, 64, 64, 20, 41, -1F, 0F, 0F, 2, 2, 2, 0F, false);
 		bulgeModelArmor = new BulgeModelBox(64, 32, 19, 24, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
+
+		lBun = new BunModelBox(64, 64, 8, 16, -4F, 0.0F, 0F, 4, 5, 4, 0.0F, false);
+		rBun = new BunModelBox(64, 64, 8, 16, 0, 0.0F, 0F, 4, 5, 4, 0.0F, true);
+		lBunWear = new OverlayModelBox(true,64, 64, 0, 34, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
+		rBunWear = new OverlayModelBox(false,64, 64, 0, 34, 0, 0.0F, 0F, 4, 5, 3, 0.0F, true);
+
+		lBunArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
+		rBunArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 	}
 
 	private static final Map<String, Identifier> ARMOR_LOCATION_CACHE = new HashMap<>();
@@ -221,13 +231,29 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			float bulgeOffsetX = Math.round((Math.round(bulge.getXOffset() * 100f) / 100f) * 10) / 10f;
 			float bulgeOffsetY = -Math.round((Math.round(bulge.getYOffset() * 100f) / 100f) * 10) / 10f;
 			float bulgeOffsetZ = -Math.round((Math.round(bulge.getZOffset() * 100f) / 100f) * 10) / 10f;
-                        final float buSize = bulge.getSize();
-                        reducer = 0;
+			final float buSize = bulge.getSize();
+			reducer = 0;
 			if (buSize < 0.84f) reducer++;
 			if (buSize < 0.72f) reducer++;
 			if (preBulgeSize != buSize) {
-				bulgeModel = new BulgeModelBox(64, 64, 0, 17, -1F, 0.0F, 0F, 2, 2, (int) (2 - bulgeOffsetZ - reducer), 0.0F, false);
+				bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, (int) (2 - bulgeOffsetZ - reducer), 0.0F, false);
 				preBulgeSize = buSize;
+			}
+
+			Buns buns = plr.getBuns();
+			float bunsOffsetX = Math.round((Math.round(buns.getXOffset() * 100f) / 100f) * 10) / 10f;
+			float bunsOffsetY = -Math.round((Math.round(buns.getYOffset() * 100f) / 100f) * 10) / 10f;
+			float bunsOffsetZ = -Math.round((Math.round(buns.getZOffset() * 100f) / 100f) * 10) / 10f;
+			final float btSize = plr.getBunsSize();
+			float bOutwardAngle = (Math.round(buns.getGap() * 100f) / 100f) * 100f;
+			bOutwardAngle = Math.min(bOutwardAngle, 10);
+			reducer = 0;
+			if (btSize < 0.84f) reducer++;
+			if (btSize < 0.72f) reducer++;
+			if (preBunSize != btSize) {
+				lBun = new BunModelBox(64, 64, 8, 16, -4F, 0.0F, 0F, 4, 5, (int) (4 - bunsOffsetZ - reducer), 0.0F, false);
+				rBun = new BunModelBox(64, 64, 8, 16, 0, 0.0F, 0F, 4, 5, (int) (4 - bunsOffsetZ - reducer), 0.0F, true);
+				preBunSize = btSize;
 			}
 
 			//DEPENDENCIES
@@ -271,13 +297,20 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (buSize > 0.7f) {
 				bulgeSize = buSize;
 			}
+			float bunsSize = btSize * 1.5f;
+			if (bunsSize > 0.7f) bunsSize = 0.7f;
+			if (buSize > 0.7f) {
+				bunsSize = btSize;
+			}
 
-			if (breastSize < 0.02f && bulgeSize < 0.02f) return;
+			if (breastSize < 0.02f && bulgeSize < 0.02f && bunsSize < 0.02f) return;
 			if (breastSize >= 0.02f) breastSize = bSize + 0.5f * Math.abs(bSize - 0.7f) * 2f;
 			if (bulgeSize >= 0.02f) bulgeSize = buSize + 0.5f * Math.abs(buSize - 0.7f) * 2f;
+			if (bunsSize >= 0.02f) bunsSize = btSize + 0.5f * Math.abs(btSize - 0.7f) * 2f;
 
 			float zOff = 0.0625f - (bSize * 0.0625f);
 			float zBuOff = 0.0625f - (buSize * 0.0625f);
+			float zBtOff = 0.0625f - (btSize * 0.0625f);
 
 			//matrixStack.translate(0, 0, zOff);
 			//System.out.println(bounceRotation);
@@ -305,13 +338,13 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 						overlayBlue, overlayAlpha, bulgeOffsetX, bulgeSize, bulgeOffsetY,
 						bulgeOffsetZ, zBuOff, isLeggingsOccupied);
 			}
-			if (breastSize >= 0.02f) {
+			if (bunsSize >= 0.02f) {
 				renderBunWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-						overlayBlue, overlayAlpha, bounceEnabled, lTotalX, lTotal, leftBounceRotation, breastSize, breastOffsetX, breastOffsetY, breastOffsetZ, zOff,
-						outwardAngle, breasts.isUniboob(), isChestplateOccupied, breathingAnimation, true);
+						overlayBlue, overlayAlpha, false, lTotalX, lTotal, leftBounceRotation, bunsSize, bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
+						bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, false, true);
 				renderBunWithTransforms(ent, model.body, armorStack, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-						overlayBlue, overlayAlpha, bounceEnabled, rTotalX, rTotal, rightBounceRotation, breastSize, -breastOffsetX, breastOffsetY, breastOffsetZ, zOff,
-						-outwardAngle, breasts.isUniboob(), isChestplateOccupied, breathingAnimation, false);
+						overlayBlue, overlayAlpha, false, rTotalX, rTotal, rightBounceRotation, bunsSize, -bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
+						-bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, false, false);
 			}
 			RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 		} catch(Exception e) {
@@ -449,7 +482,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 
 
-			matrixStack.translate(0, 0.75f + (breastOffsetY * 0.0625f), zOff - 0.2 + (breastOffsetZ * 0.0625f)); //shift down to correct position
+			matrixStack.translate(0, 0.70f + (breastOffsetY * 0.0625f), zOff - 0.2 + (breastOffsetZ * 0.0625f)); //shift down to correct position
 
 			float totalRotation = breastSize * 0.75f + bounceRotation - (float)Math.PI / 2 - 0.25f;
 
@@ -532,7 +565,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				matrixStack.translate(0, total / 32f, 0);
 			}
 
-			matrixStack.translate(breastOffsetX * 0.0625f, 0.65625f + (breastOffsetY * 0.0625f), -zOff + 0.0625f * 6f + (breastOffsetZ * 0.0625f)); //shift down to correct position
+			matrixStack.translate(breastOffsetX * 0.0625f, 0.60625f + (breastOffsetY * 0.0625f), -zOff + 0.0625f * 4.5f + (breastOffsetZ * 0.0625f)); //shift down to correct position
 
 			if (!uniboob) {
 				matrixStack.translate(-0.0625f * 2 * (left ? 1 : -1), 0, 0);
@@ -582,11 +615,11 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	private void renderBuns(AbstractClientPlayerEntity entity, ItemStack armorStack, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, RenderLayer breastRenderType,
 							  int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha, boolean left) {
 		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(breastRenderType);
-		renderBox(left ? lBreast : rBreast, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		renderBox(left ? lBun : rBun, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		if (entity.isPartVisible(PlayerModelPart.JACKET)) {
 			matrixStack.translate(0, 0, -0.015f);
 			matrixStack.scale(1.05f, 1.05f, 1.05f);
-			renderBox(left ? lBreastWear : rBreastWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			renderBox(left ? lBunWear: rBunWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		}
 		//TODO: Eventually we may want to expose a way via the API for mods to be able to override rendering
 		// be it because they are not an armor item or the way they render their armor item is custom
@@ -607,7 +640,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			matrixStack.push();
 			matrixStack.translate(left ? 0.001f : -0.001f, 0.015f, -0.015f);
 			matrixStack.scale(1.05f, 1, 1);
-			WildfireModelRenderer.BreastModelBox armor = left ? lBoobArmor : rBoobArmor;
+			WildfireModelRenderer.BreastModelBox armor = left ? lBunArmor : rBunArmor;
 			RenderLayer armorType = RenderLayer.getArmorCutoutNoCull(armorTexture);
 			VertexConsumer armorVertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, armorType, false, armorStack.hasGlint());
 			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, alpha);

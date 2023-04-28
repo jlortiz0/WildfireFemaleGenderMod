@@ -162,8 +162,44 @@ public class WildfireModelRenderer {
 			//this.quads[5] = new SteinModelRenderer.TexturedQuad(new SteinModelRenderer.PositionTextureVertex[]{modelrenderer$vertex3, modelrenderer$vertex4, modelrenderer$vertex5, modelrenderer$vertex6}, f8, f11, f9, f12, texWidth, texHeight, mirorIn, Direction.SOUTH);
 		}
 	}
+
+	public static class BunModelBox extends ModelBox {
+
+		public BunModelBox(int tW, int tH, int texU, int texV, float x, float y, float z, int dx, int dy, int dz, float delta, boolean mirror) {
+			super(tW, tH, texU, texV, x, y, z, dx, dy, dz, delta, mirror);
+		}
+
+		@Override
+		protected void initQuads(int tW, int tH, int texU, int texV, int dx, int dy, int dz, boolean mirror, boolean extra, PositionTextureVertex vertex,
+								 PositionTextureVertex vertex1, PositionTextureVertex vertex2, PositionTextureVertex vertex3, PositionTextureVertex vertex4, PositionTextureVertex vertex5,
+								 PositionTextureVertex vertex6, PositionTextureVertex vertex7) {
+			this.quads[0] = new TexturedQuad(texU + 4, texV + 4, texU + 4, texV + 4 + dy, tW, tH, mirror, Direction.EAST,
+					vertex4, vertex, vertex1, vertex5);
+			this.quads[1] = new TexturedQuad(texU, texV + 4, texU + 4, texV + 4 + dy, tW, tH, mirror, Direction.WEST,
+					vertex7, vertex3, vertex6, vertex2);
+			if (mirror) {
+				this.quads[2] = new TexturedQuad(texU + 28, texV + 11, texU + 28 + dx, texV + 11 + dy, tW, tH, false, Direction.DOWN,
+						vertex4, vertex3, vertex7, vertex);
+			} else {
+				this.quads[2] = new TexturedQuad(texU + 24, texV + 11, texU + 24 + dx, texV + 11 + dy, tW, tH, false, Direction.DOWN,
+						vertex4, vertex3, vertex7, vertex);
+			}
+			this.quads[3] = new TexturedQuad(texU + 4, texV + 4, texU + 4 + dx, texV + 4 + dy, tW, tH, mirror, Direction.UP,
+					vertex1, vertex2, vertex6, vertex5);
+			this.quads[4] = new TexturedQuad(texU + 4, texV + 4, texU + 4 + dx, texV + 4 + dy, tW, tH, mirror, Direction.NORTH,
+					vertex, vertex7, vertex2, vertex1);
+			//this.quads[5] = new TexturedQuad(new PositionTextureVertex[]{vertex3, vertex4, vertex5, vertex6}, texU + dz + dx + dz, texV + dz, texU + dz + dx + dz + dx, texV + dz + dy, tW, tH, mirror, Direction.SOUTH);
+
+			//this.quads[2] = new SteinModelRenderer.TexturedQuad(new SteinModelRenderer.PositionTextureVertex[]{modelrenderer$vertex4, modelrenderer$vertex3, modelrenderer$vertex7, modelrenderer$vertex}, f5, f10, f6, f11, texWidth, texHeight, mirorIn, Direction.DOWN);
+			//this.quads[3] = new SteinModelRenderer.TexturedQuad(new SteinModelRenderer.PositionTextureVertex[]{modelrenderer$vertex1, modelrenderer$vertex2, modelrenderer$vertex6, modelrenderer$vertex5}, f6, f11, f7, f10, texWidth, texHeight, mirorIn, Direction.UP);
+			//this.quads[1] = new SteinModelRenderer.TexturedQuad(new SteinModelRenderer.PositionTextureVertex[]{modelrenderer$vertex7, modelrenderer$vertex3, modelrenderer$vertex6, modelrenderer$vertex2}, f4, f11, f5, f12, texWidth, texHeight, mirorIn, Direction.WEST);
+			//this.quads[4] = new SteinModelRenderer.TexturedQuad(new SteinModelRenderer.PositionTextureVertex[]{modelrenderer$vertex, modelrenderer$vertex7, modelrenderer$vertex2, modelrenderer$vertex1}, f5, f11, f6, f12, texWidth, texHeight, mirorIn, Direction.NORTH);
+			//this.quads[0] = new SteinModelRenderer.TexturedQuad(new SteinModelRenderer.PositionTextureVertex[]{modelrenderer$vertex4, modelrenderer$vertex, modelrenderer$vertex1, modelrenderer$vertex5}, f6, f11, f8, f12, texWidth, texHeight, mirorIn, Direction.EAST);
+			//this.quads[5] = new SteinModelRenderer.TexturedQuad(new SteinModelRenderer.PositionTextureVertex[]{modelrenderer$vertex3, modelrenderer$vertex4, modelrenderer$vertex5, modelrenderer$vertex6}, f8, f11, f9, f12, texWidth, texHeight, mirorIn, Direction.SOUTH);
+		}
+	}
         
-        public static class BulgeModelBox extends ModelBox {
+	public static class BulgeModelBox extends ModelBox {
 
 		public BulgeModelBox(int tW, int tH, int texU, int texV, float x, float y, float z, int dx, int dy, int dz, float delta, boolean mirror) {
 			super(tW, tH, texU, texV, x, y, z, dx, dy, dz, delta, mirror);
@@ -173,15 +209,15 @@ public class WildfireModelRenderer {
 		protected void initQuads(int tW, int tH, int texU, int texV, int dx, int dy, int dz, boolean mirror, boolean extra, PositionTextureVertex vertex,
 			PositionTextureVertex vertex1, PositionTextureVertex vertex2, PositionTextureVertex vertex3, PositionTextureVertex vertex4, PositionTextureVertex vertex5,
 			PositionTextureVertex vertex6, PositionTextureVertex vertex7) {
-			this.quads[0] = new TexturedQuad(texU + 4 + dx, texV + 4, texU + 4 + dx + 4, texV + 4 + dy, tW, tH, mirror, Direction.EAST,
+			this.quads[0] = new TexturedQuad(texU + dx, texV, texU + dx + dz, texV + dy, tW, tH, mirror, Direction.EAST,
 				vertex4, vertex, vertex1, vertex5);
-			this.quads[1] = new TexturedQuad(texU, texV + 4, texU + 4, texV + 4 + dy, tW, tH, mirror, Direction.WEST,
+			this.quads[1] = new TexturedQuad(texU + dx, texV, texU + dx + dz, texV + dy, tW, tH, mirror, Direction.WEST,
 				vertex7, vertex3, vertex6, vertex2);
-			this.quads[2] = new TexturedQuad(texU + 4, texV, texU + 4 + dx, texV + 4, tW, tH, mirror, Direction.DOWN,
+			this.quads[2] = new TexturedQuad(texU, texV + dy - 1, texU + dx, texV + dy + dz, tW, tH, mirror, Direction.DOWN,
 				vertex4, vertex3, vertex7, vertex);
-			this.quads[3] = new TexturedQuad(texU + 4, texV + 4 + 4, texU + 4 + dx, texV + 1 + 4 + dy, tW, tH - 1, mirror, Direction.UP,
+			this.quads[3] = new TexturedQuad(texU, texV + dy - 1, texU + dx, texV + dy + dz, tW, tH, mirror, Direction.UP,
 				vertex1, vertex2, vertex6, vertex5);
-			this.quads[4] = new TexturedQuad(texU + 4, texV + 4, texU + 4 + dx, texV + 4 + dy, tW, tH, mirror, Direction.NORTH,
+			this.quads[4] = new TexturedQuad(texU, texV, texU + dx, texV + dy, tW, tH, mirror, Direction.NORTH,
 				vertex, vertex7, vertex2, vertex1);
 			//this.quads[5] = new TexturedQuad(new PositionTextureVertex[]{vertex3, vertex4, vertex5, vertex6}, texU + dz + dx + dz, texV + dz, texU + dz + dx + dz + dx, texV + dz + dy, tW, tH, mirror, Direction.SOUTH);
 
@@ -194,7 +230,7 @@ public class WildfireModelRenderer {
 		}
 	}
 
-	   public static class SkinnedModelBox extends ModelBox {
+	public static class SkinnedModelBox extends ModelBox {
 
 	      public SkinnedModelBox(int tW, int tH, int texU, int texV, float x, float y, float z, int dx, int dy, int dz, float delta, boolean mirror) {
 			  super(tW, tH, texU, texV, x, y, z, dx, dy, dz, delta, mirror, 6);
