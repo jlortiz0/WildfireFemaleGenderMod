@@ -82,9 +82,9 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	private OverlayModelBox lBreastWear, rBreastWear;
 	private BreastModelBox lBoobArmor, rBoobArmor;
 	private BulgeModelBox bulgeModel, bulgeModelArmor;
-	private OverlayModelBox bulgeWear;
+	private BulgeModelBox bulgeWear;
 	private BunModelBox lBun, rBun;
-	private OverlayModelBox lBunWear, rBunWear;
+	private BunModelBox lBunWear, rBunWear;
 	private BreastModelBox lBunArmor, rBunArmor;
 
 	private float preBreastSize = 0f;
@@ -106,13 +106,13 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		rBoobArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 
 		bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
-		bulgeWear = new OverlayModelBox(false, 64, 64, 20, 41, -1F, 0F, 0F, 2, 2, 2, 0F, false);
+		bulgeWear = new BulgeModelBox(64, 64, 5, 36, -1F, 0F, 0F, 2, 2, 2, 0F, false);
 		bulgeModelArmor = new BulgeModelBox(64, 32, 5, 20, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
 
 		lBun = new BunModelBox(64, 64, 28, 24, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 		rBun = new BunModelBox(64, 64, 32, 24, 0, 0.0F, 0F, 4, 4, 4, 0.0F, true);
-		lBunWear = new OverlayModelBox(true,64, 64, 0, 34, -4F, 0.0F, 0F, 4, 4, 3, 0.0F, false);
-		rBunWear = new OverlayModelBox(false,64, 64, 0, 34, 0, 0.0F, 0F, 4, 4, 3, 0.0F, true);
+		lBunWear = new BunModelBox(64, 64, 28, 40, -4F, 0.0F, 0F, 4, 4, 3, 0.0F, false);
+		rBunWear = new BunModelBox(64, 64, 32, 40, 0, 0.0F, 0F, 4, 4, 3, 0.0F, true);
 
 		lBunArmor = new BreastModelBox(64, 32, 0, 16, -4F, 0.0F, 0F, 4, 4, 3, 0.0F, false);
 		rBunArmor = new BreastModelBox(64, 32, 0, 16, 0, 0.0F, 0F, 4, 4, 3, 0.0F, false);
