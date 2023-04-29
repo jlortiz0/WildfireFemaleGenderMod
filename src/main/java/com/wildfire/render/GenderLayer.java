@@ -596,26 +596,12 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				matrixStack.translate(0.0625f * 2 * (left ? 1 : -1), 0, 0);
 			}
 
-			float rotationMultiplier = 0;
-			if (bounceEnabled) {
-				matrixStack.translate(0, -0.035f * breastSize, 0); //shift down to correct position
-				rotationMultiplier = -total / 12f;
-			}
-			float totalRotation = breastSize + rotationMultiplier;
-			if (!bounceEnabled) {
-				totalRotation = breastSize;
-			}
-			if (totalRotation > breastSize + 0.2F) {
-				totalRotation = breastSize + 0.2F;
-			}
-			totalRotation = Math.min(totalRotation, 1); //hard limit for MAX
-
 			if (isChestplateOccupied) {
 				matrixStack.translate(0, 0, 0.01f);
 			}
 
 			matrixStack.multiply(new Quaternion(0, outwardAngle, 0, true));
-			matrixStack.multiply(new Quaternion(-35f * totalRotation, 180.0f, 0, true));
+			matrixStack.multiply(new Quaternion(-35f, 180.0f, 0, true));
 
 			if (breathingAnimation) {
 				float f5 = -MathHelper.cos(entity.age * 0.09F) * 0.45F + 0.45F;
