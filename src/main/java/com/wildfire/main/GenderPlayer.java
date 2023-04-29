@@ -22,6 +22,7 @@ import com.google.gson.JsonObject;
 import com.wildfire.main.config.ConfigKey;
 import com.wildfire.main.config.Configuration;
 import com.wildfire.physics.BreastPhysics;
+import com.wildfire.physics.BulgePhysics;
 import com.wildfire.physics.BunPhysics;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -55,6 +56,7 @@ public class GenderPlayer {
 	private final BreastPhysics lBreastPhysics, rBreastPhysics;
 	private final Breasts breasts;
 	private final Bulge bulge;
+	private final BulgePhysics bulgePhysics;
 
 	private final Buns buns;
 	private final BunPhysics lBunPhysics, rBunPhysics;
@@ -67,6 +69,7 @@ public class GenderPlayer {
 		lBreastPhysics = new BreastPhysics(this);
 		rBreastPhysics = new BreastPhysics(this);
 		breasts = new Breasts();
+		bulgePhysics = new BulgePhysics(this);
 		bulge = new Bulge();
 		lBunPhysics = new BunPhysics(this);
 		rBunPhysics = new BunPhysics(this);
@@ -218,7 +221,7 @@ public class GenderPlayer {
                 
 		Bulge bulge = plr.getBulge();
 		Configuration.BULGE_SIZE.save(obj, bulge.getSize());
-		Configuration.BULGE_OFFSET_X.save(obj, bulge.getXOffset());
+		Configuration.BULGE_OFFSET_X.save(obj, bulge.getRotation());
 		Configuration.BULGE_OFFSET_Y.save(obj, bulge.getYOffset());
 		Configuration.BULGE_OFFSET_Z.save(obj, bulge.getZOffset());
 
@@ -337,7 +340,7 @@ public class GenderPlayer {
 
 		Bulge bulge = plr.getBulge();
 		config.set(Configuration.BULGE_SIZE, bulge.getSize());
-		config.set(Configuration.BULGE_OFFSET_X, bulge.getXOffset());
+		config.set(Configuration.BULGE_OFFSET_X, bulge.getRotation());
 		config.set(Configuration.BULGE_OFFSET_Y, bulge.getYOffset());
 		config.set(Configuration.BULGE_OFFSET_Z, bulge.getZOffset());
 
@@ -363,9 +366,8 @@ public class GenderPlayer {
 		return rBreastPhysics;
 	}
 
-	public Bulge getBulge() {
-            return bulge;
-        }
+	public Bulge getBulge() { return bulge; }
+	public BulgePhysics getBulgePhysics() { return bulgePhysics; }
 	public Buns getBuns() { return buns; }
 	public BunPhysics getLeftBunPhysics() { return lBunPhysics; }
 	public BunPhysics getRightBunPhysics() { return rBunPhysics; }

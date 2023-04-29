@@ -35,7 +35,7 @@ public class Bulge {
         return false;
     }
 
-    public float getXOffset() {
+    public float getRotation() {
         return xOffset;
     }
 

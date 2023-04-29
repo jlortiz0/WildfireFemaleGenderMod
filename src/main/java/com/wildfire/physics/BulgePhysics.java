@@ -31,51 +31,51 @@ import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-public class BunPhysics {
+public class BulgePhysics {
 
-	private float bounceVel = 0, targetBounce = 0, velocity = 0, wfg_buns, wfg_preBounce;
+	private float bounceVel = 0, targetBounce = 0, velocity = 0, wfg_bulge, wfg_preBounce;
 	private float bounceRotVel = 0, targetRotVel = 0, rotVelocity = 0, wfg_bounceRotation, wfg_preBounceRotation;
-	private float bounceVelX = 0, targetBounceX = 0, velocityX = 0, wfg_bunsX, wfg_preBounceX;
+	private float bounceVelX = 0, targetBounceX = 0, velocityX = 0, wfg_bulgeX, wfg_preBounceX;
 
 	private boolean justSneaking = false, alreadySleeping = false;
 
-	private float bunsSize = 0, preBunsSize = 0;
+	private float bulgeSize = 0, preBulgeSize = 0;
 
 	private Vec3d motion;
 	private Vec3d prePos;
 	private GenderPlayer genderPlayer;
-	public BunPhysics(GenderPlayer genderPlayer) {
+	public BulgePhysics(GenderPlayer genderPlayer) {
 		this.genderPlayer = genderPlayer;
 	}
 
 	private int randomB = 1;
 	private boolean alreadyFalling = false;
 	public void update(PlayerEntity plr, IGenderArmor armor) {
-		this.wfg_preBounce = this.wfg_buns;
-		this.wfg_preBounceX = this.wfg_bunsX;
+		this.wfg_preBounce = this.wfg_bulge;
+		this.wfg_preBounceX = this.wfg_bulgeX;
 		this.wfg_preBounceRotation = this.wfg_bounceRotation;
-		this.preBunsSize = this.bunsSize;
+		this.preBulgeSize = this.bulgeSize;
 
 		if(this.prePos == null) {
 			this.prePos = plr.getPos();
 			return;
 		}
 
-		float bunsWeight = genderPlayer.getBunsSize() * 1.25f;
-		float targetBunsSize = genderPlayer.getBunsSize();
+		float bulgeWeight = genderPlayer.getBulge().getSize() * 1.25f;
+		float targetBulgeSize = genderPlayer.getBulge().getSize();
 
-		if (!genderPlayer.getGender().canHaveBuns()) {
-			targetBunsSize = 0;
+		if (!genderPlayer.getGender().canHaveBulge()) {
+			targetBulgeSize = 0;
 		} else {
 			float tightness = MathHelper.clamp(armor.tightness(), 0, 1);
 			//Scale breast size by how tight the armor is, clamping at a max adjustment of shrinking by 0.15
-			targetBunsSize *= 1 - 0.15F * tightness;
+			targetBulgeSize *= 1 - 0.15F * tightness;
 		}
 
-		if(bunsSize < targetBunsSize) {
-			bunsSize += Math.abs(bunsSize - targetBunsSize) / 2f;
+		if(bulgeSize < targetBulgeSize) {
+			bulgeSize += Math.abs(bulgeSize - targetBulgeSize) / 2f;
 		} else {
-			bunsSize -= Math.abs(bunsSize - targetBunsSize) / 2f;
+			bulgeSize -= Math.abs(bulgeSize - targetBulgeSize) / 2f;
 		}
 
 
@@ -83,14 +83,12 @@ public class BunPhysics {
 		this.prePos = plr.getPos();
 		//System.out.println(motion);
 
-		float bounceIntensity = (targetBunsSize * 3f) * genderPlayer.getBounceMultiplier() / 4;
+		float bounceIntensity = (targetBulgeSize * 3f) * genderPlayer.getBounceMultiplier() / 10;
 		float resistance = MathHelper.clamp(armor.physicsResistance(), 0, 1);
 		//Adjust bounce intensity by physics resistance of the worn armor
 		bounceIntensity *= 1 - resistance;
 
-		if(!genderPlayer.getBuns().isUnibun()) {
-			bounceIntensity = bounceIntensity * WildfireHelper.randFloat(0.5f, 1.5f);
-		}
+		bounceIntensity = bounceIntensity * WildfireHelper.randFloat(0.5f, 1.5f);
 		if(plr.fallDistance > 0 && !alreadyFalling) {
 			randomB = plr.world.random.nextBoolean() ? -1 : 1;
 			alreadyFalling = true;
@@ -99,7 +97,7 @@ public class BunPhysics {
 
 
 		this.targetBounce = (float) motion.y * bounceIntensity;
-		this.targetBounce += bunsWeight;
+		this.targetBounce += bulgeWeight;
 		float horizVel = (float) Math.sqrt(Math.pow(motion.x, 2) + Math.pow(motion.z, 2)) * (bounceIntensity);
 		//float horizLocal = -horizVel * ((plr.getRotationYawHead()-plr.renderYawOffset)<0?-1:1);
 		this.targetRotVel = -((plr.bodyYaw - plr.prevBodyYaw) / 15f) * bounceIntensity;
@@ -202,7 +200,7 @@ public class BunPhysics {
 		*/
 
 
-		float percent =  genderPlayer.getFloppiness() / 4;
+		float percent =  genderPlayer.getFloppiness() / 10;
 		float bounceAmount = 0.45f * (1f - percent) + 0.15f; //0.6f * percent - 0.15f;
 		bounceAmount = MathHelper.clamp(bounceAmount, 0.15f, 0.6f);
 		float delta = 2.25f - bounceAmount;
@@ -234,26 +232,26 @@ public class BunPhysics {
 		this.bounceRotVel += this.rotVelocity * percent;
 
 		this.wfg_bounceRotation = this.bounceRotVel;
-		this.wfg_bunsX = this.bounceVelX;
-		this.wfg_buns = this.bounceVel;
+		this.wfg_bulgeX = this.bounceVelX;
+		this.wfg_bulge = this.bounceVel;
 	}
 
-	public float getBunsSize(float partialTicks) {
-		return MathHelper.lerp(partialTicks, preBunsSize, bunsSize);
+	public float getBulgeSize(float partialTicks) {
+		return MathHelper.lerp(partialTicks, preBulgeSize, bulgeSize);
 	}
 
 	public float getPreBounceY() {
 		return this.wfg_preBounce;
 	}
 	public float getBounceY() {
-		return this.wfg_buns;
+		return this.wfg_bulge;
 	}
 
 	public float getPreBounceX() {
 		return this.wfg_preBounceX;
 	}
 	public float getBounceX() {
-		return this.wfg_bunsX;
+		return this.wfg_bulgeX;
 	}
 
 	public float getBounceRotation() {

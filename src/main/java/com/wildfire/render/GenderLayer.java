@@ -22,6 +22,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.wildfire.api.IGenderArmor;
 import com.wildfire.main.*;
 import com.wildfire.physics.BreastPhysics;
+import com.wildfire.physics.BulgePhysics;
 import com.wildfire.physics.BunPhysics;
 import com.wildfire.render.WildfireModelRenderer.BreastModelBox;
 import com.wildfire.render.WildfireModelRenderer.OverlayModelBox;
@@ -31,9 +32,6 @@ import javax.annotation.Nonnull;
 
 import com.wildfire.render.WildfireModelRenderer.BulgeModelBox;
 import com.wildfire.render.WildfireModelRenderer.BunModelBox;
-import com.wildfire.render.armor.EmptyGenderArmor;
-import dev.emi.trinkets.api.SlotGroup;
-import dev.emi.trinkets.api.SlotType;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.TrinketInventory;
 import io.github.apace100.apoli.power.ModelColorPower;
@@ -44,11 +42,9 @@ import io.github.apace100.origins.origin.Origin;
 import io.github.apace100.origins.origin.OriginLayer;
 import io.github.apace100.origins.origin.OriginLayers;
 import io.github.apace100.origins.registry.ModComponents;
-import moe.kawaaii.TransparentCosmetics.TransparentArmorMaterial;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
@@ -75,7 +71,6 @@ import net.minecraft.util.math.*;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
 
@@ -229,9 +224,10 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 
 			Bulge bulge = plr.getBulge();
-			float bulgeOffsetX = Math.round((Math.round(bulge.getXOffset() * 100f) / 100f) * 10) / 10f;
+			float bulgeRotation = Math.round((Math.round(bulge.getRotation() * 100f) / 100f) * 10) / 10f;
 			float bulgeOffsetY = -Math.round((Math.round(bulge.getYOffset() * 100f) / 100f) * 10) / 10f;
 			float bulgeOffsetZ = -Math.round((Math.round(bulge.getZOffset() * 100f) / 100f) * 10) / 10f;
+			BulgePhysics bulgePhysics = plr.getBulgePhysics();
 			final float buSize = bulge.getSize();
 			reducer = 0;
 			if (buSize < 0.84f) reducer++;
@@ -289,6 +285,11 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				rTotalX = MathHelper.lerp(partialTicks, rightBreastPhysics.getPreBounceX(), rightBreastPhysics.getBounceX());
 				rightBounceRotation = MathHelper.lerp(partialTicks, rightBreastPhysics.getPreBounceRotation(), rightBreastPhysics.getBounceRotation());
 			}
+
+			float bTotal = MathHelper.lerp(partialTicks, bulgePhysics.getPreBounceY(), bulgePhysics.getBounceY());
+			float bTotalX = MathHelper.lerp(partialTicks, bulgePhysics.getPreBounceX(), bulgePhysics.getBounceX());
+			float bBounceRotation = MathHelper.lerp(partialTicks, bulgePhysics.getPreBounceRotation(), bulgePhysics.getBounceRotation());
+
 			float lBTotal = MathHelper.lerp(partialTicks, leftBunPhysics.getPreBounceY(), leftBunPhysics.getBounceY());
 			float lBTotalX = MathHelper.lerp(partialTicks, leftBunPhysics.getPreBounceX(), leftBunPhysics.getBounceX());
 			float leftBBounceRotation = MathHelper.lerp(partialTicks, leftBunPhysics.getPreBounceRotation(), leftBunPhysics.getBounceRotation());
@@ -354,7 +355,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 			if (bulgeSize >= 0.02f) {
 				renderBulgeWithTransforms(ent, model.body, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-						overlayBlue, overlayAlpha, bulgeOffsetX, bulgeSize, bulgeOffsetY,
+						overlayBlue, overlayAlpha, bounceEnabled, bTotalX, bTotal, bBounceRotation, bulgeRotation, bulgeSize, bulgeOffsetY,
 						bulgeOffsetZ, zBuOff, isLeggingsOccupied);
 			}
 			if (bunsSize >= 0.02f) {
@@ -484,7 +485,8 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
         
 	private void renderBulgeWithTransforms(AbstractClientPlayerEntity entity, ModelPart body, ItemStack armorStack, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider,
 										   RenderLayer breastRenderType, int packedLightIn, int combineTex, float red, float green, float blue, float alpha,
-										   float bounceRotation, float breastSize, float breastOffsetY, float breastOffsetZ, float zOff,
+										   boolean bounceEnabled, float totalX, float total, float bounceRotation,
+										   float breastOffsetRotation, float breastSize, float breastOffsetY, float breastOffsetZ, float zOff,
 										   boolean isChestplateOccupied) {
 		matrixStack.push();
 		//Surround with a try/catch to fix for essential mod.
@@ -500,10 +502,17 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				matrixStack.multiply(new Quaternion(body.pitch, 0f, 0f, false));
 			}
 
+			if (bounceEnabled) {
+				matrixStack.translate(totalX / 32f, 0, 0);
+				matrixStack.translate(0, total / 32f, 0);
+			}
 
 			matrixStack.translate(0, 0.70f + (breastOffsetY * 0.0625f), zOff - 0.2 + (breastOffsetZ * 0.0625f)); //shift down to correct position
 
-			float totalRotation = breastSize * 0.75f + bounceRotation - (float)Math.PI / 2 - 0.25f;
+			float totalRotation = breastSize * 0.75f + breastOffsetRotation - (float)Math.PI / 2 - 0.25f;
+			if (bounceEnabled) {
+				totalRotation += bounceRotation;
+			}
 
 			if (isChestplateOccupied) {
 				matrixStack.translate(0, 0, 0.01f);

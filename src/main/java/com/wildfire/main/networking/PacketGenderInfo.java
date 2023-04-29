@@ -76,7 +76,7 @@ public abstract class PacketGenderInfo {
         this.cleavage = breasts.getCleavage();
 
         Bulge bulge = plr.getBulge();
-        this.bulgeX = bulge.getXOffset();
+        this.bulgeX = bulge.getRotation();
         this.bulgeY = bulge.getYOffset();
         this.bulgeZ = bulge.getZOffset();
         this.bulgeSize = bulge.getSize();

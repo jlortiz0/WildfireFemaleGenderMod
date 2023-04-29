@@ -59,7 +59,7 @@ public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
         this.addDrawableChild(this.bulgeSlider = new WildfireSlider(this.width / 2 + 30, j - 48, 158, 20, Configuration.BULGE_SIZE, bulge.getSize(),
                 bulge::updateSize, value -> new TranslatableText("wildfire_gender.wardrobe.slider.bulge_size", Math.round(value * 100)), onSave));
         
-        this.addDrawableChild(this.xOffsetBulgeSlider = new WildfireSlider(this.width / 2 + 30, j - 27, 158, 20, Configuration.BULGE_OFFSET_X, bulge.getXOffset(),
+        this.addDrawableChild(this.xOffsetBulgeSlider = new WildfireSlider(this.width / 2 + 30, j - 27, 158, 20, Configuration.BULGE_OFFSET_X, bulge.getRotation(),
               bulge::updateXOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.rotation", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
         this.addDrawableChild(this.yOffsetBulgeSlider = new WildfireSlider(this.width / 2 + 30, j - 6, 158, 20, Configuration.BULGE_OFFSET_Y, bulge.getYOffset(),
               bulge::updateYOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.height", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));

@@ -92,10 +92,28 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             }
         }
 
+        ItemStack armorStack2 = plr.getEquippedStack(EquipmentSlot.LEGS);
+
+        IGenderArmor armorConfig2 = WildfireHelper.getArmorConfig(armorStack);
+
+        //Cosmetic armor
+        if(FabricLoader.getInstance().isModLoaded("trinkets")) {
+            Map<String, TrinketInventory> tm = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("legs");
+            TrinketInventory ti = null;
+            if (tm != null) {
+                ti = tm.get("cosmetic");
+            }
+            if (ti != null && ti.getStack(0).getItem() != Items.AIR) {
+                armorStack2 = ti.getStack(0);
+                armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
+            }
+        }
+
         aPlr.getLeftBreastPhysics().update(plr, armorConfig);
         aPlr.getRightBreastPhysics().update(plr, armorConfig);
-        aPlr.getLeftBunPhysics().update(plr, armorConfig);
-        aPlr.getRightBunPhysics().update(plr, armorConfig);
+        aPlr.getBulgePhysics().update(plr, armorConfig2);
+        aPlr.getLeftBunPhysics().update(plr, armorConfig2);
+        aPlr.getRightBunPhysics().update(plr, armorConfig2);
 
 
     }
