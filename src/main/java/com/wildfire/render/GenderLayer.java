@@ -246,8 +246,8 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			float bOutwardAngle = (Math.round(buns.getGap() * 100f) / 100f) * 100f;
 			bOutwardAngle = Math.min(bOutwardAngle, 10);
 			reducer = 0;
-			if (btSize < 0.84f) reducer++;
 			if (btSize < 0.72f) reducer++;
+			if (btSize < 0.33f) reducer++;
 			if (preBunSize != btSize) {
 				lBun = new BunModelBox(64, 64, 28, 24, -4F, 0.0F, 0F, 4, 4, (int) (4 - bunsOffsetZ - reducer), 0.0F, false);
 				rBun = new BunModelBox(64, 64, 32, 24, 0, 0.0F, 0F, 4, 4, (int) (4 - bunsOffsetZ - reducer), 0.0F, true);
@@ -509,7 +509,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 			matrixStack.translate(0, 0.70f + (breastOffsetY * 0.0625f), zOff - 0.2 + (breastOffsetZ * 0.0625f)); //shift down to correct position
 
-			float totalRotation = breastSize * 0.75f + breastOffsetRotation - (float)Math.PI / 2 - 0.25f;
+			float totalRotation = breastOffsetRotation - (float)Math.PI / 2 + 0.5f;
 			if (bounceEnabled) {
 				totalRotation += bounceRotation;
 			}

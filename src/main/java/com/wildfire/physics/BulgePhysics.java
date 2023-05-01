@@ -83,7 +83,7 @@ public class BulgePhysics {
 		this.prePos = plr.getPos();
 		//System.out.println(motion);
 
-		float bounceIntensity = (targetBulgeSize * 3f) * genderPlayer.getBounceMultiplier() / 10;
+		float bounceIntensity = (targetBulgeSize * 3f) * genderPlayer.getBounceMultiplier() / 8;
 		float resistance = MathHelper.clamp(armor.physicsResistance(), 0, 1);
 		//Adjust bounce intensity by physics resistance of the worn armor
 		bounceIntensity *= 1 - resistance;
@@ -200,7 +200,7 @@ public class BulgePhysics {
 		*/
 
 
-		float percent =  genderPlayer.getFloppiness() / 10;
+		float percent =  genderPlayer.getFloppiness() / 8;
 		float bounceAmount = 0.45f * (1f - percent) + 0.15f; //0.6f * percent - 0.15f;
 		bounceAmount = MathHelper.clamp(bounceAmount, 0.15f, 0.6f);
 		float delta = 2.25f - bounceAmount;
