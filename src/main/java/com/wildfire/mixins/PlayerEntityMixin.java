@@ -25,7 +25,6 @@ import com.wildfire.main.WildfireHelper;
 import com.wildfire.render.armor.EmptyGenderArmor;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.TrinketInventory;
-import moe.kawaaii.TransparentCosmetics.TransparentArmorMaterial;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
@@ -94,7 +93,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
         ItemStack armorStack2 = plr.getEquippedStack(EquipmentSlot.LEGS);
 
-        IGenderArmor armorConfig2 = WildfireHelper.getArmorConfig(armorStack);
+        IGenderArmor armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
 
         //Cosmetic armor
         if(FabricLoader.getInstance().isModLoaded("trinkets")) {

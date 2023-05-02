@@ -67,6 +67,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
+import nl.enjarai.showmeyourskin.config.ArmorConfig;
+import nl.enjarai.showmeyourskin.config.ModConfig;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -234,6 +236,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (buSize < 0.5f) reducer++;
 			if (preBulgeSize != buSize) {
 				bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, (int) (3 - bulgeOffsetZ - reducer), 0.0F, false);
+				bulgeModelArmor = new BulgeModelBox(64, 32, 5, 20, -1F, 0.0F, 0F, 2, 2, (int) (4 - bulgeOffsetZ - reducer), 0.0F, false);
 				preBulgeSize = buSize;
 			}
 
@@ -462,33 +465,36 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		//Render Breast Armor
 		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
 			Identifier armorTexture = getArmorResource(armorItem, false, null);
-			Identifier overlayTexture = null;
 			float armorR = 1f;
 			float armorG = 1f;
 			float armorB = 1f;
 			if (armorItem instanceof DyeableArmorItem dyeableItem) {
-				//overlayTexture = getArmorResource(entity, armorStack, EquipmentSlot.CHEST, "overlay");
 				int color = dyeableItem.getColor(armorStack);
 				armorR = (float) (color >> 16 & 255) / 255.0F;
 				armorG = (float) (color >> 8 & 255) / 255.0F;
 				armorB = (float) (color & 255) / 255.0F;
 			}
+			float armorA = 1f;
+			boolean glint = armorStack.hasGlint();
+			if (FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
+				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(entity.getUuid());
+				armorA = conf.getTransparency(armorItem.getSlotType()) / 100f;
+				if (armorA < 0.01f) return;
+				if (!conf.getGlint(armorItem.getSlotType())) {
+					glint = false;
+				}
+			}
 			matrixStack.push();
 			matrixStack.translate(left ? 0.001f : -0.001f, 0.015f, -0.015f);
 			matrixStack.scale(1.05f, 1, 1);
 			WildfireModelRenderer.BreastModelBox armor = left ? lBoobArmor : rBoobArmor;
-			RenderLayer armorType = RenderLayer.getArmorCutoutNoCull(armorTexture);
-			VertexConsumer armorVertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, armorType, false, armorStack.hasGlint());
-			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, alpha);
-			if (overlayTexture != null) {
-				RenderLayer overlayType = RenderLayer.getArmorCutoutNoCull(overlayTexture);
-				VertexConsumer overlayVertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, overlayType, false, armorStack.hasGlint());
-				renderBox(armor, matrixStack, overlayVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, red, green, blue, alpha);
-			}
+			RenderLayer armorType = RenderLayer.getEntityTranslucent(armorTexture);
+			VertexConsumer armorVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, armorType, false, glint);
+			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, armorA);
 			matrixStack.pop();
 		}
 	}
-        
+
 	private void renderBulgeWithTransforms(AbstractClientPlayerEntity entity, ModelPart body, ItemStack armorStack, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider,
 										   RenderLayer breastRenderType, int packedLightIn, int combineTex, float red, float green, float blue, float alpha,
 										   boolean bounceEnabled, float totalX, float total, float bounceRotation,
@@ -553,7 +559,6 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		//Render Breast Armor
 		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
 			Identifier armorTexture = getArmorResource(armorItem, true, null);
-			Identifier overlayTexture = null;
 			float armorR = 1f;
 			float armorG = 1f;
 			float armorB = 1f;
@@ -564,18 +569,23 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				armorG = (float) (color >> 8 & 255) / 255.0F;
 				armorB = (float) (color & 255) / 255.0F;
 			}
+			float armorA = 1f;
+			boolean glint = armorStack.hasGlint();
+			if (FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
+				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(entity.getUuid());
+				armorA = conf.getTransparency(armorItem.getSlotType()) / 100f;
+				if (armorA < 0.01f) return;
+				if (!conf.getGlint(armorItem.getSlotType())) {
+					glint = false;
+				}
+			}
 			matrixStack.push();
 			matrixStack.translate(0, -0.015f, -0.015f);
-			matrixStack.scale(1.05f, 1.1f, 1);
+			matrixStack.scale(1.05f, 1.1f, 1.05f);
 			WildfireModelRenderer.BulgeModelBox armor = bulgeModelArmor;
-			RenderLayer armorType = RenderLayer.getArmorCutoutNoCull(armorTexture);
-			VertexConsumer armorVertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, armorType, false, armorStack.hasGlint());
-			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, alpha);
-			if (overlayTexture != null) {
-				RenderLayer overlayType = RenderLayer.getArmorCutoutNoCull(overlayTexture);
-				VertexConsumer overlayVertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, overlayType, false, armorStack.hasGlint());
-				renderBox(armor, matrixStack, overlayVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, red, green, blue, alpha);
-			}
+			RenderLayer armorType = RenderLayer.getEntityTranslucent(armorTexture);
+			VertexConsumer armorVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, armorType, false, glint);
+			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, armorA);
 			matrixStack.pop();
 		}
 	}
@@ -634,7 +644,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	}
 
 	private void renderBuns(AbstractClientPlayerEntity entity, ItemStack armorStack, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, RenderLayer breastRenderType,
-							  int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha, boolean left) {
+							int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha, boolean left) {
 		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(breastRenderType);
 		renderBox(left ? lBun : rBun, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		if (entity.isPartVisible(left ? PlayerModelPart.LEFT_PANTS_LEG : PlayerModelPart.RIGHT_PANTS_LEG)) {
@@ -647,29 +657,32 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		//Render Breast Armor
 		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
 			Identifier armorTexture = getArmorResource(armorItem, true, null);
-			Identifier overlayTexture = null;
 			float armorR = 1f;
 			float armorG = 1f;
 			float armorB = 1f;
 			if (armorItem instanceof DyeableArmorItem dyeableItem) {
-				//overlayTexture = getArmorResource(entity, armorStack, EquipmentSlot.CHEST, "overlay");
 				int color = dyeableItem.getColor(armorStack);
 				armorR = (float) (color >> 16 & 255) / 255.0F;
 				armorG = (float) (color >> 8 & 255) / 255.0F;
 				armorB = (float) (color & 255) / 255.0F;
 			}
+			float armorA = 1f;
+			boolean glint = armorStack.hasGlint();
+			if (FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
+				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(entity.getUuid());
+				armorA = conf.getTransparency(armorItem.getSlotType()) / 100f;
+				if (armorA < 0.01f) return;
+				if (!conf.getGlint(armorItem.getSlotType())) {
+					glint = false;
+				}
+			}
 			matrixStack.push();
 			matrixStack.translate(left ? 0.001f : -0.001f, -0.015f, -0.015f);
 			matrixStack.scale(1.05f, 1.1f, 1);
 			WildfireModelRenderer.BreastModelBox armor = left ? lBunArmor : rBunArmor;
-			RenderLayer armorType = RenderLayer.getArmorCutoutNoCull(armorTexture);
-			VertexConsumer armorVertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, armorType, false, armorStack.hasGlint());
-			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, alpha);
-			if (overlayTexture != null) {
-				RenderLayer overlayType = RenderLayer.getArmorCutoutNoCull(overlayTexture);
-				VertexConsumer overlayVertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, overlayType, false, armorStack.hasGlint());
-				renderBox(armor, matrixStack, overlayVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, red, green, blue, alpha);
-			}
+			RenderLayer armorType = RenderLayer.getEntityTranslucent(armorTexture);
+			VertexConsumer armorVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, armorType, false, glint);
+			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, armorA);
 			matrixStack.pop();
 		}
 	}

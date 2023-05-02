@@ -67,9 +67,10 @@ dependencies {
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:4.2.0"
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:4.2.0"
 	modImplementation("curse.maven:trinkets-341284:3786685")
-	modImplementation("curse.maven:transparent-cosmetics-451965:3721687")
-	modImplementation("curse.maven:cosmeticarmor-436659:3771984")
+	modRuntimeOnly("curse.maven:transparent-cosmetics-451965:3721687")
+	modRuntimeOnly("curse.maven:cosmeticarmor-436659:3771984")
 	modCompileOnly "com.github.apace100:origins-fabric:1.3.1"
+	modCompileOnly("curse.maven:show-me-your-skin-622010:3989217")
 }
 
 processResources {
