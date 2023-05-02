@@ -178,13 +178,6 @@ public class BulgePhysics {
 			}
 			//System.out.println("VEHICLE");
 		}
-		if(plr.handSwinging && plr.age % 5 == 0 && plr.getPose() != EntityPose.SLEEPING) {
-			if(Math.random() > 0.5) {
-				this.targetBounce += -0.25f * bounceIntensity;
-			} else {
-				this.targetBounce += 0.25f * bounceIntensity;
-			}
-		}
 		if(plr.getPose() == EntityPose.SLEEPING && !this.alreadySleeping) {
 			this.targetBounce = bounceIntensity;
 			this.alreadySleeping = true;
@@ -200,7 +193,7 @@ public class BulgePhysics {
 		*/
 
 
-		float percent =  genderPlayer.getFloppiness() / 8;
+		float percent =  genderPlayer.getFloppiness() / 4;
 		float bounceAmount = 0.45f * (1f - percent) + 0.15f; //0.6f * percent - 0.15f;
 		bounceAmount = MathHelper.clamp(bounceAmount, 0.15f, 0.6f);
 		float delta = 2.25f - bounceAmount;

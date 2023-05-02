@@ -101,9 +101,9 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		lBoobArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 		rBoobArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 
-		bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
+		bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, 3, 0.0F, false);
 		bulgeWear = new BulgeModelBox(64, 64, 5, 36, -1F, 0F, 0F, 2, 2, 2, 0F, false);
-		bulgeModelArmor = new BulgeModelBox(64, 32, 5, 20, -1F, 0.0F, 0F, 2, 2, 2, 0.0F, false);
+		bulgeModelArmor = new BulgeModelBox(64, 32, 5, 20, -1F, 0.0F, 0F, 2, 2, 3, 0.0F, false);
 
 		lBun = new BunModelBox(64, 64, 28, 24, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 		rBun = new BunModelBox(64, 64, 32, 24, 0, 0.0F, 0F, 4, 4, 4, 0.0F, true);
@@ -230,10 +230,10 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			BulgePhysics bulgePhysics = plr.getBulgePhysics();
 			final float buSize = bulge.getSize();
 			reducer = 0;
-			if (buSize < 0.84f) reducer++;
-			if (buSize < 0.72f) reducer++;
+			if (buSize < 1f) reducer++;
+			if (buSize < 0.5f) reducer++;
 			if (preBulgeSize != buSize) {
-				bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, (int) (2 - bulgeOffsetZ - reducer), 0.0F, false);
+				bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, (int) (3 - bulgeOffsetZ - reducer), 0.0F, false);
 				preBulgeSize = buSize;
 			}
 
@@ -252,6 +252,10 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				lBun = new BunModelBox(64, 64, 28, 24, -4F, 0.0F, 0F, 4, 4, (int) (4 - bunsOffsetZ - reducer), 0.0F, false);
 				rBun = new BunModelBox(64, 64, 32, 24, 0, 0.0F, 0F, 4, 4, (int) (4 - bunsOffsetZ - reducer), 0.0F, true);
 				preBunSize = btSize;
+			}
+			if (ent.hasVehicle()) {
+				bunsOffsetX += 1.3;
+				bOutwardAngle += 9;
 			}
 
 			//DEPENDENCIES
@@ -329,8 +333,10 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (bunsSize >= 0.02f) bunsSize = btSize + 0.5f * Math.abs(btSize - 0.7f) * 2f;
 
 			float zOff = 0.0625f - (bSize * 0.0625f);
-			float zBuOff = 0.0625f - (buSize * 0.0625f);
+			float zBuOff = 0.0f - (buSize * 0.0625f);
 			float zBtOff = 0.0625f - (btSize * 0.0625f);
+			if (buSize >= 1f) zBuOff += 0.03125f;
+			if (buSize >= 0.5f) zBuOff += 0.03125f;
 
 			//matrixStack.translate(0, 0, zOff);
 			//System.out.println(bounceRotation);
@@ -354,17 +360,17 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 						-outwardAngle, breasts.isUniboob(), isChestplateOccupied, breathingAnimation, false);
 			}
 			if (bulgeSize >= 0.02f) {
-				renderBulgeWithTransforms(ent, model.body, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
+				renderBulgeWithTransforms(ent, model.leftLeg, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
 						overlayBlue, overlayAlpha, bounceEnabled, bTotalX, bTotal, bBounceRotation, bulgeRotation, bulgeSize, bulgeOffsetY,
 						bulgeOffsetZ, zBuOff, isLeggingsOccupied);
 			}
 			if (bunsSize >= 0.02f) {
-				renderBunWithTransforms(ent, model.body, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-						overlayBlue, overlayAlpha, bounceEnabled, lBTotalX, lBTotal, leftBBounceRotation, bunsSize, bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
-						bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, false, true);
-				renderBunWithTransforms(ent, model.body, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-						overlayBlue, overlayAlpha, bounceEnabled, rBTotalX, rBTotal, rightBBounceRotation, bunsSize, -bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
-						-bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, false, false);
+				renderBunWithTransforms(ent, model.leftLeg, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
+						overlayBlue, overlayAlpha, bounceEnabled, lBTotalX, lBTotal, leftBBounceRotation, bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
+						bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, true);
+				renderBunWithTransforms(ent, model.rightLeg, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
+						overlayBlue, overlayAlpha, bounceEnabled, rBTotalX, rBTotal, rightBBounceRotation, -bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
+						-bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, false);
 			}
 			RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 		} catch(Exception e) {
@@ -493,13 +499,17 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		try {
 			matrixStack.translate(body.pivotX * 0.0625f, body.pivotY * 0.0625f, body.pivotZ * 0.0625f);
 			if (body.roll != 0.0F) {
-				matrixStack.multiply(new Quaternion(0f, 0f, body.roll, false));
+				matrixStack.multiply(new Quaternion(0f, 0f, body.roll * 0.125f, false));
 			}
 			if (body.yaw != 0.0F) {
 				matrixStack.multiply(new Quaternion(0f, body.yaw, 0f, false));
 			}
-			if (body.pitch != 0.0F) {
+			if (Math.abs(body.pitch) > Math.PI / 2) {
 				matrixStack.multiply(new Quaternion(body.pitch, 0f, 0f, false));
+			} else if (Math.abs(body.pitch) > (Math.PI / 16) * 7) {
+				matrixStack.multiply(new Quaternion(body.pitch * 0.5f, 0f, 0f, false));
+			} else if (bounceEnabled) {
+				matrixStack.multiply(new Quaternion(body.pitch * 0.1f, 0f, 0f, false));
 			}
 
 			if (bounceEnabled) {
@@ -507,9 +517,9 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				matrixStack.translate(0, total / 32f, 0);
 			}
 
-			matrixStack.translate(0, 0.70f + (breastOffsetY * 0.0625f), zOff - 0.2 + (breastOffsetZ * 0.0625f)); //shift down to correct position
+			matrixStack.translate(-0.125f, -0.00625f + (breastOffsetY * 0.0625f), zOff - 0.075f + ((breastOffsetZ - breastOffsetRotation) * 0.0625f)); //shift down to correct position
 
-			float totalRotation = breastOffsetRotation - (float)Math.PI / 2 + 0.5f;
+			float totalRotation = breastOffsetRotation - 0.15f;
 			if (bounceEnabled) {
 				totalRotation += bounceRotation;
 			}
@@ -518,7 +528,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				matrixStack.translate(0, 0, 0.01f);
 			}
 
-			matrixStack.multiply(new Quaternion(-35f * totalRotation, 0, 0, true));
+			matrixStack.multiply(new Quaternion(-35f * totalRotation + 180f, 0, 0, true));
 
 			matrixStack.scale(0.9995f, 1f, 1f); //z-fighting FIXXX
 
@@ -571,9 +581,9 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	}
 
 	private void renderBunWithTransforms(AbstractClientPlayerEntity entity, ModelPart body, ItemStack armorStack, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider,
-											RenderLayer breastRenderType, int packedLightIn, int combineTex, float red, float green, float blue, float alpha, boolean bounceEnabled, float totalX, float total,
-											float bounceRotation, float breastSize, float breastOffsetX, float breastOffsetY, float breastOffsetZ, float zOff, float outwardAngle, boolean uniboob,
-											boolean isChestplateOccupied, boolean breathingAnimation, boolean left) {
+										 RenderLayer breastRenderType, int packedLightIn, int combineTex, float red, float green, float blue, float alpha, boolean bounceEnabled, float totalX, float total,
+										 float bounceRotation, float breastOffsetX, float breastOffsetY, float breastOffsetZ, float zOff, float outwardAngle, boolean uniboob,
+										 boolean isChestplateOccupied, boolean left) {
 		matrixStack.push();
 		//Surround with a try/catch to fix for essential mod.
 		try {
@@ -584,16 +594,18 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (body.yaw != 0.0F) {
 				matrixStack.multiply(new Quaternion(0f, body.yaw, 0f, false));
 			}
-			if (body.pitch != 0.0F) {
+			if (Math.abs(body.pitch) > Math.PI / 2) {
 				matrixStack.multiply(new Quaternion(body.pitch, 0f, 0f, false));
+			} else if (body.pitch != 0f) {
+				matrixStack.multiply(new Quaternion(body.pitch * 0.05f, 0f, 0f, false));
 			}
 
 			if (bounceEnabled) {
 				matrixStack.translate(totalX / 32f, 0, 0);
-				matrixStack.translate(0, total / 32f, 0);
+				matrixStack.translate(0, total / 32f - 0.05, 0);
 			}
 
-			matrixStack.translate(breastOffsetX * 0.0625f, 0.60625f + (breastOffsetY * 0.0625f), -zOff + 0.0625f * 4.5f + (breastOffsetZ * 0.0625f)); //shift down to correct position
+			matrixStack.translate(breastOffsetX * 0.0625f + (left ? -0.12 : 0.13), -0.09625f + (breastOffsetY * 0.0625f), -zOff + 0.0625f * 4.5f + (breastOffsetZ * 0.0625f)); //shift down to correct position
 
 			if (!uniboob) {
 				matrixStack.translate(-0.0625f * 2 * (left ? 1 : -1), 0, 0);
@@ -610,12 +622,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 
 			matrixStack.multiply(new Quaternion(0, outwardAngle, 0, true));
-			matrixStack.multiply(new Quaternion(-35f, 180.0f, 0, true));
-
-			if (breathingAnimation) {
-				float f5 = -MathHelper.cos(entity.age * 0.09F) * 0.45F + 0.45F;
-				matrixStack.multiply(new Quaternion(f5, 0, 0, true));
-			}
+			matrixStack.multiply(new Quaternion(-30f, 180.0f, 0, true));
 
 			matrixStack.scale(0.9995f, 1f, 1f); //z-fighting FIXXX
 

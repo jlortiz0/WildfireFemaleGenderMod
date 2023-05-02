@@ -221,8 +221,8 @@ public class WildfireModelRenderer {
 				vertex4, vertex3, vertex7, vertex);
 			this.quads[3] = new TexturedQuad(texU, texV + dy - 1, texU + dx, texV + dy + dz, tW, tH, mirror, Direction.UP,
 				vertex1, vertex2, vertex6, vertex5);
-			this.quads[4] = new TexturedQuad(texU, texV, texU + dx, texV + dy, tW, tH, mirror, Direction.NORTH,
-				vertex, vertex7, vertex2, vertex1);
+			this.quads[4] = new TexturedQuad(texU, texV, texU + dx, texV + dy, tW, tH, mirror, Direction.SOUTH,
+				vertex4, vertex3, vertex6, vertex5);
 			//this.quads[5] = new TexturedQuad(new PositionTextureVertex[]{vertex3, vertex4, vertex5, vertex6}, texU + dz + dx + dz, texV + dz, texU + dz + dx + dz + dx, texV + dz + dy, tW, tH, mirror, Direction.SOUTH);
 
 			//this.quads[2] = new SteinModelRenderer.TexturedQuad(new SteinModelRenderer.PositionTextureVertex[]{modelrenderer$vertex4, modelrenderer$vertex3, modelrenderer$vertex7, modelrenderer$vertex}, f5, f10, f6, f11, texWidth, texHeight, mirorIn, Direction.DOWN);

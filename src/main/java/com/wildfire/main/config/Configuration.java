@@ -56,9 +56,9 @@ public class Configuration {
 	public static final FloatConfigKey FLOPPY_MULTIPLIER = new FloatConfigKey("floppy_multiplier", 0.95F, 0, 2);
         
 	public static final FloatConfigKey BULGE_SIZE = new FloatConfigKey("bulge_size", 0, 0, 1.5f);
-	public static final FloatConfigKey BULGE_OFFSET_X = new FloatConfigKey("bulge_xOffset", 0, -1, 1);
+	public static final FloatConfigKey BULGE_OFFSET_X = new FloatConfigKey("bulge_xOffset", -0.1f, -1.5f, 1.5f);
 	public static final FloatConfigKey BULGE_OFFSET_Y = new FloatConfigKey("bulge_yOffset", 0, -1, 1);
-	public static final FloatConfigKey BULGE_OFFSET_Z = new FloatConfigKey("bulge_zOffset", 0, -1, 1);
+	public static final FloatConfigKey BULGE_OFFSET_Z = new FloatConfigKey("bulge_zOffset", 0, -1, 0);
 
 	public static final FloatConfigKey BUNS_OFFSET_X = new FloatConfigKey("buns_xOffset", 0.0F, -1, 1);
 	public static final FloatConfigKey BUNS_OFFSET_Y = new FloatConfigKey("buns_yOffset", 0.0F, -1, 1);
