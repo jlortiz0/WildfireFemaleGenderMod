@@ -17,9 +17,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 package com.wildfire.main;
 import com.wildfire.main.networking.PacketSendGenderInfo;
+import com.wildfire.main.networking.PacketSync;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+
+import java.util.UUID;
 
 
 public class WildfireGenderServer implements ModInitializer {
@@ -29,6 +34,21 @@ public class WildfireGenderServer implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "send_gender_info"),
         (server, playerEntity, handler, buf, responseSender) -> {
             PacketSendGenderInfo.handle(server, playerEntity, handler, buf, responseSender);
+        });
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            if (!handler.getPlayer().world.isClient()) {
+                //Send all other players to the player who joined. Note: We don't send the player to
+                // other players as that will happen once the player finishes sending themselves to the server
+                ServerPlayerEntity uuid = handler.getPlayer();
+                Thread thread = new Thread(() -> {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {}
+                    PacketSync.sendTo(uuid);
+                } );
+                thread.setName("WFGM_Sync-" + uuid.getUuid());
+                thread.start();
+            }
         });
     }
 }

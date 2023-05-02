@@ -156,6 +156,7 @@ public abstract class PacketGenderInfo {
     protected void updatePlayerFromPacket(GenderPlayer plr) {
         plr.updateGender(pronouns);
         plr.updateBustSize(bust_size);
+        plr.updateBunsSize(buns_size);
         plr.updateHurtSounds(hurtSounds);
 
         //physics

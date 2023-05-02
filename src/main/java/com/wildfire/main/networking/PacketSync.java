@@ -52,6 +52,7 @@ public class PacketSync extends PacketGenderInfo {
             packet.updatePlayerFromPacket(plr);
             plr.syncStatus = GenderPlayer.SyncStatus.SYNCED;
             plr.lockSettings = true;
+            plr.getConfig().save();
             //System.out.println("Received player data " + plr.uuid);
         } else {
             //System.out.println("Ignoring packet, this is yourself.");

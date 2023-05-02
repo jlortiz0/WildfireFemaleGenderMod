@@ -49,13 +49,6 @@ public class WildfireEventHandler {
 
 	public static void registerClientEvents() {
 
-		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-			if (!handler.getPlayer().world.isClient()) {
-				//Send all other players to the player who joined. Note: We don't send the player to
-				// other players as that will happen once the player finishes sending themselves to the server
-				PacketSync.sendTo(handler.getPlayer());
-			}
-		});
 		ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
 			if(!world.isClient) return;
 			if(entity instanceof  AbstractClientPlayerEntity plr) {

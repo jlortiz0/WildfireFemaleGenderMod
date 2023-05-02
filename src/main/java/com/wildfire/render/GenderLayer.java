@@ -605,7 +605,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				matrixStack.translate(0, total / 32f - 0.05, 0);
 			}
 
-			matrixStack.translate(breastOffsetX * 0.0625f + (left ? -0.12 : 0.13), -0.09625f + (breastOffsetY * 0.0625f), -zOff + 0.0625f * 4.5f + (breastOffsetZ * 0.0625f)); //shift down to correct position
+			matrixStack.translate(breastOffsetX * 0.0625f + (left ? -0.11875 : 0.11875), -0.09625f + (breastOffsetY * 0.0625f), -zOff + 0.0625f * 4.5f + (breastOffsetZ * 0.0625f)); //shift down to correct position
 
 			if (!uniboob) {
 				matrixStack.translate(-0.0625f * 2 * (left ? 1 : -1), 0, 0);
@@ -622,7 +622,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 
 			matrixStack.multiply(new Quaternion(0, outwardAngle, 0, true));
-			matrixStack.multiply(new Quaternion(-30f, 180.0f, 0, true));
+			matrixStack.multiply(new Quaternion(-45f, 180.0f, 0, true));
 
 			matrixStack.scale(0.9995f, 1f, 1f); //z-fighting FIXXX
 
