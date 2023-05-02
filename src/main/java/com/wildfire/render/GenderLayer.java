@@ -228,7 +228,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			float bulgeOffsetY = -Math.round((Math.round(bulge.getYOffset() * 100f) / 100f) * 10) / 10f;
 			float bulgeOffsetZ = -Math.round((Math.round(bulge.getZOffset() * 100f) / 100f) * 10) / 10f;
 			BulgePhysics bulgePhysics = plr.getBulgePhysics();
-			final float buSize = bulge.getSize();
+			final float buSize = bulgePhysics.getBulgeSize(partialTicks);
 			reducer = 0;
 			if (buSize < 1f) reducer++;
 			if (buSize < 0.5f) reducer++;
@@ -514,21 +514,21 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 			if (bounceEnabled) {
 				matrixStack.translate(totalX / 32f, 0, 0);
-				matrixStack.translate(0, total / 32f, 0);
+				// matrixStack.translate(0, total / 32f, 0);
 			}
 
 			matrixStack.translate(-0.125f, -0.00625f + (breastOffsetY * 0.0625f), zOff - 0.075f + ((breastOffsetZ - breastOffsetRotation) * 0.0625f)); //shift down to correct position
 
 			float totalRotation = breastOffsetRotation - 0.15f;
-			if (bounceEnabled) {
-				totalRotation += bounceRotation;
-			}
 
+			if (bounceEnabled) {
+				totalRotation += total - 2;
+			}
 			if (isChestplateOccupied) {
 				matrixStack.translate(0, 0, 0.01f);
 			}
 
-			matrixStack.multiply(new Quaternion(-35f * totalRotation + 180f, 0, 0, true));
+			matrixStack.multiply(new Quaternion(-35f * totalRotation + 180f,  bounceEnabled ? bounceRotation * -8.75f : 0, 0, true));
 
 			matrixStack.scale(0.9995f, 1f, 1f); //z-fighting FIXXX
 
