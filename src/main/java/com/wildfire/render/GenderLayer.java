@@ -104,16 +104,16 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		rBoobArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 
 		bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, 3, 0.0F, false);
-		bulgeWear = new BulgeModelBox(64, 64, 5, 36, -1F, 0F, 0F, 2, 2, 2, 0F, false);
+		bulgeWear = new BulgeModelBox(64, 64, 5, 36, -1F, 0F, 0F, 2, 2, 3, 0F, false);
 		bulgeModelArmor = new BulgeModelBox(64, 32, 5, 20, -1F, 0.0F, 0F, 2, 2, 3, 0.0F, false);
 
 		lBun = new BunModelBox(64, 64, 28, 28, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 		rBun = new BunModelBox(64, 64, 32, 28, 0, 0.0F, 0F, 4, 4, 4, 0.0F, true);
-		lBunWear = new BunModelBox(64, 64, 28, 40, -4F, 0.0F, 0F, 4, 4, 3, 0.0F, false);
-		rBunWear = new BunModelBox(64, 64, 32, 40, 0, 0.0F, 0F, 4, 4, 3, 0.0F, true);
+		lBunWear = new BunModelBox(64, 64, 28, 44, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
+		rBunWear = new BunModelBox(64, 64, 32, 44, 0, 0.0F, 0F, 4, 4, 4, 0.0F, true);
 
-		lBunArmor = new BreastModelBox(64, 32, 0, 16, -4F, 0.0F, 0F, 4, 4, 3, 0.0F, false);
-		rBunArmor = new BreastModelBox(64, 32, 0, 16, 0, 0.0F, 0F, 4, 4, 3, 0.0F, false);
+		lBunArmor = new BreastModelBox(64, 32, 0, 16, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
+		rBunArmor = new BreastModelBox(64, 32, 0, 16, 0, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 	}
 
 	private static final Map<String, Identifier> ARMOR_LOCATION_CACHE = new HashMap<>();
@@ -236,6 +236,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (buSize < 0.5f) reducer++;
 			if (preBulgeSize != buSize) {
 				bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, (int) (3 - bulgeOffsetZ - reducer), 0.0F, false);
+				bulgeWear = new BulgeModelBox(64, 64, 5, 36, -1F, 0F, 0F, 2, 2, (int) (3 - bulgeOffsetZ - reducer), 0F, false);
 				bulgeModelArmor = new BulgeModelBox(64, 32, 5, 20, -1F, 0.0F, 0F, 2, 2, (int) (4 - bulgeOffsetZ - reducer), 0.0F, false);
 				preBulgeSize = buSize;
 			}
@@ -550,8 +551,8 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(breastRenderType);
 		renderBox(bulgeModel, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		if (entity.isPartVisible(PlayerModelPart.JACKET)) {
-			matrixStack.translate(0, 0, -0.015f);
 			matrixStack.scale(1.05f, 1.05f, 1.05f);
+			matrixStack.translate(0, -0.005f, 0.005f);
 			renderBox(bulgeWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		}
 		//TODO: Eventually we may want to expose a way via the API for mods to be able to override rendering
@@ -580,8 +581,8 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				}
 			}
 			matrixStack.push();
-			matrixStack.translate(0, -0.015f, -0.015f);
-			matrixStack.scale(1.05f, 1.1f, 1.05f);
+			matrixStack.scale(1.05f, 1.05f, 1.05f);
+			matrixStack.translate(0, -0.005f, 0.005f);
 			WildfireModelRenderer.BulgeModelBox armor = bulgeModelArmor;
 			RenderLayer armorType = RenderLayer.getEntityTranslucent(armorTexture);
 			VertexConsumer armorVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, armorType, false, glint);
@@ -648,7 +649,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(breastRenderType);
 		renderBox(left ? lBun : rBun, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		if (entity.isPartVisible(left ? PlayerModelPart.LEFT_PANTS_LEG : PlayerModelPart.RIGHT_PANTS_LEG)) {
-			matrixStack.translate(0, 0, -0.015f);
+			matrixStack.translate(left ? 0.001f : -0.001f, -0.015f, -0.015f);
 			matrixStack.scale(1.05f, 1.05f, 1.05f);
 			renderBox(left ? lBunWear: rBunWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 		}
