@@ -174,24 +174,24 @@ public class WildfireModelRenderer {
 								 PositionTextureVertex vertex1, PositionTextureVertex vertex2, PositionTextureVertex vertex3, PositionTextureVertex vertex4, PositionTextureVertex vertex5,
 								 PositionTextureVertex vertex6, PositionTextureVertex vertex7) {
 			if (extra) {
-				this.quads[0] = new TexturedQuad(texU - 16, texV + 4, texU - 16 + dx, texV + 4 + dy, tW, tH, true, Direction.EAST,
-						vertex4, vertex, vertex1, vertex5);
-				this.quads[1] = new TexturedQuad(texU - 16, texV + 4, texU - 16 + dx, texV + 4 + dy, tW, tH, false, Direction.WEST,
-						vertex7, vertex3, vertex6, vertex2);
-				this.quads[3] = new TexturedQuad(texU - 20, texV - 4, texU - 20 + dx, texV - 4 + dy, tW, tH, mirror, Direction.UP,
-						vertex1, vertex2, vertex6, vertex5);
+				this.quads[0] = new TexturedQuad(texU - 16, texV, texU - 16 + dx, texV + dy, tW, tH, false, Direction.EAST,
+						vertex5, vertex4, vertex, vertex1);
+				this.quads[1] = new TexturedQuad(texU, texV, texU + dx, texV + dy, tW, tH, false, Direction.WEST,
+						vertex3, vertex6, vertex2, vertex7);
+				this.quads[3] = new TexturedQuad(texU - 20, texV - 8, texU - 20 + dx, texV - 8 + dy, tW, tH, mirror, Direction.NORTH,
+						vertex, vertex7, vertex2, vertex1);
 			} else {
-				this.quads[0] = new TexturedQuad(texU + 4, texV + 4, texU + 4 + dx, texV + 4 + dy, tW, tH, false, Direction.EAST,
-						vertex4, vertex, vertex1, vertex5);
-				this.quads[1] = new TexturedQuad(texU + 4, texV + 4, texU + 4 + dx, texV + 4 + dy, tW, tH, true, Direction.WEST,
-						vertex7, vertex3, vertex6, vertex2);
-				this.quads[3] = new TexturedQuad(texU - 16, texV - 4, texU - 16 + dx, texV - 4 + dy, tW, tH, mirror, Direction.UP,
-						vertex1, vertex2, vertex6, vertex5);
+				this.quads[0] = new TexturedQuad(texU, texV, texU + dx, texV + dy, tW, tH, false, Direction.EAST,
+						vertex5, vertex4, vertex, vertex1);
+				this.quads[1] = new TexturedQuad(texU + 8, texV, texU + 8 + dx, texV + dy, tW, tH, false, Direction.WEST,
+						vertex3, vertex6, vertex2, vertex7);
+				this.quads[3] = new TexturedQuad(texU - 16, texV - 8, texU - 16 + dx, texV - 8 + dy, tW, tH, mirror, Direction.NORTH,
+						vertex, vertex7, vertex2, vertex1);
 			}
 			this.quads[2] = new TexturedQuad(texU + 4, texV, texU + 4 + dx, texV + dy, tW, tH, mirror, Direction.DOWN,
 					vertex4, vertex3, vertex7, vertex);
-			this.quads[4] = new TexturedQuad(texU + 4, texV + 4, texU + 4 + dx, texV + 4 + dy, tW, tH, false, Direction.NORTH,
-					vertex, vertex7, vertex2, vertex1);
+			this.quads[4] = new TexturedQuad(texU, texV - 12, texU + dx, texV - 12 + dy, tW, tH, false, Direction.UP,
+					vertex1, vertex2, vertex6, vertex5);
 			//this.quads[5] = new TexturedQuad(new PositionTextureVertex[]{vertex3, vertex4, vertex5, vertex6}, texU + dz + dx + dz, texV + dz, texU + dz + dx + dz + dx, texV + dz + dy, tW, tH, mirror, Direction.SOUTH);
 
 			//this.quads[2] = new SteinModelRenderer.TexturedQuad(new SteinModelRenderer.PositionTextureVertex[]{modelrenderer$vertex4, modelrenderer$vertex3, modelrenderer$vertex7, modelrenderer$vertex}, f5, f10, f6, f11, texWidth, texHeight, mirorIn, Direction.DOWN);
@@ -213,13 +213,13 @@ public class WildfireModelRenderer {
 		protected void initQuads(int tW, int tH, int texU, int texV, int dx, int dy, int dz, boolean mirror, boolean extra, PositionTextureVertex vertex,
 			PositionTextureVertex vertex1, PositionTextureVertex vertex2, PositionTextureVertex vertex3, PositionTextureVertex vertex4, PositionTextureVertex vertex5,
 			PositionTextureVertex vertex6, PositionTextureVertex vertex7) {
-			this.quads[0] = new TexturedQuad(texU + dx, texV, texU + dx + dz, texV + dy, tW, tH, mirror, Direction.EAST,
+			this.quads[0] = new TexturedQuad(texU + dx, texV, texU + dx + dy, texV + dz, tW, tH, mirror, Direction.EAST,
 				vertex4, vertex, vertex1, vertex5);
-			this.quads[1] = new TexturedQuad(texU + dx, texV, texU + dx + dz, texV + dy, tW, tH, mirror, Direction.WEST,
+			this.quads[1] = new TexturedQuad(texU + dx, texV, texU + dx + dy, texV + dz, tW, tH, mirror, Direction.WEST,
 				vertex7, vertex3, vertex6, vertex2);
-			this.quads[2] = new TexturedQuad(texU, texV + dy - 1, texU + dx, texV + dy + dz, tW, tH, mirror, Direction.DOWN,
+			this.quads[2] = new TexturedQuad(texU, texV, texU + dx, texV + dz, tW, tH, mirror, Direction.DOWN,
 				vertex4, vertex3, vertex7, vertex);
-			this.quads[3] = new TexturedQuad(texU, texV + dy - 1, texU + dx, texV + dy + dz, tW, tH, mirror, Direction.UP,
+			this.quads[3] = new TexturedQuad(texU, texV, texU + dx, texV + dz, tW, tH, mirror, Direction.UP,
 				vertex1, vertex2, vertex6, vertex5);
 			this.quads[4] = new TexturedQuad(texU, texV, texU + dx, texV + dy, tW, tH, mirror, Direction.SOUTH,
 				vertex4, vertex3, vertex6, vertex5);

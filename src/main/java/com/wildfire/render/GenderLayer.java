@@ -107,8 +107,8 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		bulgeWear = new BulgeModelBox(64, 64, 5, 36, -1F, 0F, 0F, 2, 2, 2, 0F, false);
 		bulgeModelArmor = new BulgeModelBox(64, 32, 5, 20, -1F, 0.0F, 0F, 2, 2, 3, 0.0F, false);
 
-		lBun = new BunModelBox(64, 64, 28, 24, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
-		rBun = new BunModelBox(64, 64, 32, 24, 0, 0.0F, 0F, 4, 4, 4, 0.0F, true);
+		lBun = new BunModelBox(64, 64, 28, 28, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
+		rBun = new BunModelBox(64, 64, 32, 28, 0, 0.0F, 0F, 4, 4, 4, 0.0F, true);
 		lBunWear = new BunModelBox(64, 64, 28, 40, -4F, 0.0F, 0F, 4, 4, 3, 0.0F, false);
 		rBunWear = new BunModelBox(64, 64, 32, 40, 0, 0.0F, 0F, 4, 4, 3, 0.0F, true);
 
@@ -252,8 +252,8 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (btSize < 0.72f) reducer++;
 			if (btSize < 0.33f) reducer++;
 			if (preBunSize != btSize) {
-				lBun = new BunModelBox(64, 64, 28, 24, -4F, 0.0F, 0F, 4, 4, (int) (4 - bunsOffsetZ - reducer), 0.0F, false);
-				rBun = new BunModelBox(64, 64, 32, 24, 0, 0.0F, 0F, 4, 4, (int) (4 - bunsOffsetZ - reducer), 0.0F, true);
+				lBun = new BunModelBox(64, 64, 28, 28, -4F, 0.0F, 0F, 4, 4, (int) (4 - bunsOffsetZ - reducer), 0.0F, false);
+				rBun = new BunModelBox(64, 64, 32, 28, 0, 0.0F, 0F, 4, 4, (int) (4 - bunsOffsetZ - reducer), 0.0F, true);
 				preBunSize = btSize;
 			}
 			if (ent.hasVehicle()) {
