@@ -83,7 +83,7 @@ public class BunPhysics {
 		this.prePos = plr.getPos();
 		//System.out.println(motion);
 
-		float bounceIntensity = (targetBunsSize * 3f) * genderPlayer.getBounceMultiplier() / 4;
+		float bounceIntensity = (targetBunsSize * 3f) * genderPlayer.getBounceMultiplier() / 3;
 		float resistance = MathHelper.clamp(armor.physicsResistance(), 0, 1);
 		//Adjust bounce intensity by physics resistance of the worn armor
 		bounceIntensity *= 1 - resistance;
@@ -202,7 +202,7 @@ public class BunPhysics {
 		*/
 
 
-		float percent =  genderPlayer.getFloppiness() / 4;
+		float percent =  genderPlayer.getFloppiness() / 3;
 		float bounceAmount = 0.45f * (1f - percent) + 0.15f; //0.6f * percent - 0.15f;
 		bounceAmount = MathHelper.clamp(bounceAmount, 0.15f, 0.6f);
 		float delta = 2.25f - bounceAmount;

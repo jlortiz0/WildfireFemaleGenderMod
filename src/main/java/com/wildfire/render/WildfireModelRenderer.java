@@ -178,14 +178,14 @@ public class WildfireModelRenderer {
 						vertex5, vertex4, vertex, vertex1);
 				this.quads[1] = new TexturedQuad(texU, texV, texU + dx, texV + dy, tW, tH, false, Direction.WEST,
 						vertex3, vertex6, vertex2, vertex7);
-				this.quads[3] = new TexturedQuad(texU - 20, texV - 8, texU - 20 + dx, texV - 8 + dy, tW, tH, mirror, Direction.NORTH,
+				this.quads[3] = new TexturedQuad(texU - 20, texV - 8, texU - 20 + dx, texV - 8 + dy, tW, tH, false, Direction.NORTH,
 						vertex, vertex7, vertex2, vertex1);
 			} else {
 				this.quads[0] = new TexturedQuad(texU, texV, texU + dx, texV + dy, tW, tH, false, Direction.EAST,
 						vertex5, vertex4, vertex, vertex1);
 				this.quads[1] = new TexturedQuad(texU + 8, texV, texU + 8 + dx, texV + dy, tW, tH, false, Direction.WEST,
 						vertex3, vertex6, vertex2, vertex7);
-				this.quads[3] = new TexturedQuad(texU - 16, texV - 8, texU - 16 + dx, texV - 8 + dy, tW, tH, mirror, Direction.NORTH,
+				this.quads[3] = new TexturedQuad(texU - 16, texV - 8, texU - 16 + dx, texV - 8 + dy, tW, tH, true, Direction.NORTH,
 						vertex, vertex7, vertex2, vertex1);
 			}
 			this.quads[2] = new TexturedQuad(texU + 4, texV, texU + 4 + dx, texV + dy, tW, tH, mirror, Direction.DOWN,

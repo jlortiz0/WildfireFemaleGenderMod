@@ -154,7 +154,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 			//Cosmetic armor
 			if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-				Map<String, TrinketInventory> tm = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("chest");
+				Map<String, TrinketInventory> tm = TrinketsApi.getTrinketComponent(ent).get().getInventory().get("chest");
 				TrinketInventory ti = null;
 				if (tm != null) {
 					ti = tm.get("cosmetic");
@@ -169,12 +169,17 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (armorConfig.alwaysHidesBreasts() || !plr.showBreastsInArmor() && isChestplateOccupied) {
 				//If the armor always hides breasts or there is armor and the player configured breasts
 				// to be hidden when wearing armor, we can just exit early rather than doing any calculations
-				return;
+				if (FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
+					ArmorConfig conf = ModConfig.INSTANCE.getApplicable(playerUUID);
+					if (conf.getTransparency(EquipmentSlot.CHEST) > 2) return;
+				} else {
+					return;
+				}
 			}
 			ItemStack armorStack2 = ent.getEquippedStack(EquipmentSlot.LEGS);
 			IGenderArmor armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
 			if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-				Map<String, TrinketInventory> tm = TrinketsApi.getTrinketComponent(MinecraftClient.getInstance().player).get().getInventory().get("legs");
+				Map<String, TrinketInventory> tm = TrinketsApi.getTrinketComponent(ent).get().getInventory().get("legs");
 				TrinketInventory ti = null;
 				if (tm != null) {
 					ti = tm.get("cosmetic");
@@ -203,7 +208,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				OriginComponent component = ModComponents.ORIGIN.get(ent);
 				OriginLayer layer = OriginLayers.getLayer(new Identifier("origins", "origin"));
 				Origin or = component.getOrigin(layer);
-				if (lastOrigin == null || !or.getIdentifier().equals(lastOrigin)) {
+				if (or != null && (lastOrigin == null || !or.getIdentifier().equals(lastOrigin))) {
 					lastOrigin = or.getIdentifier();
 					this.modelColor = null;
 					for (PowerType<? extends Power> p : or.getPowerTypes()) {
