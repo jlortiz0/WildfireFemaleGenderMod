@@ -27,6 +27,7 @@ import net.minecraft.item.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WildfireHelper {
@@ -64,6 +65,8 @@ public class WildfireHelper {
                     return SimpleGenderArmor.DIAMOND;
                 } else if (material == ArmorMaterials.NETHERITE) {
                     return SimpleGenderArmor.NETHERITE;
+                } else if (material.getName().equals("transparent")) {
+                    return EmptyGenderArmor.INSTANCE;
                 }
                 //Otherwise just fallback to our default armor implementation
                 return SimpleGenderArmor.FALLBACK;

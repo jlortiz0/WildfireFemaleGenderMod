@@ -32,6 +32,7 @@ import javax.annotation.Nonnull;
 
 import com.wildfire.render.WildfireModelRenderer.BulgeModelBox;
 import com.wildfire.render.WildfireModelRenderer.BunModelBox;
+import com.wildfire.render.armor.SimpleGenderArmor;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.TrinketInventory;
 import io.github.apace100.apoli.power.ModelColorPower;
@@ -42,6 +43,7 @@ import io.github.apace100.origins.origin.Origin;
 import io.github.apace100.origins.origin.OriginLayer;
 import io.github.apace100.origins.origin.OriginLayers;
 import io.github.apace100.origins.registry.ModComponents;
+import net.fabricmc.fabric.impl.client.rendering.ArmorRendererRegistryImpl;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -54,6 +56,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.entity.PlayerModelPart;
+import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
@@ -61,11 +64,13 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectUtil;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.DyeableArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.InvalidIdentifierException;
 import net.minecraft.util.math.*;
 import nl.enjarai.showmeyourskin.config.ArmorConfig;
 import nl.enjarai.showmeyourskin.config.ModConfig;
@@ -121,9 +126,12 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	private static final Map<String, Identifier> ARMOR_TEXTURE_CACHE = new HashMap<String, Identifier>();
 
 	public Identifier getArmorResource(ArmorItem item, boolean legs, @Nullable String overlay) {
-
 		String string = "textures/models/armor/" + item.getMaterial().getName() + "_layer_" + (legs ? 2 : 1) + (overlay == null ? "" : "_" + overlay) + ".png";
-		return (Identifier) ARMOR_TEXTURE_CACHE.computeIfAbsent(string, Identifier::new);
+		try {
+			return (Identifier) ARMOR_TEXTURE_CACHE.computeIfAbsent(string, Identifier::new);
+		} catch (InvalidIdentifierException ignored) {
+			return new Identifier("wildfire_gender", "textures/blank.png");
+		}
 	}
 
 	@Override
@@ -165,17 +173,12 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				}
 			}
 
-			boolean isChestplateOccupied = armorConfig.coversBreasts();
-			if (armorConfig.alwaysHidesBreasts() || !plr.showBreastsInArmor() && isChestplateOccupied) {
-				//If the armor always hides breasts or there is armor and the player configured breasts
-				// to be hidden when wearing armor, we can just exit early rather than doing any calculations
-				if (FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
-					ArmorConfig conf = ModConfig.INSTANCE.getApplicable(playerUUID);
-					if (conf.getTransparency(EquipmentSlot.CHEST) > 2) return;
-				} else {
-					return;
-				}
+			boolean isChestplateOccupied = armorConfig.alwaysHidesBreasts() || (!plr.showBreastsInArmor() && armorConfig.coversBreasts());
+			if (isChestplateOccupied && FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
+				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(playerUUID);
+				isChestplateOccupied = conf.getTransparency(EquipmentSlot.CHEST) != 0;
 			}
+
 			ItemStack armorStack2 = ent.getEquippedStack(EquipmentSlot.LEGS);
 			IGenderArmor armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
 			if (FabricLoader.getInstance().isModLoaded("trinkets")) {
@@ -189,7 +192,11 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 					armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
 				}
 			}
-			boolean isLeggingsOccupied = armorConfig2.coversBreasts();
+			boolean isLeggingsOccupied = armorConfig2.alwaysHidesBreasts() || (!plr.showBreastsInArmor() && armorConfig2.coversBreasts());
+			if (isLeggingsOccupied && FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
+				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(playerUUID);
+				isLeggingsOccupied = conf.getTransparency(EquipmentSlot.LEGS) != 0;
+			}
 
 			PlayerEntityRenderer rend = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(ent);
 			PlayerEntityModel<AbstractClientPlayerEntity> model = rend.getModel();
@@ -200,7 +207,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			float breastOffsetZ = -Math.round((Math.round(breasts.getZOffset() * 100f) / 100f) * 10) / 10f;
 
 			BreastPhysics leftBreastPhysics = plr.getLeftBreastPhysics();
-			final float bSize = leftBreastPhysics.getBreastSize(partialTicks);
+			final float bSize = isChestplateOccupied ? 0 : leftBreastPhysics.getBreastSize(partialTicks);
 			float outwardAngle = (Math.round(breasts.getCleavage() * 100f) / 100f) * 100f;
 			outwardAngle = Math.min(outwardAngle, 10);
 
@@ -235,7 +242,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			float bulgeOffsetY = -Math.round((Math.round(bulge.getYOffset() * 100f) / 100f) * 10) / 10f;
 			float bulgeOffsetZ = -Math.round((Math.round(bulge.getZOffset() * 100f) / 100f) * 10) / 10f;
 			BulgePhysics bulgePhysics = plr.getBulgePhysics();
-			final float buSize = bulgePhysics.getBulgeSize(partialTicks);
+			final float buSize = isLeggingsOccupied ? 0 : bulgePhysics.getBulgeSize(partialTicks);
 			reducer = 0;
 			if (buSize < 1f) reducer++;
 			if (buSize < 0.5f) reducer++;
@@ -251,7 +258,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			float bunsOffsetY = -Math.round((Math.round(buns.getYOffset() * 100f) / 100f) * 10) / 10f;
 			float bunsOffsetZ = -Math.round((Math.round(buns.getZOffset() * 100f) / 100f) * 10) / 10f;
 			BunPhysics leftBunPhysics = plr.getLeftBunPhysics();
-			final float btSize = leftBunPhysics.getBunsSize(partialTicks);
+			final float btSize = isLeggingsOccupied ? 0 : leftBunPhysics.getBunsSize(partialTicks);
 			float bOutwardAngle = (Math.round(buns.getGap() * 100f) / 100f) * 100f;
 			bOutwardAngle = Math.min(bOutwardAngle, 10);
 			reducer = 0;
