@@ -33,6 +33,7 @@
 	"wildfire_gender.tooltip.hide_in_armor": "Hide Breasts/Bulge When Wearing Armors",
 	"wildfire_gender.char_settings.hurt_sounds": "Hurt Sounds: %s",
 	"wildfire_gender.tooltip.hurt_sounds": "Change Hurt Sounds",
+	"wildfire_gender.bulge_settings_disabled": "Unlock Bulge Settings",
 
 	"wildfire_gender.breast_customization.dual_physics": "Dual-Physics: %s",
 

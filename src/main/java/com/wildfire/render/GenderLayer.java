@@ -249,7 +249,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			float bulgeOffsetY = -Math.round((Math.round(bulge.getYOffset() * 100f) / 100f) * 10) / 10f;
 			float bulgeOffsetZ = -Math.round((Math.round(bulge.getZOffset() * 100f) / 100f) * 10) / 10f;
 			BulgePhysics bulgePhysics = plr.getBulgePhysics();
-			final float buSize = isLeggingsOccupied ? 0 : bulgePhysics.getBulgeSize(partialTicks);
+			final float buSize = WildfireGender.isCurseforgeNerfed ? 0 : (isLeggingsOccupied ? 0 : bulgePhysics.getBulgeSize(partialTicks));
 			reducer = 0;
 			if (buSize < 1f) reducer++;
 			if (buSize < 0.5f) reducer++;

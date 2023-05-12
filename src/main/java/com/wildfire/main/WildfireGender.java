@@ -36,6 +36,9 @@ public class WildfireGender implements ClientModInitializer {
 	private static final String PROTOCOL_VERSION = "2";
 	public static Map<UUID, GenderPlayer> CLOTHING_PLAYERS = new HashMap<>();
 
+	public static final boolean isCurseforgeNerfed = false;
+	public static final String GITHUB_LINK = "https://github.com/jlortiz0/WildfireGender";
+
 	@Override
   	public void onInitializeClient() {
 		File f = new File(System.getProperty("user.dir")  + "/config/KittGender/");

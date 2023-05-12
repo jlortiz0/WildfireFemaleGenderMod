@@ -26,6 +26,7 @@ import com.wildfire.gui.WildfireButton;
 import com.wildfire.main.GenderPlayer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ConfirmChatLinkScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.GameRenderer;
@@ -34,9 +35,12 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3f;
 
@@ -73,8 +77,18 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j + 28, 158, 20, new TranslatableText("wildfire_gender.char_settings.title").append("..."),
 				button -> MinecraftClient.getInstance().setScreen(new WildfireCharacterSettingsScreen(WardrobeBrowserScreen.this, this.playerUUID))));
 
-		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 12, 158, 20, new TranslatableText("wildfire_gender.bulge_settings.title").append("..."),
-				button -> MinecraftClient.getInstance().setScreen(new WildfireBulgeCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
+		if (WildfireGender.isCurseforgeNerfed) {
+			this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 12, 158, 20, new TranslatableText("wildfire_gender.bulge_settings_disabled").formatted(Formatting.UNDERLINE),
+					button -> this.client.setScreen(new ConfirmChatLinkScreen((bool) -> {
+						if (bool) {
+							Util.getOperatingSystem().open(WildfireGender.GITHUB_LINK);
+						}
+						this.client.setScreen(this);
+					}, WildfireGender.GITHUB_LINK, false))));
+		} else {
+			this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 12, 158, 20, new TranslatableText("wildfire_gender.bulge_settings.title").append("..."),
+					button -> MinecraftClient.getInstance().setScreen(new WildfireBulgeCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
+		}
 
 		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j + 8, 158, 20, new TranslatableText("wildfire_gender.buns_settings.title").append("..."),
 				button -> MinecraftClient.getInstance().setScreen(new WildfireBunsCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
