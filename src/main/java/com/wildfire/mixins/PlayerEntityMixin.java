@@ -38,6 +38,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import nl.enjarai.showmeyourskin.config.ArmorConfig;
+import nl.enjarai.showmeyourskin.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -90,6 +92,12 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 armorConfig = WildfireHelper.getArmorConfig(armorStack);
             }
         }
+        if (armorConfig != EmptyGenderArmor.INSTANCE && FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
+            ArmorConfig conf = ModConfig.INSTANCE.getApplicable(plr.getUuid());
+            if (conf.getTransparency(EquipmentSlot.CHEST) == 0) {
+                armorConfig = EmptyGenderArmor.INSTANCE;
+            }
+        }
 
         ItemStack armorStack2 = plr.getEquippedStack(EquipmentSlot.LEGS);
 
@@ -105,6 +113,12 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             if (ti != null && ti.getStack(0).getItem() != Items.AIR) {
                 armorStack2 = ti.getStack(0);
                 armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
+            }
+        }
+        if (armorConfig2 != EmptyGenderArmor.INSTANCE && FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
+            ArmorConfig conf = ModConfig.INSTANCE.getApplicable(plr.getUuid());
+            if (conf.getTransparency(EquipmentSlot.LEGS) == 0) {
+                armorConfig2 = EmptyGenderArmor.INSTANCE;
             }
         }
 

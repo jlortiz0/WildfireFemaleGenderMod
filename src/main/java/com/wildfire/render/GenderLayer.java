@@ -32,6 +32,7 @@ import javax.annotation.Nonnull;
 
 import com.wildfire.render.WildfireModelRenderer.BulgeModelBox;
 import com.wildfire.render.WildfireModelRenderer.BunModelBox;
+import com.wildfire.render.armor.EmptyGenderArmor;
 import com.wildfire.render.armor.SimpleGenderArmor;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.TrinketInventory;
@@ -177,6 +178,9 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (isChestplateOccupied && FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
 				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(playerUUID);
 				isChestplateOccupied = conf.getTransparency(EquipmentSlot.CHEST) != 0;
+				if (!isChestplateOccupied) {
+					armorConfig = EmptyGenderArmor.INSTANCE;
+				}
 			}
 
 			ItemStack armorStack2 = ent.getEquippedStack(EquipmentSlot.LEGS);
@@ -196,6 +200,9 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (isLeggingsOccupied && FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
 				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(playerUUID);
 				isLeggingsOccupied = conf.getTransparency(EquipmentSlot.LEGS) != 0;
+				if (!isLeggingsOccupied) {
+					armorConfig2 = EmptyGenderArmor.INSTANCE;
+				}
 			}
 
 			PlayerEntityRenderer rend = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(ent);
@@ -358,12 +365,14 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			//System.out.println(bounceRotation);
 
 			float resistance = MathHelper.clamp(armorConfig.physicsResistance(), 0, 1);
+			float resistance2 = MathHelper.clamp(armorConfig2.physicsResistance(), 0, 1);
 			//Note: We only check if the breathing animation should be enabled if the chestplate's physics resistance
 			// is less than or equal to 0.5 so that if we won't be rendering it we can avoid doing extra calculations
 			boolean breathingAnimation = resistance <= 0.5F &&
 					(!ent.isSubmergedInWater() || StatusEffectUtil.hasWaterBreathing(ent) ||
 							ent.world.getBlockState(new BlockPos(ent.getX(), ent.getEyeY(), ent.getZ())).isOf(Blocks.BUBBLE_COLUMN));
 			boolean bounceEnabled = plr.hasBreastPhysics() && (!isChestplateOccupied || plr.hasArmorBreastPhysics() && resistance < 1); //oh, you found this?
+			boolean bounceEnabled2 = plr.hasBreastPhysics() && (!isLeggingsOccupied || plr.hasArmorBreastPhysics() && resistance2 < 1);
 
 			int combineTex = LivingEntityRenderer.getOverlay(ent, 0);
 			RenderLayer type = RenderLayer.getEntityTranslucent(rend.getTexture(ent));
@@ -377,15 +386,15 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 			if (bulgeSize >= 0.02f) {
 				renderBulgeWithTransforms(ent, model.leftLeg, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-						overlayBlue, overlayAlpha, bounceEnabled, bTotalX, bTotal, bBounceRotation, bulgeRotation, bulgeSize, bulgeOffsetY,
+						overlayBlue, overlayAlpha, bounceEnabled2, bTotalX, bTotal, bBounceRotation, bulgeRotation, bulgeSize, bulgeOffsetY,
 						bulgeOffsetZ, zBuOff, isLeggingsOccupied);
 			}
 			if (bunsSize >= 0.02f) {
 				renderBunWithTransforms(ent, model.leftLeg, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-						overlayBlue, overlayAlpha, bounceEnabled, lBTotalX, lBTotal, leftBBounceRotation, bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
+						overlayBlue, overlayAlpha, bounceEnabled2, lBTotalX, lBTotal, leftBBounceRotation, bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
 						bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, true);
 				renderBunWithTransforms(ent, model.rightLeg, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
-						overlayBlue, overlayAlpha, bounceEnabled, rBTotalX, rBTotal, rightBBounceRotation, -bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
+						overlayBlue, overlayAlpha, bounceEnabled2, rBTotalX, rBTotal, rightBBounceRotation, -bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
 						-bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, false);
 			}
 			RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
