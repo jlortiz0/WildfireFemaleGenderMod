@@ -97,9 +97,11 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 	private ModelColorPower modelColor = null;
 	private Identifier lastOrigin = null;
+	private final ArmorFeatureRenderer afr;
 
-	public GenderLayer(FeatureRendererContext render) {
+	public GenderLayer(FeatureRendererContext render, ArmorFeatureRenderer afr) {
 		super(render);
+		this.afr = afr;
 
 		lBreast = new BreastModelBox(64, 64, 16, 17, -4F, 0.0F, 0F, 4, 5, 4, 0.0F, false);
 		rBreast = new BreastModelBox(64, 64, 20, 17, 0, 0.0F, 0F, 4, 5, 4, 0.0F, false);
@@ -128,6 +130,12 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 	public Identifier getArmorResource(ArmorItem item, boolean legs, @Nullable String overlay) {
 		String string = "textures/models/armor/" + item.getMaterial().getName() + "_layer_" + (legs ? 2 : 1) + (overlay == null ? "" : "_" + overlay) + ".png";
+		if (afr != null) {
+			Identifier id = afr.ARMOR_TEXTURE_CACHE.get(string);
+			if (id != null) {
+				return id;
+			}
+		}
 		try {
 			return (Identifier) ARMOR_TEXTURE_CACHE.computeIfAbsent(string, Identifier::new);
 		} catch (InvalidIdentifierException ignored) {
