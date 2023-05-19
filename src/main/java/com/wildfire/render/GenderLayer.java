@@ -400,10 +400,10 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (bunsSize >= 0.02f) {
 				renderBunWithTransforms(ent, model.leftLeg, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
 						overlayBlue, overlayAlpha, bounceEnabled2, lBTotalX, lBTotal, leftBBounceRotation, bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
-						bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, true);
+						bOutwardAngle, buns.isUnibun(), buns.getRot() * 100f, isLeggingsOccupied, true);
 				renderBunWithTransforms(ent, model.rightLeg, armorStack2, matrixStack, vertexConsumerProvider, type, packedLightIn, combineTex, overlayRed, overlayGreen,
 						overlayBlue, overlayAlpha, bounceEnabled2, rBTotalX, rBTotal, rightBBounceRotation, -bunsOffsetX, bunsOffsetY, bunsOffsetZ, zBtOff,
-						-bOutwardAngle, buns.isUnibun(), isLeggingsOccupied, false);
+						-bOutwardAngle, buns.isUnibun(), buns.getRot() * 100f, isLeggingsOccupied, false);
 			}
 			RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 		} catch(Exception e) {
@@ -558,7 +558,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			float totalRotation = breastOffsetRotation - 0.15f;
 
 			if (bounceEnabled) {
-				totalRotation += total - 2;
+				totalRotation -= total - 2;
 			}
 			if (isChestplateOccupied) {
 				matrixStack.translate(0, 0, 0.01f);
@@ -623,7 +623,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	private void renderBunWithTransforms(AbstractClientPlayerEntity entity, ModelPart body, ItemStack armorStack, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider,
 										 RenderLayer breastRenderType, int packedLightIn, int combineTex, float red, float green, float blue, float alpha, boolean bounceEnabled, float totalX, float total,
 										 float bounceRotation, float breastOffsetX, float breastOffsetY, float breastOffsetZ, float zOff, float outwardAngle, boolean uniboob,
-										 boolean isChestplateOccupied, boolean left) {
+										 float yRot, boolean isChestplateOccupied, boolean left) {
 		matrixStack.push();
 		//Surround with a try/catch to fix for essential mod.
 		try {
@@ -660,9 +660,12 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			if (isChestplateOccupied) {
 				matrixStack.translate(0, 0, 0.01f);
 			}
+			if (entity.isInSneakingPose()) {
+				matrixStack.translate(0, 0.0625f, 0);
+			}
 
-			matrixStack.multiply(new Quaternion(0, outwardAngle, 0, true));
-			matrixStack.multiply(new Quaternion(-45f, 180.0f, 0, true));
+			matrixStack.multiply(new Quaternion(yRot, outwardAngle, 0, true));
+			matrixStack.multiply(new Quaternion(-45f, 180f, 0, true));
 
 			matrixStack.scale(0.9995f, 1f, 1f); //z-fighting FIXXX
 

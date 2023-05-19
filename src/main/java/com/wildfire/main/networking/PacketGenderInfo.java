@@ -52,6 +52,7 @@ public abstract class PacketGenderInfo {
     private final float bunsZ;
     private final boolean unibun;
     private final float bunGap;
+    private final float bunRot;
 
     protected PacketGenderInfo(GenderPlayer plr) {
         this.uuid = plr.uuid;
@@ -88,6 +89,7 @@ public abstract class PacketGenderInfo {
 
         this.unibun = buns.isUnibun();
         this.bunGap = buns.getGap();
+        this.bunRot = buns.getRot();
     }
 
     protected PacketGenderInfo(PacketByteBuf buffer) {
@@ -120,6 +122,7 @@ public abstract class PacketGenderInfo {
         this.bunsZ = buffer.readFloat();
         this.unibun = buffer.readBoolean();
         this.bunGap = buffer.readFloat();
+        this.bunRot = buffer.readFloat();
     }
 
     public void encode(PacketByteBuf buffer) {
@@ -151,6 +154,7 @@ public abstract class PacketGenderInfo {
         buffer.writeFloat(this.bunsZ);
         buffer.writeBoolean(this.unibun);
         buffer.writeFloat(this.bunGap);
+        buffer.writeFloat(this.bunRot);
     }
 
     protected void updatePlayerFromPacket(GenderPlayer plr) {
@@ -186,5 +190,6 @@ public abstract class PacketGenderInfo {
         buns.updateZOffset(bunsZ);
         buns.updateUnibun(unibun);
         buns.updateGap(bunGap);
+        buns.updateRot(bunRot);
     }
 }

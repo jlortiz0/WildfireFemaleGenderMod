@@ -36,7 +36,7 @@ import java.util.UUID;
 public class WildfireBunsCustomizationScreen extends BaseWildfireScreen {
 
     private WildfireSlider bunsSlider, xOffsetBunSlider, yOffsetBunSlider, zOffsetBunSlider; //rotateSlider
-    private WildfireSlider gapSlider;
+    private WildfireSlider gapSlider, rotSlider;
 
     public WildfireBunsCustomizationScreen(Screen parent, UUID uuid) {
         super(new TranslatableText("wildfire_gender.buns_settings.title"), parent, uuid);
@@ -69,8 +69,10 @@ public class WildfireBunsCustomizationScreen extends BaseWildfireScreen {
 
         this.addDrawableChild(this.gapSlider = new WildfireSlider(this.width / 2 + 30, j + 36, 158, 20, Configuration.BUNS_GAP, buns.getGap(),
               buns::updateGap, value -> new TranslatableText("wildfire_gender.wardrobe.slider.rotation", Math.round((Math.round(value * 100f) / 100f) * 100)), onSave));
+        this.addDrawableChild(this.rotSlider = new WildfireSlider(this.width / 2 + 30, j + 57, 158, 20, Configuration.BUNS_ROT, buns.getRot(),
+                buns::updateRot, value -> new TranslatableText("wildfire_gender.wardrobe.slider.rotation_vert", Math.round((Math.round(value * 100f) / 100f) * 100)), onSave));
 
-        this.addDrawableChild(new WildfireButton(this.width / 2 + 30, j + 57, 158, 20,
+        this.addDrawableChild(new WildfireButton(this.width / 2 + 30, j + 78, 158, 20,
               new TranslatableText("wildfire_gender.breast_customization.dual_physics", new TranslatableText(buns.isUnibun() ? "wildfire_gender.label.no" : "wildfire_gender.label.yes")), button -> {
             boolean isUnibun = !buns.isUnibun();
             if (buns.updateUnibun(isUnibun)) {
@@ -113,6 +115,7 @@ public class WildfireBunsCustomizationScreen extends BaseWildfireScreen {
         yOffsetBunSlider.visible = canHaveBuns;
         zOffsetBunSlider.visible = canHaveBuns;
         gapSlider.visible = canHaveBuns;
+        rotSlider.visible = canHaveBuns;
 
         int x = this.width / 2;
         int y = this.height / 2;
@@ -130,6 +133,7 @@ public class WildfireBunsCustomizationScreen extends BaseWildfireScreen {
         yOffsetBunSlider.save();
         zOffsetBunSlider.save();
         gapSlider.save();
+        rotSlider.save();
         return super.mouseReleased(mouseX, mouseY, state);
     }
 }

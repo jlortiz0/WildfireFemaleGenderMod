@@ -27,6 +27,7 @@ public class Buns {
 
     private float xOffset = Configuration.BUNS_OFFSET_X.getDefault(), yOffset = Configuration.BUNS_OFFSET_Y.getDefault(), zOffset = Configuration.BUNS_OFFSET_Z.getDefault();
     private float gap = Configuration.BUNS_GAP.getDefault();
+    private float rot = Configuration.BUNS_ROT.getDefault();
     private boolean unibuns = Configuration.BUNS_UNIBUN.getDefault();
 
     private <VALUE> boolean updateValue(ConfigKey<VALUE> key, VALUE value, Consumer<VALUE> setter) {
@@ -75,5 +76,13 @@ public class Buns {
 
     public boolean updateUnibun(boolean value) {
         return updateValue(Configuration.BUNS_UNIBUN, value, v -> this.unibuns = v);
+    }
+
+    public float getRot() {
+        return rot;
+    }
+
+    public boolean updateRot(float value) {
+        return updateValue(Configuration.BUNS_ROT, value, v -> this.rot = v);
     }
 }

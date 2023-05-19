@@ -27,6 +27,7 @@ import com.wildfire.physics.BunPhysics;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import org.jetbrains.annotations.Contract;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -105,6 +106,7 @@ public class GenderPlayer {
 		this.cfg.setDefault(Configuration.BUNS_OFFSET_Z);
 		this.cfg.setDefault(Configuration.BUNS_UNIBUN);
 		this.cfg.setDefault(Configuration.BUNS_GAP);
+		this.cfg.setDefault(Configuration.BUNS_ROT);
 		this.cfg.finish();
 	}
 
@@ -231,6 +233,7 @@ public class GenderPlayer {
 		Configuration.BUNS_OFFSET_Z.save(obj, buns.getZOffset());
 		Configuration.BUNS_UNIBUN.save(obj, buns.isUnibun());
 		Configuration.BUNS_GAP.save(obj, buns.getGap());
+		Configuration.BUNS_ROT.save(obj, buns.getRot());
 		return obj;
 	}
 
@@ -267,6 +270,7 @@ public class GenderPlayer {
 		buns.updateZOffset(Configuration.BUNS_OFFSET_Z.read(obj));
 		buns.updateUnibun(Configuration.BUNS_UNIBUN.read(obj));
 		buns.updateGap(Configuration.BUNS_GAP.read(obj));
+		buns.updateRot(Configuration.BUNS_ROT.read(obj));
 		return plr;
 	}
 
@@ -308,6 +312,7 @@ public class GenderPlayer {
 			buns.updateZOffset(config.get(Configuration.BUNS_OFFSET_Z));
 			buns.updateUnibun(config.get(Configuration.BUNS_UNIBUN));
 			buns.updateGap(config.get(Configuration.BUNS_GAP));
+			buns.updateRot(config.get(Configuration.BUNS_ROT));
 			if (markForSync) {
 				plr.needsSync = true;
 			}
@@ -350,6 +355,7 @@ public class GenderPlayer {
 		config.set(Configuration.BUNS_OFFSET_Z, buns.getZOffset());
 		config.set(Configuration.BUNS_UNIBUN, buns.isUnibun());
 		config.set(Configuration.BUNS_GAP, buns.getGap());
+		config.set(Configuration.BUNS_ROT, buns.getRot());
 
 		config.save();
 		plr.needsSync = true;
@@ -403,6 +409,8 @@ public class GenderPlayer {
 		public boolean canHaveBulge() {
                     return true;
                 }
-		public boolean canHaveBuns() { return true; }
+		public boolean canHaveBuns() {
+			return true;
+		}
 	}
 }

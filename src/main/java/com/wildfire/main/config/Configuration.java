@@ -65,6 +65,7 @@ public class Configuration {
 	public static final FloatConfigKey BUNS_OFFSET_Z = new FloatConfigKey("buns_zOffset", 0.0F, 0, 1);
 	public static final BooleanConfigKey BUNS_UNIBUN = new BooleanConfigKey("buns_unibun", true);
 	public static final FloatConfigKey BUNS_GAP = new FloatConfigKey("buns_gap", 0.05F, 0, 0.1F);
+	public static final FloatConfigKey BUNS_ROT = new FloatConfigKey("buns_rot", 0, -0.1f, 0.1f);
 
 	private static final TypeAdapter<JsonObject> ADAPTER = new Gson().getAdapter(JsonObject.class);
 
