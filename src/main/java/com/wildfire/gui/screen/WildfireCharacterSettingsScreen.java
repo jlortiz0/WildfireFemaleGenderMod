@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package com.wildfire.gui.screen;
 
 import com.wildfire.gui.WildfireSlider;
-import com.wildfire.main.HurtSoundBank;
+import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.config.Configuration;
 import java.util.UUID;
@@ -30,7 +30,6 @@ import com.wildfire.main.GenderPlayer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.sound.AbstractSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -119,20 +118,8 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         }));
 
         this.addDrawableChild(new WildfireButton(xPos, yPos + 100, 157, 20,
-                new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(aPlr.getHurtSounds().getName())), button -> {
-            int ind = aPlr.getHurtSounds().ordinal();
-            HurtSoundBank hurtSounds = HurtSoundBank.NONE;
-            if (ind + 1 < HurtSoundBank.values().length) {
-                hurtSounds = HurtSoundBank.values()[ind + 1];
-            }
-            if (aPlr.updateHurtSounds(hurtSounds)) {
-                if (hurtSounds.getSnd() != null) {
-                    client.player.playSound(hurtSounds.getSnd(), SoundCategory.PLAYERS, 1, 1);
-                }
-                button.setMessage(new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(aPlr.getHurtSounds().getName())));
-                GenderPlayer.saveGenderInfo(aPlr);
-            }
-        }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, new TranslatableText("wildfire_gender.tooltip.hurt_sounds"), mouseX, mouseY)));
+                new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(aPlr.getHurtSounds().getName())),
+                button -> MinecraftClient.getInstance().setScreen(new WildfireHurtSoundListScreen(this, playerUUID)), (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, new TranslatableText("wildfire_gender.tooltip.hurt_sounds"), mouseX, mouseY)));
 
         this.BACKGROUND = new Identifier(WildfireGender.MODID, "textures/gui/settings_bg.png");
 

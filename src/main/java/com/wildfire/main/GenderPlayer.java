@@ -19,15 +19,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package com.wildfire.main;
 
 import com.google.gson.JsonObject;
+import com.wildfire.api.IHurtSound;
 import com.wildfire.main.config.ConfigKey;
 import com.wildfire.main.config.Configuration;
 import com.wildfire.physics.BreastPhysics;
 import com.wildfire.physics.BulgePhysics;
 import com.wildfire.physics.BunPhysics;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import org.jetbrains.annotations.Contract;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.SimpleRegistry;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -40,7 +44,7 @@ public class GenderPlayer {
 	private float pBustSize = Configuration.BUST_SIZE.getDefault();
 	private float pBunSize = Configuration.BUNS_SIZE.getDefault();
 
-	private HurtSoundBank hurtSounds = Configuration.HURT_SOUNDS.getDefault();
+	private IHurtSound hurtSounds = Configuration.HURT_SOUNDS.getDefault();
 
 	//physics variables
 	private boolean breastPhysics = Configuration.BREAST_PHYSICS.getDefault();
@@ -144,11 +148,11 @@ public class GenderPlayer {
 		return updateValue(Configuration.BUNS_SIZE, value, v -> this.pBunSize = v);
 	}
 
-	public HurtSoundBank getHurtSounds() {
+	public IHurtSound getHurtSounds() {
 		return hurtSounds;
 	}
 
-	public boolean updateHurtSounds(HurtSoundBank value) {
+	public boolean updateHurtSounds(IHurtSound value) {
 		return updateValue(Configuration.HURT_SOUNDS, value, v -> this.hurtSounds = v);
 	}
 

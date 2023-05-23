@@ -16,21 +16,33 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 package com.wildfire.main;
+import com.wildfire.api.IHurtSound;
 import com.wildfire.main.networking.PacketSendGenderInfo;
 import com.wildfire.main.networking.PacketSync;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.SimpleRegistry;
 
 import java.util.UUID;
 
 
 public class WildfireGenderServer implements ModInitializer {
 
+    public static final SimpleRegistry<IHurtSound> hurtSounds = FabricRegistryBuilder.createSimple(IHurtSound.class, new Identifier(WildfireGender.MODID, "hurt_sound_registry")).buildAndRegister();
+    public static final IHurtSound defaultHurtSound = new HurtSound("Disabled", null);
     @Override
     public void onInitialize() {
+        Registry.register(hurtSounds, new Identifier(WildfireGender.MODID, "disabled"), defaultHurtSound);
+        Identifier id =  new Identifier(WildfireGender.MODID, "male_hurt1");
+        Registry.register(hurtSounds, id, new HurtSound("Masculine 1", id));
+        id = new Identifier(WildfireGender.MODID, "female_hurt1");
+        Registry.register(hurtSounds, id, new HurtSound("Feminine 1", id));
+
         ServerPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "send_gender_info"),
         (server, playerEntity, handler, buf, responseSender) -> {
             PacketSendGenderInfo.handle(server, playerEntity, handler, buf, responseSender);

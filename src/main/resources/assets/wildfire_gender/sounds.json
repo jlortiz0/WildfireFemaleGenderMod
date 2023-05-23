@@ -8,50 +8,5 @@
 		"category": "blocks",
 		"subtitle": "wildfire_gender.hurt.male",
 		"sounds": [ "wildfire_gender:male_damage", "wildfire_gender:male_damage2" ]
-	},
-	"female_hurt2": {
-		"category": "blocks",
-		"subtitle": "wildfire_gender.hurt.female",
-		"sounds": [ "wildfire_gender:female2_damage1", "wildfire_gender:female2_damage2", "wildfire_gender:female2_damage3" ]
-	},
-	"male_hurt2": {
-		"category": "blocks",
-		"subtitle": "wildfire_gender.hurt.male",
-		"sounds": [ "wildfire_gender:male2_damage1", "wildfire_gender:male2_damage2", "wildfire_gender:male2_damage3" ]
-	},
-	"robo_hurt": {
-		"category": "blocks",
-		"subtitle": "wildfire_gender.hurt.other",
-		"sounds": [ "wildfire_gender:robo_damage1", "wildfire_gender:robo_damage2", "wildfire_gender:robo_damage3" ]
-	},
-	"oof_hurt": {
-		"category": "blocks",
-		"subtitle": "wildfire_gender.hurt.other",
-		"sounds": [ "wildfire_gender:male3_damage" ]
-	},
-	"female_hurt3": {
-		"category": "blocks",
-		"subtitle": "wildfire_gender.hurt.female",
-		"sounds": [ "wildfire_gender:female3_damage1", "wildfire_gender:female3_damage2", "wildfire_gender:female3_damage3" ]
-	},
-	"male_hurt3": {
-		"category": "blocks",
-		"subtitle": "wildfire_gender.hurt.male",
-		"sounds": [ "wildfire_gender:male4_damage1", "wildfire_gender:male4_damage2", "wildfire_gender:male4_damage3" ]
-	},
-	"female_hurt4": {
-		"category": "blocks",
-		"subtitle": "wildfire_gender.hurt.female",
-		"sounds": [ "wildfire_gender:female5_damage1", "wildfire_gender:female5_damage2" ]
-	},
-	"male_hurt4": {
-		"category": "blocks",
-		"subtitle": "wildfire_gender.hurt.male",
-		"sounds": [ "wildfire_gender:male5_damage1", "wildfire_gender:male5_damage2", "wildfire_gender:male5_damage3" ]
-	},
-	"squid_hurt": {
-		"category": "blocks",
-		"subtitle": "wildfire_gender.hurt.other",
-		"sounds": [ "wildfire_gender:squid_damage1", "wildfire_gender:squid_damage2" ]
 	}
 }

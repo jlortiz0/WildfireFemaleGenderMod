@@ -21,26 +21,29 @@ package com.wildfire.main.config;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.wildfire.main.GenderPlayer.Pronouns;
-import com.wildfire.main.HurtSoundBank;
+import com.wildfire.api.IHurtSound;
+import com.wildfire.main.HurtSound;
+import com.wildfire.main.WildfireGender;
+import com.wildfire.main.WildfireGenderServer;
+import net.minecraft.util.Identifier;
 
-public class HurtSoundConfigKey extends ConfigKey<HurtSoundBank> {
+public class HurtSoundConfigKey extends ConfigKey<IHurtSound> {
 
     //Do not modify
-    private static final HurtSoundBank[] SOUNDS = HurtSoundBank.values();
 
     public HurtSoundConfigKey(String key) {
-        super(key, HurtSoundBank.NONE);
+        super(key, WildfireGenderServer.defaultHurtSound);
     }
 
     @Override
-    protected HurtSoundBank read(JsonElement element) {
+    protected IHurtSound read(JsonElement element) {
         if (element.isJsonPrimitive()) {
             JsonPrimitive primitive = element.getAsJsonPrimitive();
-            if (primitive.isNumber()) {
-                int ordinal = primitive.getAsInt();
-                if (ordinal >= 0 && ordinal < SOUNDS.length) {
-                    return SOUNDS[ordinal];
+            if (primitive.isString()) {
+                Identifier i = new Identifier(primitive.getAsString());
+                IHurtSound hurt = WildfireGenderServer.hurtSounds.get(i);
+                if (hurt != null) {
+                    return hurt;
                 }
             }
         }
@@ -48,7 +51,9 @@ public class HurtSoundConfigKey extends ConfigKey<HurtSoundBank> {
     }
 
     @Override
-    public void save(JsonObject object, HurtSoundBank value) {
-        object.addProperty(key, value.ordinal());
+    public void save(JsonObject object, IHurtSound value) {
+        if (value.getId() != null) {
+            object.addProperty(key, value.getId().toString());
+        }
     }
 }

@@ -23,8 +23,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Nullable;
+
+import com.wildfire.api.IHurtSound;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.SimpleRegistry;
+import org.lwjgl.system.CallbackI;
 
 public class WildfireGender implements ClientModInitializer {
 	public static final String VERSION = "2.11.0";
@@ -47,7 +55,6 @@ public class WildfireGender implements ClientModInitializer {
 		}
 
 		WildfireEventHandler.registerClientEvents();
-		HurtSoundBank.registerAll();
     }
 
 	@Nullable

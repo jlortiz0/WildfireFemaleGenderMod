@@ -45,7 +45,7 @@ public abstract class PlayerEntityServerMixin extends LivingEntity {
         super(EntityType.PLAYER, world);
     }
 
-    @Inject(method = "applyDamage", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "applyDamage", at = @At("HEAD"))
     private void onDamagePlayer(DamageSource source, float amount, CallbackInfo ci) {
         if (!this.isInvulnerableTo(source)) {
             PlayerEntity self = (PlayerEntity) (Object) this;
@@ -61,7 +61,6 @@ public abstract class PlayerEntityServerMixin extends LivingEntity {
                 if (plr != null) {
                     PacketByteBuf buf = PacketByteBufs.create();
                     buf.writeUuid(plr.uuid);
-                    buf.writeEnumConstant(plr.getHurtSounds());
                     for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, world.getPlayerByUuid(plr.uuid).getBlockPos())) {
                         if (ServerPlayNetworking.canSend(player, new Identifier("wildfire_gender", "hurt"))) {
                             ServerPlayNetworking.send(player, new Identifier("wildfire_gender", "hurt"), buf);

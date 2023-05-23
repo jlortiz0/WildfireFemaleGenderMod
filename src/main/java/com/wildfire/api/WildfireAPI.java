@@ -1,9 +1,13 @@
 package com.wildfire.api;
 
 import com.wildfire.main.GenderPlayer;
+import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
+import com.wildfire.main.WildfireGenderServer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +63,13 @@ public class WildfireAPI {
      */
     public static Map<Item, IGenderArmor> getGenderArmors() {
         return GENDER_ARMORS;
+    }
+
+    /**
+     * Add a new hurt sound to the Hurt Sounds registry
+     */
+    public static void registerHurtSound(IHurtSound snd, Identifier id) {
+        Registry.register(WildfireGenderServer.hurtSounds, id, snd);
     }
 
 }

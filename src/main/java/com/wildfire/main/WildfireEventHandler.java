@@ -28,7 +28,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
@@ -102,11 +101,14 @@ public class WildfireEventHandler {
 			ClientPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "hurt"),
 					(client2, handler, buf, responseSender) -> {
 						UUID uuid = buf.readUuid();
-						HurtSoundBank hurtSounds = buf.readEnumConstant(HurtSoundBank.class);
+						GenderPlayer aPlr = WildfireGender.getPlayerById(uuid);
+						if (aPlr == null) {
+							return;
+						}
 
 						//Vector3d pos = new Vector3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
 
-						SoundEvent hurtSound = hurtSounds.getSnd();
+						SoundEvent hurtSound = aPlr.getHurtSounds().getSnd();
 						if(hurtSound == null) return;
 
 						PlayerEntity ent = MinecraftClient.getInstance().world.getPlayerByUuid(uuid);
@@ -121,9 +123,7 @@ public class WildfireEventHandler {
 		});
 
 		ClientPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "sync"),
-				(client, handler, buf, responseSender) -> {
-					PacketSync.handle(client, handler, buf, responseSender);
-				});
+				PacketSync::handle);
 	}
 
 	//TODO: Eventually we may want to replace this with a map or something and replace things like drowning sounds with other drowning sounds

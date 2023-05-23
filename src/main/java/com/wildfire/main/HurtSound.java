@@ -18,37 +18,23 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.main;
 
+import com.wildfire.api.IHurtSound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import org.lwjgl.system.CallbackI;
 
-import java.util.Random;
-
-public enum HurtSoundBank {
-	NONE("Disabled", null),
-	MASCULINE1("Masculine 1", "male_hurt1"),
-	FEMININE1("Feminine 1", "female_hurt1"),
-	MASCULINE2("Masculine 2", "male_hurt2"),
-	FEMININE2("Feminine 2", "female_hurt2"),
-	MASCULINE3("Masculine 3", "male_hurt3"),
-	FEMININE3("Feminine 3", "female_hurt3"),
-	MASCULINE4("Masculine 4", "male_hurt4"),
-	FEMININE4("Feminine 4", "female_hurt4"),
-	SQUID("Squid", "squid_hurt"),
-	ROBOT("Robot", "robo_hurt"),
-	OOF("Tommy Tallarico", "oof_hurt");
+public class HurtSound implements IHurtSound {
 	private final String name;
 	private final Identifier id;
 	private final SoundEvent snd;
-	HurtSoundBank(String name, String prefix) {
+	public HurtSound(String name, Identifier id) {
 		this.name = name;
-		if (prefix == null) {
-			this.id = null;
-			this.snd = null;
+		this.id = id;
+		if (id != null) {
+			this.snd = new SoundEvent(id);
+			Registry.register(Registry.SOUND_EVENT, id, snd);
 		} else {
-			this.id = new Identifier(WildfireGender.MODID, prefix);
-			this.snd = new SoundEvent(this.id);
+			this.snd = null;
 		}
 	}
 
@@ -56,17 +42,11 @@ public enum HurtSoundBank {
 		return snd;
 	}
 
-	private void register() {
-		if (snd != null) {
-			Registry.register(Registry.SOUND_EVENT, id, snd);
-		}
-	}
 	public String getName() {
 		return name;
 	}
-	public static void registerAll() {
-		for (HurtSoundBank h : HurtSoundBank.values()) {
-			h.register();
-		}
+
+	public Identifier getId() {
+		return id;
 	}
 }
