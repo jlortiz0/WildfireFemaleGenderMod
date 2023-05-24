@@ -51,16 +51,6 @@ import java.util.Map;
 @Mixin(value = PlayerEntity.class, priority = 900)
 public abstract class PlayerEntityMixin extends LivingEntity {
 
-    public float wfg_femaleBreast;
-    public float wfg_preBounce;
-
-    float bounceVel = 0;
-    float targetBounce = 0;
-    float preY = 0;
-
-    boolean justSneaking = false;
-    boolean alreadySleeping = false;
-
     public PlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
         super(EntityType.PLAYER, world);
     }

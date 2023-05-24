@@ -97,11 +97,9 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 	private ModelColorPower modelColor = null;
 	private Identifier lastOrigin = null;
-	private final ArmorFeatureRenderer afr;
 
-	public GenderLayer(FeatureRendererContext render, ArmorFeatureRenderer afr) {
+	public GenderLayer(FeatureRendererContext render) {
 		super(render);
-		this.afr = afr;
 
 		lBreast = new BreastModelBox(64, 64, 16, 17, -4F, 0.0F, 0F, 4, 5, 4, 0.0F, false);
 		rBreast = new BreastModelBox(64, 64, 20, 17, 0, 0.0F, 0F, 4, 5, 4, 0.0F, false);
@@ -123,18 +121,13 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		lBunArmor = new BreastModelBox(64, 32, 0, 16, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 		rBunArmor = new BreastModelBox(64, 32, 0, 16, 0, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 	}
-
-	private static final Map<String, Identifier> ARMOR_LOCATION_CACHE = new HashMap<>();
-
-	private static final Map<String, Identifier> ARMOR_TEXTURE_CACHE = new HashMap<String, Identifier>();
+	private static final Map<String, Identifier> ARMOR_TEXTURE_CACHE = new HashMap<>();
 
 	public Identifier getArmorResource(ArmorItem item, boolean legs, @Nullable String overlay) {
 		String string = "textures/models/armor/" + item.getMaterial().getName() + "_layer_" + (legs ? 2 : 1) + (overlay == null ? "" : "_" + overlay) + ".png";
-		if (afr != null) {
-			Identifier id = afr.ARMOR_TEXTURE_CACHE.get(string);
-			if (id != null) {
-				return id;
-			}
+		Identifier id = ArmorFeatureRenderer.ARMOR_TEXTURE_CACHE.get(string);
+		if (id != null) {
+			return id;
 		}
 		try {
 			return (Identifier) ARMOR_TEXTURE_CACHE.computeIfAbsent(string, Identifier::new);

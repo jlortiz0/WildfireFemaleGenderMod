@@ -43,12 +43,6 @@ public abstract class PlayerRenderMixin extends LivingEntityRenderer<AbstractCli
 
     @Inject(method = {"<init>"}, at = {@At("RETURN")})
     private void initFemaleGender(CallbackInfo ci) {
-        ArmorFeatureRenderer afr = null;
-        for (FeatureRenderer f : this.features) {
-            if (f instanceof ArmorFeatureRenderer<?,?,?> fr) {
-                afr = fr;
-            }
-        }
-        this.addFeature(new GenderLayer(this, afr));
+        this.addFeature(new GenderLayer(this));
     }
 }
