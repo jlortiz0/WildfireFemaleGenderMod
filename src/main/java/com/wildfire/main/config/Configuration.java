@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonWriter;
 import net.fabricmc.loader.api.FabricLoader;
+import org.lwjgl.system.CallbackI;
 
 import java.io.File;
 import java.io.FileReader;
@@ -39,8 +40,10 @@ public class Configuration {
 
 	public static final UUIDConfigKey USERNAME = new UUIDConfigKey("username", UUID.nameUUIDFromBytes("UNKNOWN".getBytes(StandardCharsets.UTF_8)));
 	public static final GenderConfigKey GENDER = new GenderConfigKey("gender");
-	public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0, 0, 1.5f);
-	public static final FloatConfigKey BUNS_SIZE = new FloatConfigKey("buns_size", 0, 0, 1.5f);
+	public static final FloatConfigKey FAKE_BUST_SIZE = new FloatConfigKey("_bust_size", 0, 0, 1.5f);
+	public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0, 0, 2.5f);
+	public static final FloatConfigKey FAKE_BUNS_SIZE = new FloatConfigKey("_bust_size", 0, 0, 1.5f);
+	public static final FloatConfigKey BUNS_SIZE = new FloatConfigKey("buns_size", 0, 0, 2.5f);
 	public static final HurtSoundConfigKey HURT_SOUNDS = new HurtSoundConfigKey("hurt_sounds");
 
 	public static final FloatConfigKey BREASTS_OFFSET_X = new FloatConfigKey("breasts_xOffset", 0.0F, -1, 1);
