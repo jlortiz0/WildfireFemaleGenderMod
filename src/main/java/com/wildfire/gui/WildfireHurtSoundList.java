@@ -59,12 +59,12 @@ public class WildfireHurtSoundList extends EntryListWidget<WildfireHurtSoundList
     private final WildfireHurtSoundListScreen parent;
 
     private IHurtSound cur;
-    public WildfireHurtSoundList(WildfireHurtSoundListScreen parent, int listWidth, int top, int bottom, IHurtSound cur) {
+    public WildfireHurtSoundList(WildfireHurtSoundListScreen parent, int listWidth, int top, int bottom, Identifier cur) {
         super(MinecraftClient.getInstance(), parent.width-4, parent.height, top-6, bottom, 20);
         this.parent = parent;
         this.listWidth = listWidth;
-        this.cur = cur;
-        List<IHurtSound> hurtSoundList = WildfireGenderServer.hurtSounds.stream().toList();
+        this.cur = WildfireGender.hurtSounds.get(cur);
+        List<IHurtSound> hurtSoundList = WildfireGender.hurtSounds.stream().toList();
         for (IHurtSound i : hurtSoundList) {
             addEntry(new Entry(i));
         }

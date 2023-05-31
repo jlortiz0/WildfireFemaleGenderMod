@@ -142,15 +142,22 @@ public class WildfireModelRenderer {
 		protected void initQuads(int tW, int tH, int texU, int texV, int dx, int dy, int dz, boolean mirror, boolean extra, PositionTextureVertex vertex,
 			PositionTextureVertex vertex1, PositionTextureVertex vertex2, PositionTextureVertex vertex3, PositionTextureVertex vertex4, PositionTextureVertex vertex5,
 			PositionTextureVertex vertex6, PositionTextureVertex vertex7) {
-			this.quads[0] = new TexturedQuad(texU + 4 + dx, texV + 4, texU + 4 + dx + 4, texV + 4 + dy, tW, tH, mirror, Direction.EAST,
+			if (tW > 72) {
+				dx *= 12;
+				dy *= 12;
+				dz = 4 * 12;
+			} else {
+				dz = 4;
+			}
+			this.quads[0] = new TexturedQuad(texU + dz + dx, texV + dz, texU + dz + dx + dz, texV + dz + dy, tW, tH, mirror, Direction.EAST,
 				vertex4, vertex, vertex1, vertex5);
-			this.quads[1] = new TexturedQuad(texU, texV + 4, texU + 4, texV + 4 + dy, tW, tH, mirror, Direction.WEST,
+			this.quads[1] = new TexturedQuad(texU, texV + dz, texU + dz, texV + dz + dy, tW, tH, mirror, Direction.WEST,
 				vertex7, vertex3, vertex6, vertex2);
-			this.quads[2] = new TexturedQuad(texU + 4, texV, texU + 4 + dx, texV + 4, tW, tH, mirror, Direction.DOWN,
+			this.quads[2] = new TexturedQuad(texU + dz, texV, texU + dz + dx, texV + dz, tW, tH, mirror, Direction.DOWN,
 				vertex4, vertex3, vertex7, vertex);
-			this.quads[3] = new TexturedQuad(texU + 4, texV + 4 + 4, texU + 4 + dx, texV + 1 + 4 + dy, tW, tH - 1, mirror, Direction.UP,
+			this.quads[3] = new TexturedQuad(texU + dz, texV + dz + dy, texU + dz + dx, texV + 1 + dz + dy, tW, tH - 1, mirror, Direction.UP,
 				vertex1, vertex2, vertex6, vertex5);
-			this.quads[4] = new TexturedQuad(texU + 4, texV + 4, texU + 4 + dx, texV + 4 + dy, tW, tH, mirror, Direction.NORTH,
+			this.quads[4] = new TexturedQuad(texU + dz, texV + dz, texU + dz + dx, texV + dz + dy, tW, tH, mirror, Direction.NORTH,
 				vertex, vertex7, vertex2, vertex1);
 			//this.quads[5] = new TexturedQuad(new PositionTextureVertex[]{vertex3, vertex4, vertex5, vertex6}, texU + dz + dx + dz, texV + dz, texU + dz + dx + dz + dx, texV + dz + dy, tW, tH, mirror, Direction.SOUTH);
 
@@ -213,6 +220,12 @@ public class WildfireModelRenderer {
 		protected void initQuads(int tW, int tH, int texU, int texV, int dx, int dy, int dz, boolean mirror, boolean extra, PositionTextureVertex vertex,
 			PositionTextureVertex vertex1, PositionTextureVertex vertex2, PositionTextureVertex vertex3, PositionTextureVertex vertex4, PositionTextureVertex vertex5,
 			PositionTextureVertex vertex6, PositionTextureVertex vertex7) {
+
+			if (tW > 100) {
+				dx *= 6;
+				dy *= 6;
+				dz *= 6;
+			}
 			this.quads[0] = new TexturedQuad(texU + dx, texV, texU + dx + dy, texV + dz, tW, tH, mirror, Direction.EAST,
 				vertex4, vertex, vertex1, vertex5);
 			this.quads[1] = new TexturedQuad(texU + dx, texV, texU + dx + dy, texV + dz, tW, tH, mirror, Direction.WEST,

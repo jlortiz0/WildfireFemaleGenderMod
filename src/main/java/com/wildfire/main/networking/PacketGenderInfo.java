@@ -43,7 +43,7 @@ public abstract class PacketGenderInfo {
     private final boolean uniboob;
     private final float cleavage;
 
-    private final IHurtSound hurtSounds;
+    private final Identifier hurtSounds;
     private final float bulgeX;
     private final float bulgeY;
     private final float bulgeZ;
@@ -99,12 +99,7 @@ public abstract class PacketGenderInfo {
         this.pronouns = buffer.readEnumConstant(Pronouns.class);
         this.bust_size = buffer.readFloat();
         this.buns_size = buffer.readFloat();
-        Identifier i = new Identifier(buffer.readString());
-        IHurtSound hurt = WildfireGenderServer.hurtSounds.get(i);
-        if (hurt == null) {
-            hurt = WildfireGenderServer.defaultHurtSound;
-        }
-        this.hurtSounds = hurt;
+        this.hurtSounds = new Identifier(buffer.readString());
 
         //physics variables
         this.breast_physics = buffer.readBoolean();
@@ -137,7 +132,7 @@ public abstract class PacketGenderInfo {
         buffer.writeEnumConstant(this.pronouns);
         buffer.writeFloat(this.bust_size);
         buffer.writeFloat(this.buns_size);
-        buffer.writeString(this.hurtSounds.getId().toString());
+        buffer.writeString(this.hurtSounds.toString());
 
         buffer.writeBoolean(this.breast_physics);
         buffer.writeBoolean(this.breast_physics_armor);

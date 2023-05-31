@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.main;
 
+import com.wildfire.api.IHurtSound;
 import com.wildfire.gui.screen.WildfirePlayerListScreen;
 import com.wildfire.main.networking.PacketSendGenderInfo;
 import com.wildfire.main.networking.PacketSync;
@@ -108,12 +109,14 @@ public class WildfireEventHandler {
 
 						//Vector3d pos = new Vector3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
 
-						SoundEvent hurtSound = aPlr.getHurtSounds().getSnd();
-						if(hurtSound == null) return;
+						Identifier hurtSoundID = aPlr.getHurtSounds();
+						if(hurtSoundID == null) return;
+						IHurtSound hurtSound = WildfireGender.hurtSounds.get(hurtSoundID);
+						if (hurtSound == null) return;
 
 						PlayerEntity ent = MinecraftClient.getInstance().world.getPlayerByUuid(uuid);
 						if (ent != null) {
-							client.getSoundManager().play(new EntityTrackingSoundInstance(hurtSound, SoundCategory.PLAYERS, 1f, 1f, ent));
+							client.getSoundManager().play(new EntityTrackingSoundInstance(hurtSound.getSnd(), SoundCategory.PLAYERS, 1f, 1f, ent));
 						}
 					});
 

@@ -48,6 +48,5 @@
     "mermod": ">=1.9",
     "transparent_cosmetics": "*",
     "showmeyourskin": "*"
-  },
-  "accessWidener": "wildfire_gender.accesswidener"
+  }
 }

@@ -33,7 +33,6 @@ import javax.annotation.Nonnull;
 import com.wildfire.render.WildfireModelRenderer.BulgeModelBox;
 import com.wildfire.render.WildfireModelRenderer.BunModelBox;
 import com.wildfire.render.armor.EmptyGenderArmor;
-import com.wildfire.render.armor.SimpleGenderArmor;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.TrinketInventory;
 import io.github.apace100.apoli.power.ModelColorPower;
@@ -44,7 +43,6 @@ import io.github.apace100.origins.origin.Origin;
 import io.github.apace100.origins.origin.OriginLayer;
 import io.github.apace100.origins.origin.OriginLayers;
 import io.github.apace100.origins.registry.ModComponents;
-import net.fabricmc.fabric.impl.client.rendering.ArmorRendererRegistryImpl;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -57,7 +55,6 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.entity.PlayerModelPart;
-import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
@@ -65,31 +62,36 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectUtil;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.DyeableArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.InvalidIdentifierException;
 import net.minecraft.util.math.*;
 import nl.enjarai.showmeyourskin.config.ArmorConfig;
 import nl.enjarai.showmeyourskin.config.ModConfig;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
 
 	private BreastModelBox lBreast, rBreast;
-	private OverlayModelBox lBreastWear, rBreastWear;
-	private BreastModelBox lBoobArmor, rBoobArmor;
-	private BulgeModelBox bulgeModel, bulgeModelArmor;
+	private static final OverlayModelBox lBreastWear = new OverlayModelBox(true,64, 64, 17, 34, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
+	private static final OverlayModelBox rBreastWear = new OverlayModelBox(false,64, 64, 21, 34, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);;
+	private static final BreastModelBox lBoobArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
+	private static final BreastModelBox rBoobArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
+	private static final BreastModelBox lBoobArmorArclight = new BreastModelBox(460, 361, 116, 147, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
+	private static final BreastModelBox rBoobArmorArclight = new BreastModelBox(460, 361, 200, 147, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
+	private BulgeModelBox bulgeModel, bulgeModelArmor, bulgeModelArmorArclight;
 	private BulgeModelBox bulgeWear;
 	private BunModelBox lBun, rBun;
-	private BunModelBox lBunWear, rBunWear;
-	private BreastModelBox lBunArmor, rBunArmor;
+	private static final BunModelBox lBunWear = new BunModelBox(64, 64, 28, 44, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
+	private static final BunModelBox rBunWear = new BunModelBox(64, 64, 32, 44, 0, 0.0F, 0F, 4, 4, 4, 0.0F, true);
+	private static final BreastModelBox lBunArmor = new BreastModelBox(64, 32, 0, 16, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
+	private static final BreastModelBox rBunArmor = new BreastModelBox(64, 32, 0, 16, 0, 0.0F, 0F, 4, 4, 4, 0.0F, false);
+	private static final BreastModelBox lBunArmorArclight = new BreastModelBox(539, 292, 308, 0, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
+	private static final BreastModelBox rBunArmorArclight = new BreastModelBox(539, 292, 388, 0, 0, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 
 	private float preBreastSize = 0f;
 	private float preBulgeSize = 0f;
@@ -103,37 +105,23 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 		lBreast = new BreastModelBox(64, 64, 16, 17, -4F, 0.0F, 0F, 4, 5, 4, 0.0F, false);
 		rBreast = new BreastModelBox(64, 64, 20, 17, 0, 0.0F, 0F, 4, 5, 4, 0.0F, false);
-		lBreastWear = new OverlayModelBox(true,64, 64, 17, 34, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
-		rBreastWear = new OverlayModelBox(false,64, 64, 21, 34, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
-
-		lBoobArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
-		rBoobArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 
 		bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, 3, 0.0F, false);
 		bulgeWear = new BulgeModelBox(64, 64, 5, 36, -1F, 0F, 0F, 2, 2, 3, 0F, false);
-		bulgeModelArmor = new BulgeModelBox(64, 32, 5, 20, -1F, 0.0F, 0F, 2, 2, 3, 0.0F, false);
+		bulgeModelArmor = new BulgeModelBox(64, 32, 5, 20, -1F, 0.0F, 0F, 2, 2, 4, 0.0F, false);
+		bulgeModelArmorArclight = new BulgeModelBox(539, 292, 103, 20, -1F, 0.0F, 0F, 2, 2, 4, 0.0F, false);
 
 		lBun = new BunModelBox(64, 64, 28, 28, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 		rBun = new BunModelBox(64, 64, 32, 28, 0, 0.0F, 0F, 4, 4, 4, 0.0F, true);
-		lBunWear = new BunModelBox(64, 64, 28, 44, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
-		rBunWear = new BunModelBox(64, 64, 32, 44, 0, 0.0F, 0F, 4, 4, 4, 0.0F, true);
-
-		lBunArmor = new BreastModelBox(64, 32, 0, 16, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
-		rBunArmor = new BreastModelBox(64, 32, 0, 16, 0, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 	}
 	private static final Map<String, Identifier> ARMOR_TEXTURE_CACHE = new HashMap<>();
 
-	public Identifier getArmorResource(ArmorItem item, boolean legs, @Nullable String overlay) {
-		String string = "textures/models/armor/" + item.getMaterial().getName() + "_layer_" + (legs ? 2 : 1) + (overlay == null ? "" : "_" + overlay) + ".png";
-		Identifier id = ArmorFeatureRenderer.ARMOR_TEXTURE_CACHE.get(string);
-		if (id != null) {
-			return id;
-		}
-		try {
-			return (Identifier) ARMOR_TEXTURE_CACHE.computeIfAbsent(string, Identifier::new);
-		} catch (InvalidIdentifierException ignored) {
-			return new Identifier("wildfire_gender", "textures/blank.png");
-		}
+	private static final Map<String, Identifier> ARMOR_LOC_CACHE = new HashMap<>();
+
+	public Identifier getArmorResource(ArmorItem item, boolean legs) {
+		Identifier ingrId = ARMOR_LOC_CACHE.computeIfAbsent(item.getMaterial().getName(), Identifier::new);
+		String string = "textures/models/armor/" + ingrId.getPath() + "_layer_" + (legs ? 2 : 1) + ".png";
+		return ARMOR_TEXTURE_CACHE.computeIfAbsent(string, (s) -> new Identifier(ingrId.getNamespace(), s));
 	}
 
 	@Override
@@ -258,6 +246,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, (int) (3 - bulgeOffsetZ - reducer), 0.0F, false);
 				bulgeWear = new BulgeModelBox(64, 64, 5, 36, -1F, 0F, 0F, 2, 2, (int) (3 - bulgeOffsetZ - reducer), 0F, false);
 				bulgeModelArmor = new BulgeModelBox(64, 32, 5, 20, -1F, 0.0F, 0F, 2, 2, (int) (4 - bulgeOffsetZ - reducer), 0.0F, false);
+				bulgeModelArmorArclight = new BulgeModelBox(648, 292, 103, 20, -1F, 0.0F, 0F, 2, 2, (int) (4 - bulgeOffsetZ - reducer), 0.0F, false);
 				preBulgeSize = buSize;
 			}
 
@@ -487,7 +476,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		// be it because they are not an armor item or the way they render their armor item is custom
 		//Render Breast Armor
 		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
-			Identifier armorTexture = getArmorResource(armorItem, false, null);
+			Identifier armorTexture = getArmorResource(armorItem, false);
 			float armorR = 1f;
 			float armorG = 1f;
 			float armorB = 1f;
@@ -510,7 +499,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			matrixStack.push();
 			matrixStack.translate(left ? 0.001f : -0.001f, 0.015f, -0.015f);
 			matrixStack.scale(1.05f, 1, 1);
-			WildfireModelRenderer.BreastModelBox armor = left ? lBoobArmor : rBoobArmor;
+			BreastModelBox armor = armorTexture.getNamespace().equals("arclight") ? (left ? lBoobArmorArclight : rBoobArmorArclight) : (left ? lBoobArmor : rBoobArmor);
 			RenderLayer armorType = RenderLayer.getEntityTranslucent(armorTexture);
 			VertexConsumer armorVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, armorType, false, glint);
 			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, armorA);
@@ -581,7 +570,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		// be it because they are not an armor item or the way they render their armor item is custom
 		//Render Breast Armor
 		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
-			Identifier armorTexture = getArmorResource(armorItem, true, null);
+			Identifier armorTexture = getArmorResource(armorItem, true);
 			float armorR = 1f;
 			float armorG = 1f;
 			float armorB = 1f;
@@ -605,7 +594,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			matrixStack.push();
 			matrixStack.scale(1.05f, 1.05f, 1.05f);
 			matrixStack.translate(0, -0.005f, 0.005f);
-			WildfireModelRenderer.BulgeModelBox armor = bulgeModelArmor;
+			BulgeModelBox armor = armorTexture.getNamespace().equals("arclight") ? bulgeModelArmorArclight : bulgeModelArmor;
 			RenderLayer armorType = RenderLayer.getEntityTranslucent(armorTexture);
 			VertexConsumer armorVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, armorType, false, glint);
 			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, armorA);
@@ -682,7 +671,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		// be it because they are not an armor item or the way they render their armor item is custom
 		//Render Breast Armor
 		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
-			Identifier armorTexture = getArmorResource(armorItem, true, null);
+			Identifier armorTexture = getArmorResource(armorItem, true);
 			float armorR = 1f;
 			float armorG = 1f;
 			float armorB = 1f;
@@ -705,7 +694,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			matrixStack.push();
 			matrixStack.translate(left ? 0.001f : -0.001f, -0.015f, -0.015f);
 			matrixStack.scale(1.05f, 1.1f, 1);
-			WildfireModelRenderer.BreastModelBox armor = left ? lBunArmor : rBunArmor;
+			BreastModelBox armor = armorTexture.getNamespace().equals("arclight") ? (left ? lBunArmorArclight : rBunArmorArclight) : (left ? lBunArmor : rBunArmor);
 			RenderLayer armorType = RenderLayer.getEntityTranslucent(armorTexture);
 			VertexConsumer armorVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, armorType, false, glint);
 			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, armorA);

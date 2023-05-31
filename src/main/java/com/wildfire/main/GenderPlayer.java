@@ -44,7 +44,7 @@ public class GenderPlayer {
 	private float pBustSize = Configuration.BUST_SIZE.getDefault();
 	private float pBunSize = Configuration.BUNS_SIZE.getDefault();
 
-	private IHurtSound hurtSounds = Configuration.HURT_SOUNDS.getDefault();
+	private Identifier hurtSounds = Configuration.HURT_SOUNDS.getDefault();
 
 	//physics variables
 	private boolean breastPhysics = Configuration.BREAST_PHYSICS.getDefault();
@@ -148,11 +148,11 @@ public class GenderPlayer {
 		return updateValue(Configuration.BUNS_SIZE, value, v -> this.pBunSize = v);
 	}
 
-	public IHurtSound getHurtSounds() {
+	public Identifier getHurtSounds() {
 		return hurtSounds;
 	}
 
-	public boolean updateHurtSounds(IHurtSound value) {
+	public boolean updateHurtSounds(Identifier value) {
 		return updateValue(Configuration.HURT_SOUNDS, value, v -> this.hurtSounds = v);
 	}
 

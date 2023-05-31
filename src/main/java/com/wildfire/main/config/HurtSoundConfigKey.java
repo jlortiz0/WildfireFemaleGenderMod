@@ -27,33 +27,29 @@ import com.wildfire.main.WildfireGender;
 import com.wildfire.main.WildfireGenderServer;
 import net.minecraft.util.Identifier;
 
-public class HurtSoundConfigKey extends ConfigKey<IHurtSound> {
+public class HurtSoundConfigKey extends ConfigKey<Identifier> {
 
     //Do not modify
 
     public HurtSoundConfigKey(String key) {
-        super(key, WildfireGenderServer.defaultHurtSound);
+        super(key, null);
     }
 
     @Override
-    protected IHurtSound read(JsonElement element) {
+    protected Identifier read(JsonElement element) {
         if (element.isJsonPrimitive()) {
             JsonPrimitive primitive = element.getAsJsonPrimitive();
             if (primitive.isString()) {
-                Identifier i = new Identifier(primitive.getAsString());
-                IHurtSound hurt = WildfireGenderServer.hurtSounds.get(i);
-                if (hurt != null) {
-                    return hurt;
-                }
+                return new Identifier(primitive.getAsString());
             }
         }
         return defaultValue;
     }
 
     @Override
-    public void save(JsonObject object, IHurtSound value) {
-        if (value.getId() != null) {
-            object.addProperty(key, value.getId().toString());
+    public void save(JsonObject object, Identifier value) {
+        if (value != null) {
+            object.addProperty(key, value.toString());
         }
     }
 }

@@ -19,12 +19,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package com.wildfire.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.wildfire.api.IHurtSound;
 import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfirePlayerList;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.GenderPlayer.Pronouns;
 import com.wildfire.main.WildfireGender;
 import javax.annotation.Nullable;
+
+import com.wildfire.main.WildfireGenderServer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -148,7 +151,11 @@ public class WildfirePlayerListScreen extends Screen {
 					this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.bulge_size", Math.round(HOVER_PLAYER.getBulge().getSize() * 100)), dialogX, dialogY + 80, 0xBBBBBB);
 				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.buns_size", Math.round(HOVER_PLAYER.getBunsSize() * 100)), dialogX, dialogY + 90, 0xBBBBBB);
 
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(HOVER_PLAYER.getHurtSounds().getName())), dialogX, dialogY + 110, 0xBBBBBB);
+				IHurtSound hs = WildfireGender.hurtSounds.get(HOVER_PLAYER.getHurtSounds());
+				if (hs == null) {
+					hs = WildfireGender.hurtSounds.get((Identifier) null);
+				}
+				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(hs.getName())), dialogX, dialogY + 110, 0xBBBBBB);
 			}
 			if(pEntity != null) {
 				WardrobeBrowserScreen.drawEntityOnScreen(x - 110, y + 45, 45, (x - 300), (y - 26 - f2), pEntity);

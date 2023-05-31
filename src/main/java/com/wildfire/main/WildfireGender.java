@@ -35,17 +35,15 @@ import net.minecraft.util.registry.SimpleRegistry;
 import org.lwjgl.system.CallbackI;
 
 public class WildfireGender implements ClientModInitializer {
-	public static final String VERSION = "2.11.0";
+	public static final String VERSION = "2.11.2";
   	public static final String MODID = "wildfire_gender";
-
-  	public static boolean modEnabled = true;
-  	public static final boolean SYNCING_ENABLED = false;
 
 	private static final String PROTOCOL_VERSION = "2";
 	public static Map<UUID, GenderPlayer> CLOTHING_PLAYERS = new HashMap<>();
 
 	public static final boolean isCurseforgeNerfed = false;
 	public static final String GITHUB_LINK = "https://github.com/jlortiz0/WildfireGender";
+	public static final SimpleRegistry<IHurtSound> hurtSounds = FabricRegistryBuilder.createSimple(IHurtSound.class, new Identifier(WildfireGender.MODID, "hurt_sound_registry")).buildAndRegister();
 
 	@Override
   	public void onInitializeClient() {
@@ -73,49 +71,15 @@ public class WildfireGender implements ClientModInitializer {
   		thread.start();
   	}
 
-  	public static void refreshAllGenders() {
-		if(MinecraftClient.getInstance().world == null) return;
-		/*
-  		Thread thread = new Thread(new Runnable() {
-			public void run() {
-		  		NetworkPlayerInfo[] playersC = Minecraft.getInstance().getConnection().getPlayerInfoMap().toArray(new NetworkPlayerInfo[Minecraft.getInstance().getConnection().getPlayerInfoMap().size()]);
-		        for(int h = 0; h < playersC.length; h++) {
-					NetworkPlayerInfo loadedPlayer = playersC[h];
-					GenderPlayer plr = WildfireGender.getPlayerByName(loadedPlayer.getGameProfile().getId().toString());
-					if(plr != null) {
-						plr.refreshCape();
-					}
-				}
-			}
-
-		});
-		thread.setName("WFGM_GetAllPlayers");
-  		thread.start();*/
-  	}
-
 	public static GenderPlayer loadGenderInfo(UUID uuid, boolean markForSync) {
 		return GenderPlayer.loadCachedPlayer(uuid, markForSync);
 	}
-  /*
-	public static void drawTextLabel(PoseStack m, String txt, int x, int y) {
-		GlStateManager._disableBlend();
-		Screen.fill(m, x, y, x + (Minecraft.getInstance()).font.width(txt) + 3, y + 11, 1610612736);
-		Minecraft.getInstance().font.draw(m, txt, x + 2, y + 2, 16777215);
-	}
-	public static void drawRightTextLabel(PoseStack m, String txt, int x, int y) {
-		GlStateManager._disableBlend();
-		int w = (Minecraft.getInstance()).font.width(txt) + 3;
-		Screen.fill(m, x - w, y, x, y + 11, 1610612736);
-		Minecraft.getInstance().font.draw(m, txt, x - w + 2, y + 2, 16777215);
-	}
-	public static void drawCenterTextLabel(PoseStack m, String txt, int x, int y) {
-		GlStateManager._disableBlend();
-		int w = (Minecraft.getInstance()).font.width(txt) + 3;
-		Screen.fill(m, x - w / 2, y, x + w / 2 + 1, y + 11, 1610612736);
-		Minecraft.getInstance().font.draw(m, txt, x - w / 2 + 2, y + 2, 16777215);
-	}*/
 
-	public interface WildfireCB {
-		void onExecute(boolean success, Object data);
+	static {
+		Registry.register(hurtSounds, (Identifier) null, new HurtSound("Disabled", null));
+		Identifier id =  new Identifier(WildfireGender.MODID, "male_hurt1");
+		Registry.register(hurtSounds, id, new HurtSound("Masculine 1", id));
+		id = new Identifier(WildfireGender.MODID, "female_hurt1");
+		Registry.register(hurtSounds, id, new HurtSound("Feminine 1", id));
 	}
 }

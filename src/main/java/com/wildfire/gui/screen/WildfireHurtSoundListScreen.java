@@ -74,7 +74,7 @@ public class WildfireHurtSoundListScreen extends BaseWildfireScreen {
 		super.init();
 	}
     public void setHurtSound(IHurtSound sound) {
-		if (aPlr.updateHurtSounds(sound)) {
+		if (aPlr.updateHurtSounds(sound.getId())) {
 			if (sound.getSnd() != null) {
 				client.player.playSound(sound.getSnd(), SoundCategory.PLAYERS, 1, 1);
 			}

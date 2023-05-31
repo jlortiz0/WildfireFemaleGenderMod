@@ -18,9 +18,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.gui.screen;
 
+import com.wildfire.api.IHurtSound;
 import com.wildfire.gui.WildfireSlider;
 import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
+import com.wildfire.main.WildfireGenderServer;
 import com.wildfire.main.config.Configuration;
 import java.util.UUID;
 
@@ -117,8 +119,12 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
             }
         }));
 
+        IHurtSound hs = WildfireGender.hurtSounds.get(aPlr.getHurtSounds());
+        if (hs == null) {
+            hs = WildfireGender.hurtSounds.get((Identifier) null);
+        }
         this.addDrawableChild(new WildfireButton(xPos, yPos + 100, 157, 20,
-                new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(aPlr.getHurtSounds().getName())),
+                new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(hs.getName())),
                 button -> MinecraftClient.getInstance().setScreen(new WildfireHurtSoundListScreen(this, playerUUID)), (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, new TranslatableText("wildfire_gender.tooltip.hurt_sounds"), mouseX, mouseY)));
 
         this.BACKGROUND = new Identifier(WildfireGender.MODID, "textures/gui/settings_bg.png");

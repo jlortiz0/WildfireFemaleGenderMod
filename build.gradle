@@ -86,14 +86,18 @@ tasks.withType(JavaCompile).configureEach {
 	it.options.release = 17
 }
 
+sourceSets {
+	main {
+		resources {
+			exclude "assets/arclight/textures/models/armor/*.xcf"
+		}
+	}
+}
+
 jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}"}
 	}
-}
-
-loom {
-	accessWidenerPath = file('src/main/resources/wildfire_gender.accesswidener')
 }
 
 // configure the maven publication

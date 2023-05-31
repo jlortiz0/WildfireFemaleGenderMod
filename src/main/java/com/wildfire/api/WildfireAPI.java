@@ -69,7 +69,7 @@ public class WildfireAPI {
      * Add a new hurt sound to the Hurt Sounds registry
      */
     public static void registerHurtSound(IHurtSound snd, Identifier id) {
-        Registry.register(WildfireGenderServer.hurtSounds, id, snd);
+        Registry.register(WildfireGender.hurtSounds, id, snd);
     }
 
 }
