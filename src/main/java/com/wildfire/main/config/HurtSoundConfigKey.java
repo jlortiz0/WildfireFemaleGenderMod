@@ -26,6 +26,7 @@ import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.WildfireGenderServer;
 import net.minecraft.util.Identifier;
+import org.lwjgl.system.CallbackI;
 
 public class HurtSoundConfigKey extends ConfigKey<Identifier> {
 
@@ -50,6 +51,13 @@ public class HurtSoundConfigKey extends ConfigKey<Identifier> {
     public void save(JsonObject object, Identifier value) {
         if (value != null) {
             object.addProperty(key, value.toString());
+        } else {
+            object.addProperty(key, (String) null);
         }
+    }
+
+    @Override
+    public boolean validate(Identifier value) {
+        return WildfireGender.hurtSounds.get(value) != null;
     }
 }
