@@ -28,7 +28,9 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 
+import java.awt.*;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -37,7 +39,7 @@ public class GenderPlayer {
 	public boolean needsSync;
 	public final UUID uuid;
 	private String pronouns;
-	private Formatting pronounColor = Configuration.GENDER_COLOR.getDefault();
+	private Formatting[] pronounColor = Configuration.GENDER_COLOR.getDefault();
 	private Text pronounText;
 	private float pBustSize = Configuration.BUST_SIZE.getDefault();
 	private float pBunSize = Configuration.BUNS_SIZE.getDefault();
@@ -136,11 +138,11 @@ public class GenderPlayer {
 		});
 	}
 
-	public Formatting getPronounColor() {
+	public Formatting[] getPronounColor() {
 		return pronounColor;
 	}
 
-	public boolean updatePronounColor(Formatting value) {
+	public boolean updatePronounColor(Formatting[] value) {
 		return updateValue(Configuration.GENDER_COLOR, value, v -> {
 			this.pronounColor = v;
 			this.pronounText = null;
@@ -149,9 +151,31 @@ public class GenderPlayer {
 
 	public Text getPronounText() {
 		if (pronounText == null) {
-			pronounText = new LiteralText(this.pronouns).formatted(this.pronounColor);
+			pronounText = new LiteralText(this.pronouns).formatted(this.pronounColor[0]);
 		}
 		return pronounText;
+	}
+
+	private static final int ticksPerColor = 40;
+
+	public int getPronounColorOnTick(int tick) {
+		if (pronounColor.length == 1) {
+			return pronounColor[0].getColorValue();
+		}
+		int ind = (tick / ticksPerColor) % pronounColor.length;
+		float per = (float) (tick % ticksPerColor) / ticksPerColor;
+		float invPer = 1 - per;
+		Color color1 = new Color(pronounColor[ind].getColorValue());
+		Color color2;
+		if (ind + 1 == pronounColor.length) {
+			color2 = new Color(pronounColor[0].getColorValue());
+		} else {
+			color2 = new Color(pronounColor[ind + 1].getColorValue());
+		}
+		Color output = new Color((color1.getRed() * invPer + color2.getRed() * per) / 255,
+				(color1.getGreen() * invPer + color2.getGreen() * per) / 255, (color1.getBlue() * invPer + color2.getBlue() * per) / 255);
+
+		return output.getRGB();
 	}
 
 	public float getBustSize() {

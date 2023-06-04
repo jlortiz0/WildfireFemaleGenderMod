@@ -23,12 +23,13 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
+import java.text.Normalizer;
 import java.util.UUID;
 
 public abstract class PacketGenderInfo {
     protected final UUID uuid;
     private final String pronouns;
-    private final Formatting pronounColor;
+    private final Formatting[] pronounColor;
     private final float bust_size;
     private final float buns_size;
 
@@ -98,7 +99,10 @@ public abstract class PacketGenderInfo {
     protected PacketGenderInfo(PacketByteBuf buffer) {
         this.uuid = buffer.readUuid();
         this.pronouns = buffer.readString();
-        this.pronounColor = Formatting.byColorIndex(buffer.readInt());
+        this.pronounColor = new Formatting[Math.min(buffer.readInt(), 8)];
+        for (int i = 0; i < this.pronounColor.length; i++) {
+            this.pronounColor[i] = Formatting.byColorIndex(buffer.readInt());
+        }
         this.bust_size = buffer.readFloat();
         this.buns_size = buffer.readFloat();
         this.hurtSounds = new Identifier(buffer.readString());
@@ -132,7 +136,10 @@ public abstract class PacketGenderInfo {
     public void encode(PacketByteBuf buffer) {
         buffer.writeUuid(this.uuid);
         buffer.writeString(this.pronouns);
-        buffer.writeInt(this.pronounColor.getColorIndex());
+        buffer.writeInt(this.pronounColor.length);
+        for (Formatting f : this.pronounColor) {
+            buffer.writeInt(f.getColorIndex());
+        }
         buffer.writeFloat(this.bust_size);
         buffer.writeFloat(this.buns_size);
         buffer.writeString(this.hurtSounds.toString());

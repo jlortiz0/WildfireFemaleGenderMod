@@ -46,7 +46,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.GameMode;
 
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry> {
@@ -57,9 +56,9 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
     private static final Identifier TXTR_CACHED = new Identifier(WildfireGender.MODID, "textures/cached.png");
 
     private final int listWidth;
-    private boolean loadingPlayers = true;
+    private int colorTicks = 0;
 
-    private static WildfirePlayerListScreen parent;
+    private final WildfirePlayerListScreen parent;
 
     public WildfirePlayerList(WildfirePlayerListScreen parent, int listWidth, int top, int bottom) {
         super(MinecraftClient.getInstance(), parent.width-4, parent.height, top-6, bottom, 20);
@@ -85,30 +84,17 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
         ClientPlayNetworkHandler clientPlayNetworkHandler = this.client.player.networkHandler;
         List<PlayerListEntry> list = ENTRY_ORDERING.sortedCopy(clientPlayNetworkHandler.getPlayerList());
 
-        Iterator var9 = list.iterator();
-        int index = 0;
-        while(var9.hasNext()) {
-            PlayerListEntry playerListEntry = (PlayerListEntry)var9.next();
+        for (PlayerListEntry playerListEntry : list) {
             PlayerEntity playerentity = MinecraftClient.getInstance().world.getPlayerByUuid(playerListEntry.getProfile().getId());
-            if(playerentity != null) {
-                addEntry(new WildfirePlayerList.Entry(playerListEntry));
-                index++;
+            if (playerentity != null) {
+                addEntry(new Entry(playerListEntry));
             }
         }
     }
 
     @Override
-    protected void renderBackground(MatrixStack mStack) {}
-
-    public boolean isLoadingPlayers() {
-        boolean loadingPlayers = false;
-        for (Entry child : this.children()) {
-            GenderPlayer aPlr = WildfireGender.getPlayerById(child.nInfo.getProfile().getId());
-            if (aPlr == null) {
-                loadingPlayers = true;
-            }
-        }
-        return loadingPlayers;
+    protected void renderBackground(MatrixStack mStack) {
+        colorTicks++;
     }
 
     @Override
@@ -140,10 +126,6 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
             }
         }
 
-        public PlayerListEntry getNetworkInfo() {
-            return nInfo;
-        }
-
         @Override
         public void render(MatrixStack m, int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean p_194999_5_, float partialTicks) {
             TextRenderer font = MinecraftClient.getInstance().textRenderer;
@@ -165,7 +147,7 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
             if(aPlr != null) {
                 btnOpenGUI.active = !aPlr.lockSettings;
 
-                font.draw(m, aPlr.getPronounText(), left + 23, top + 11, 0xFFFFFF);
+                font.draw(m, aPlr.getPronouns(), left + 23, top + 11, aPlr.getPronounColorOnTick(colorTicks));
                 if (aPlr.getSyncStatus() == GenderPlayer.SyncStatus.SYNCED) {
                     RenderSystem.setShaderTexture(0, TXTR_SYNC);
                     Screen.drawTexture(m, left + 98, top + 11, 12, 8, 0, 0, 12, 8, 12, 8);

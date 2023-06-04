@@ -49,6 +49,7 @@ public class WildfirePlayerListScreen extends Screen {
 	private static final UUID CREATOR_UUID = UUID.fromString("33c937ae-6bfc-423e-a38e-3a613e7c1256");
 	private Identifier TXTR_BACKGROUND;
 	private static final Identifier TXTR_RIBBON = new Identifier(WildfireGender.MODID, "textures/bc_ribbon.png");
+	private int colorTick = 0;
 
 	@Nullable
 	private Text tooltip = null;
@@ -132,6 +133,7 @@ public class WildfirePlayerListScreen extends Screen {
 	  	RenderSystem.disableScissor();
 
 	    if(HOVER_PLAYER != null) {
+			colorTick++;
 			int dialogX = x + 75;
 			int dialogY = y - 73;
 			PlayerEntity pEntity = mc.world.getPlayerByUuid(HOVER_PLAYER.uuid);
@@ -139,7 +141,7 @@ public class WildfirePlayerListScreen extends Screen {
 				this.textRenderer.drawWithShadow(m, pEntity.getDisplayName().copy().formatted(Formatting.UNDERLINE), dialogX, dialogY - 2, 0xFFFFFF);
 			}
 
-			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.label.gender").append(" ").append(HOVER_PLAYER.getPronounText()), dialogX, dialogY + 10, 0xBBBBBB);
+			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.label.gender").append(" ").append(HOVER_PLAYER.getPronouns()), dialogX, dialogY + 10, HOVER_PLAYER.getPronounColorOnTick(colorTick));
 			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.breast_size", Math.round(HOVER_PLAYER.getBustSize() * 100)), dialogX, dialogY + 20, 0xBBBBBB);
 			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.char_settings.physics", new TranslatableText(HOVER_PLAYER.hasBreastPhysics() ? "wildfire_gender.label.enabled" : "wildfire_gender.label.disabled")), dialogX, dialogY + 40, 0xBBBBBB);
 			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);
