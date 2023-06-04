@@ -59,17 +59,8 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 
 		GenderPlayer plr = getPlayer();
 
-		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 52, 158, 20, getGenderLabel(plr.getGender()), button -> {
-			int ind = plr.getGender().ordinal();
-			Pronouns pronouns = Pronouns.THEY_THEM;
-			if (ind + 1 < Pronouns.values().length) {
-				pronouns = Pronouns.values()[ind + 1];
-			}
-			if (plr.updateGender(pronouns)) {
-				button.setMessage(getGenderLabel(pronouns));
-				GenderPlayer.saveGenderInfo(plr);
-			}
-		}));
+		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 52, 158, 20, getGenderLabel(plr.getGender()),
+				button -> MinecraftClient.getInstance().setScreen(new WildfirePronounListScreen(WardrobeBrowserScreen.this, this.playerUUID))));
 
 		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 32, 158, 20, new TranslatableText("wildfire_gender.breast_settings.title").append("..."),
 				button -> MinecraftClient.getInstance().setScreen(new WildfireBreastCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));

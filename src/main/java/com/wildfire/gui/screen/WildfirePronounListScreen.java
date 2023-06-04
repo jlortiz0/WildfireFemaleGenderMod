@@ -22,37 +22,27 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.wildfire.api.IHurtSound;
 import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfireHurtSoundList;
-import com.wildfire.gui.WildfirePlayerList;
+import com.wildfire.gui.WildfirePronounList;
 import com.wildfire.main.GenderPlayer;
-import com.wildfire.main.GenderPlayer.Pronouns;
 import com.wildfire.main.WildfireGender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 
-public class WildfireHurtSoundListScreen extends BaseWildfireScreen {
+public class WildfirePronounListScreen extends BaseWildfireScreen {
 	private Identifier TXTR_BACKGROUND;
 
-	private WildfireHurtSoundList SOUND_LIST;
+	private WildfirePronounList SOUND_LIST;
 	private final GenderPlayer aPlr;
 
-	public WildfireHurtSoundListScreen(Screen parent, UUID plr) {
+	public WildfirePronounListScreen(Screen parent, UUID plr) {
 		super(new TranslatableText("wildfire_gender.player_list.female_sounds"), parent, plr);
 		aPlr = getPlayer();
 	}
@@ -64,7 +54,7 @@ public class WildfireHurtSoundListScreen extends BaseWildfireScreen {
 
 		this.addDrawableChild(new WildfireButton(this.width / 2 + 53, y - 74, 9, 9, new TranslatableText("wildfire_gender.label.exit"), button -> MinecraftClient.getInstance().setScreen(parent)));
 
-		SOUND_LIST = new WildfireHurtSoundList(this, 118, (y - 61), (y + 71), aPlr.getHurtSounds());
+		SOUND_LIST = new WildfirePronounList(this, 118, (y - 61), (y + 71), aPlr.getGender());
 		SOUND_LIST.setRenderBackground(false);
 		SOUND_LIST.setRenderHorizontalShadows(false);
 		this.addSelectableChild(this.SOUND_LIST);
@@ -73,11 +63,8 @@ public class WildfireHurtSoundListScreen extends BaseWildfireScreen {
 
 		super.init();
 	}
-    public void setHurtSound(IHurtSound sound) {
-		if (aPlr.updateHurtSounds(sound.getId())) {
-			if (sound.getSnd() != null) {
-				client.player.playSound(sound.getSnd(), SoundCategory.PLAYERS, 1, 1);
-			}
+    public void setPronouns(GenderPlayer.Pronouns pronouns) {
+		if (aPlr.updateGender(pronouns)) {
 			GenderPlayer.saveGenderInfo(aPlr);
 		}
     }
@@ -112,6 +99,6 @@ public class WildfireHurtSoundListScreen extends BaseWildfireScreen {
 		SOUND_LIST.render(m, f1, f2, f3);
 		RenderSystem.disableScissor();
 
-		this.textRenderer.draw(m, new TranslatableText("wildfire_gender.hurt_sound_list.title"), x - 60, y - 73, 4473924);
+		this.textRenderer.draw(m, new TranslatableText("wildfire_gender.pronouns_list.title"), x - 60, y - 73, 4473924);
 	}
 }
