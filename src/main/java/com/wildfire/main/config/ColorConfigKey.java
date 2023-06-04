@@ -23,8 +23,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.util.Formatting;
 
-import java.text.Format;
-
 public class ColorConfigKey extends ConfigKey<Formatting> {
 
     //Do not modify
@@ -39,7 +37,7 @@ public class ColorConfigKey extends ConfigKey<Formatting> {
             JsonPrimitive primitive = element.getAsJsonPrimitive();
             if (primitive.isNumber()) {
                 Formatting f = Formatting.byColorIndex(primitive.getAsInt());
-                if (f != null && f.isColor()) {
+                if (validate(f)) {
                     return f;
                 }
             }
@@ -49,10 +47,10 @@ public class ColorConfigKey extends ConfigKey<Formatting> {
 
     @Override
     public void save(JsonObject object, Formatting value) {
-        if (value != null && value.isColor()) {
-            object.addProperty(key, value.getColorValue());
+        if (validate(value)) {
+            object.addProperty(key, value.getColorIndex());
         } else {
-            object.addProperty(key, defaultValue.getColorValue());
+            object.addProperty(key, defaultValue.getColorIndex());
         }
     }
 

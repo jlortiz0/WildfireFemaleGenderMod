@@ -62,7 +62,9 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 				button -> MinecraftClient.getInstance().setScreen(parent)));
 		this.addDrawableChild(new WildfireButton(this.width / 2 - 100, (this.height * 3) / 4 - 22, 200, 20, new TranslatableText("wildfire_gender.acknowledge.confirm"),
 				button -> {
-					aPlr.updatePronouns(textFieldWidget.getText());
+					if (aPlr.updatePronouns(textFieldWidget.getText())) {
+						GenderPlayer.saveGenderInfo(aPlr);
+					}
 					MinecraftClient.getInstance().setScreen(parent);
 				}));
 
@@ -77,6 +79,7 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 	public void setColor(Formatting f) {
 		if (aPlr.updatePronounColor(f)) {
 			textFieldWidget.setEditableColor(f.getColorValue());
+			GenderPlayer.saveGenderInfo(aPlr);
 		}
 	}
 
