@@ -19,19 +19,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package com.wildfire.main;
 
 import com.google.gson.JsonObject;
-import com.wildfire.api.IHurtSound;
 import com.wildfire.main.config.ConfigKey;
 import com.wildfire.main.config.Configuration;
 import com.wildfire.physics.BreastPhysics;
 import com.wildfire.physics.BulgePhysics;
 import com.wildfire.physics.BunPhysics;
-import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.SimpleRegistry;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -40,7 +36,9 @@ public class GenderPlayer {
 
 	public boolean needsSync;
 	public final UUID uuid;
-	private Pronouns pronouns;
+	private String pronouns;
+	private Formatting pronounColor = Configuration.GENDER_COLOR.getDefault();
+	private Text pronounText;
 	private float pBustSize = Configuration.BUST_SIZE.getDefault();
 	private float pBunSize = Configuration.BUNS_SIZE.getDefault();
 
@@ -70,7 +68,7 @@ public class GenderPlayer {
 		this(uuid, Configuration.GENDER.getDefault());
 	}
 
-	public GenderPlayer(UUID uuid, Pronouns pronouns) {
+	public GenderPlayer(UUID uuid, String pronouns) {
 		lBreastPhysics = new BreastPhysics(this);
 		rBreastPhysics = new BreastPhysics(this);
 		breasts = new Breasts();
@@ -84,6 +82,7 @@ public class GenderPlayer {
 		this.cfg = new Configuration("WildfireGender", this.uuid.toString());
 		this.cfg.set(Configuration.USERNAME, this.uuid);
 		this.cfg.setDefault(Configuration.GENDER);
+		this.cfg.setDefault(Configuration.GENDER_COLOR);
 		this.cfg.setDefault(Configuration.BUST_SIZE);
 		this.cfg.setDefault(Configuration.BUNS_SIZE);
 		this.cfg.setDefault(Configuration.HURT_SOUNDS);
@@ -126,12 +125,33 @@ public class GenderPlayer {
 		return false;
 	}
 
-	public Pronouns getGender() {
+	public String getPronouns() {
 		return pronouns;
 	}
 
-	public boolean updateGender(Pronouns value) {
-		return updateValue(Configuration.GENDER, value, v -> this.pronouns = v);
+	public boolean updatePronouns(String value) {
+		return updateValue(Configuration.GENDER, value, v -> {
+			this.pronouns = v;
+			this.pronounText = null;
+		});
+	}
+
+	public Formatting getPronounColor() {
+		return pronounColor;
+	}
+
+	public boolean updatePronounColor(Formatting value) {
+		return updateValue(Configuration.GENDER_COLOR, value, v -> {
+			this.pronounColor = v;
+			this.pronounText = null;
+		});
+	}
+
+	public Text getPronounText() {
+		if (pronounText == null) {
+			pronounText = new LiteralText(this.pronouns).formatted(this.pronounColor);
+		}
+		return pronounText;
 	}
 
 	public float getBustSize() {
@@ -207,7 +227,8 @@ public class GenderPlayer {
 	public static JsonObject toJsonObject(GenderPlayer plr) {
 		JsonObject obj = new JsonObject();
 		Configuration.USERNAME.save(obj, plr.uuid);
-		Configuration.GENDER.save(obj, plr.getGender());
+		Configuration.GENDER.save(obj, plr.getPronouns());
+		Configuration.GENDER_COLOR.save(obj, plr.getPronounColor());
 		Configuration.BUST_SIZE.save(obj, plr.getBustSize());
 		Configuration.BUNS_SIZE.save(obj, plr.getBunsSize());
 		Configuration.HURT_SOUNDS.save(obj, plr.getHurtSounds());
@@ -243,7 +264,8 @@ public class GenderPlayer {
 
 	public static GenderPlayer fromJsonObject(JsonObject obj) {
 		GenderPlayer plr = new GenderPlayer(Configuration.USERNAME.read(obj));
-		plr.updateGender(Configuration.GENDER.read(obj));
+		plr.updatePronouns(Configuration.GENDER.read(obj));
+		plr.updatePronounColor(Configuration.GENDER_COLOR.read(obj));
 		plr.updateBustSize(Configuration.BUST_SIZE.read(obj));
 		plr.updateBunsSize(Configuration.BUNS_SIZE.read(obj));
 		plr.updateHurtSounds(Configuration.HURT_SOUNDS.read(obj));
@@ -285,7 +307,8 @@ public class GenderPlayer {
 			plr.lockSettings = false;
 			plr.syncStatus = SyncStatus.CACHED;
 			Configuration config = plr.getConfig();
-			plr.updateGender(config.get(Configuration.GENDER));
+			plr.updatePronouns(config.get(Configuration.GENDER));
+			plr.updatePronounColor(config.get(Configuration.GENDER_COLOR));
 			plr.updateBustSize(config.get(Configuration.BUST_SIZE));
 			plr.updateBunsSize(config.get(Configuration.BUNS_SIZE));
 			plr.updateHurtSounds(config.get(Configuration.HURT_SOUNDS));
@@ -328,7 +351,8 @@ public class GenderPlayer {
 	public static void saveGenderInfo(GenderPlayer plr) {
 		Configuration config = plr.getConfig();
 		config.set(Configuration.USERNAME, plr.uuid);
-		config.set(Configuration.GENDER, plr.getGender());
+		config.set(Configuration.GENDER, plr.getPronouns());
+		config.set(Configuration.GENDER_COLOR, plr.getPronounColor());
 		config.set(Configuration.BUST_SIZE, plr.getBustSize());
 		config.set(Configuration.BUNS_SIZE, plr.getBunsSize());
 		config.set(Configuration.HURT_SOUNDS, plr.getHurtSounds());
@@ -384,40 +408,5 @@ public class GenderPlayer {
 
 	public enum SyncStatus {
 		CACHED, SYNCED, UNKNOWN
-	}
-
-	public enum Pronouns {
-		THEY_THEM(new LiteralText("they/them").formatted(Formatting.GREEN)),
-		HE_HIM(new LiteralText("he/him").formatted(Formatting.BLUE)),
-		SHE_HER(new LiteralText("she/her").formatted(Formatting.LIGHT_PURPLE)),
-		HE_THEY(new LiteralText("he/they").formatted(Formatting.DARK_BLUE)),
-		SHE_THEY(new LiteralText("she/they").formatted(Formatting.DARK_PURPLE)),
-		THEY_HE(new LiteralText("they/he").formatted(Formatting.GREEN)),
-		THEY_SHE(new LiteralText("they/she").formatted(Formatting.GREEN)),
-		THEY_HE_SHE(new LiteralText("they/he/she").formatted(Formatting.GREEN)),
-		HE_SHE_THEY(new LiteralText("he/she/they").formatted(Formatting.BLUE)),
-		SHE_HE_THEY(new LiteralText("she/he/they").formatted(Formatting.LIGHT_PURPLE)),
-		ANY(new LiteralText("any/all").formatted(Formatting.GOLD)),
-		ASK(new LiteralText("please ask").formatted(Formatting.WHITE));
-
-		private final Text name;
-
-		Pronouns(Text name) {
-			this.name = name;
-		}
-
-		public Text getDisplayName() {
-			return name;
-		}
-
-		public boolean canHaveBreasts() {
-			return true;
-		}
-		public boolean canHaveBulge() {
-                    return true;
-                }
-		public boolean canHaveBuns() {
-			return true;
-		}
 	}
 }

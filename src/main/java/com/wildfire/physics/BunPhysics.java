@@ -64,13 +64,9 @@ public class BunPhysics {
 		float bunsWeight = genderPlayer.getBunsSize() * 1.25f;
 		float targetBunsSize = genderPlayer.getBunsSize();
 
-		if (!genderPlayer.getGender().canHaveBuns()) {
-			targetBunsSize = 0;
-		} else {
-			float tightness = MathHelper.clamp(armor.tightness(), 0, 1);
-			//Scale breast size by how tight the armor is, clamping at a max adjustment of shrinking by 0.15
-			targetBunsSize *= 1 - 0.15F * tightness;
-		}
+		float tightness = MathHelper.clamp(armor.tightness(), 0, 1);
+		//Scale breast size by how tight the armor is, clamping at a max adjustment of shrinking by 0.15
+		targetBunsSize *= 1 - 0.15F * tightness;
 
 		if(bunsSize < targetBunsSize) {
 			bunsSize += Math.abs(bunsSize - targetBunsSize) / 2f;

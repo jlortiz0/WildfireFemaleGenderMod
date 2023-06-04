@@ -1,11 +1,11 @@
 package com.wildfire.api;
 
 import com.wildfire.main.GenderPlayer;
-import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
-import com.wildfire.main.WildfireGenderServer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -39,13 +39,13 @@ public class WildfireAPI {
     }
 
     /**
-     * Get the player's {@link GenderPlayer.Pronouns }.
+     * Get the player's pronouns.
      *
      * @param  uuid  the uuid of the {@link PlayerEntity }.
-     * @see    GenderPlayer.Pronouns
+     * @see    Text
      */
-    public static GenderPlayer.Pronouns getPlayerGender(UUID uuid) {
-        return WildfireGender.getPlayerById(uuid).getGender();
+    public static Text getPlayerGender(UUID uuid) {
+        return WildfireGender.getPlayerById(uuid).getPronounText();
     }
 
     /**

@@ -94,12 +94,6 @@ public class WildfireBulgeCustomizationScreen extends BaseWildfireScreen {
             minecraft.setScreen(new WildfirePlayerListScreen(minecraft));
         }
 
-        boolean canHaveBulge = plr.getGender().canHaveBulge();
-        bulgeSlider.visible = canHaveBulge;
-        xOffsetBulgeSlider.visible = canHaveBulge;
-        yOffsetBulgeSlider.visible = canHaveBulge;
-        zOffsetBulgeSlider.visible = canHaveBulge;
-
         int x = this.width / 2;
         int y = this.height / 2;
         fill(m, x + 28, y - 64, x + 190, y + 79, 0x55000000);

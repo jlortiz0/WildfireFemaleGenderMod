@@ -22,27 +22,16 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.wildfire.api.IHurtSound;
 import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfireHurtSoundList;
-import com.wildfire.gui.WildfirePlayerList;
 import com.wildfire.main.GenderPlayer;
-import com.wildfire.main.GenderPlayer.Pronouns;
 import com.wildfire.main.WildfireGender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 

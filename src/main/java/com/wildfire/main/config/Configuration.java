@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonWriter;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.Formatting;
 import org.lwjgl.system.CallbackI;
 
 import java.io.File;
@@ -39,7 +40,8 @@ import java.util.UUID;
 public class Configuration {
 
 	public static final UUIDConfigKey USERNAME = new UUIDConfigKey("username", UUID.nameUUIDFromBytes("UNKNOWN".getBytes(StandardCharsets.UTF_8)));
-	public static final GenderConfigKey GENDER = new GenderConfigKey("gender");
+	public static final StringConfigKey GENDER = new StringConfigKey("gender", "they/them");
+	public static final ColorConfigKey GENDER_COLOR = new ColorConfigKey("gender_color", Formatting.GREEN);
 	public static final FloatConfigKey FAKE_BUST_SIZE = new FloatConfigKey("_bust_size", 0, 0, 1.5f);
 	public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0, 0, 2.5f);
 	public static final FloatConfigKey FAKE_BUNS_SIZE = new FloatConfigKey("_bust_size", 0, 0, 1.5f);

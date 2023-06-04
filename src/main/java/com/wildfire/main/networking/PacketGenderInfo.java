@@ -18,17 +18,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.main.networking;
 
-import com.wildfire.api.IHurtSound;
 import com.wildfire.main.*;
-import com.wildfire.main.GenderPlayer.Pronouns;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 import java.util.UUID;
 
 public abstract class PacketGenderInfo {
     protected final UUID uuid;
-    private final Pronouns pronouns;
+    private final String pronouns;
+    private final Formatting pronounColor;
     private final float bust_size;
     private final float buns_size;
 
@@ -58,7 +58,8 @@ public abstract class PacketGenderInfo {
 
     protected PacketGenderInfo(GenderPlayer plr) {
         this.uuid = plr.uuid;
-        this.pronouns = plr.getGender();
+        this.pronouns = plr.getPronouns();
+        this.pronounColor = plr.getPronounColor();
         this.bust_size = plr.getBustSize();
         this.buns_size = plr.getBunsSize();
         this.hurtSounds = plr.getHurtSounds();
@@ -96,7 +97,8 @@ public abstract class PacketGenderInfo {
 
     protected PacketGenderInfo(PacketByteBuf buffer) {
         this.uuid = buffer.readUuid();
-        this.pronouns = buffer.readEnumConstant(Pronouns.class);
+        this.pronouns = buffer.readString();
+        this.pronounColor = Formatting.byColorIndex(buffer.readInt());
         this.bust_size = buffer.readFloat();
         this.buns_size = buffer.readFloat();
         this.hurtSounds = new Identifier(buffer.readString());
@@ -129,7 +131,8 @@ public abstract class PacketGenderInfo {
 
     public void encode(PacketByteBuf buffer) {
         buffer.writeUuid(this.uuid);
-        buffer.writeEnumConstant(this.pronouns);
+        buffer.writeString(this.pronouns);
+        buffer.writeInt(this.pronounColor.getColorIndex());
         buffer.writeFloat(this.bust_size);
         buffer.writeFloat(this.buns_size);
         buffer.writeString(this.hurtSounds.toString());
@@ -160,7 +163,8 @@ public abstract class PacketGenderInfo {
     }
 
     protected void updatePlayerFromPacket(GenderPlayer plr) {
-        plr.updateGender(pronouns);
+        plr.updatePronouns(pronouns);
+        plr.updatePronounColor(pronounColor);
         plr.updateBustSize(bust_size);
         plr.updateBunsSize(buns_size);
         plr.updateHurtSounds(hurtSounds);

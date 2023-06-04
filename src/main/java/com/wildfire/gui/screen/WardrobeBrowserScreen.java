@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.gui.screen;
 
-import com.wildfire.main.GenderPlayer.Pronouns;
 import com.wildfire.main.WildfireGender;
 import java.util.UUID;
 
@@ -35,7 +34,6 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -59,8 +57,8 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 
 		GenderPlayer plr = getPlayer();
 
-		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 52, 158, 20, getGenderLabel(plr.getGender()),
-				button -> MinecraftClient.getInstance().setScreen(new WildfirePronounListScreen(WardrobeBrowserScreen.this, this.playerUUID))));
+		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 52, 158, 20, getGenderLabel(plr),
+				button -> MinecraftClient.getInstance().setScreen(new WildfirePronounScreen(WardrobeBrowserScreen.this, this.playerUUID))));
 
 		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 32, 158, 20, new TranslatableText("wildfire_gender.breast_settings.title").append("..."),
 				button -> MinecraftClient.getInstance().setScreen(new WildfireBreastCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
@@ -94,8 +92,8 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		super.init();
 	}
 
-	private Text getGenderLabel(Pronouns pronouns) {
-		return new TranslatableText("wildfire_gender.label.gender").append(" - ").append(pronouns.getDisplayName());
+	private Text getGenderLabel(GenderPlayer plr) {
+		return new TranslatableText("wildfire_gender.label.gender").append(" - ").append(plr.getPronounText());
 	}
 
 	@Override

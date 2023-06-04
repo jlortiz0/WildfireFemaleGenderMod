@@ -21,35 +21,43 @@ package com.wildfire.main.config;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.wildfire.main.GenderPlayer.Pronouns;
+import net.minecraft.util.Formatting;
 
-public class GenderConfigKey extends ConfigKey<Pronouns> {
+import java.text.Format;
+
+public class ColorConfigKey extends ConfigKey<Formatting> {
 
     //Do not modify
-    private static final Pronouns[] PRONOUNS = Pronouns.values();
 
-    public GenderConfigKey(String key) {
-        super(key, Pronouns.THEY_THEM);
+    public ColorConfigKey(String key, Formatting defaultValue) {
+        super(key, defaultValue);
     }
 
     @Override
-    protected Pronouns read(JsonElement element) {
+    protected Formatting read(JsonElement element) {
         if (element.isJsonPrimitive()) {
             JsonPrimitive primitive = element.getAsJsonPrimitive();
             if (primitive.isNumber()) {
-                int ordinal = primitive.getAsInt();
-                if (ordinal >= 0 && ordinal < PRONOUNS.length) {
-                    return PRONOUNS[ordinal];
+                Formatting f = Formatting.byColorIndex(primitive.getAsInt());
+                if (f != null && f.isColor()) {
+                    return f;
                 }
-            } else {
-                return primitive.getAsBoolean() ? Pronouns.HE_HIM : Pronouns.SHE_HER;
             }
         }
         return defaultValue;
     }
 
     @Override
-    public void save(JsonObject object, Pronouns value) {
-        object.addProperty(key, value.ordinal());
+    public void save(JsonObject object, Formatting value) {
+        if (value != null && value.isColor()) {
+            object.addProperty(key, value.getColorValue());
+        } else {
+            object.addProperty(key, defaultValue.getColorValue());
+        }
+    }
+
+    @Override
+    public boolean validate(Formatting value) {
+        return value != null && value.isColor();
     }
 }

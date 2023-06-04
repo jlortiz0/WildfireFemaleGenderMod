@@ -64,13 +64,9 @@ public class BulgePhysics {
 		float bulgeWeight = genderPlayer.getBulge().getSize() * 1.25f;
 		float targetBulgeSize = genderPlayer.getBulge().getSize();
 
-		if (!genderPlayer.getGender().canHaveBulge()) {
-			targetBulgeSize = 0;
-		} else {
-			float tightness = MathHelper.clamp(armor.tightness(), 0, 1);
-			//Scale breast size by how tight the armor is, clamping at a max adjustment of shrinking by 0.15
-			targetBulgeSize *= 1 - 0.15F * tightness;
-		}
+		float tightness = MathHelper.clamp(armor.tightness(), 0, 1);
+		//Scale breast size by how tight the armor is, clamping at a max adjustment of shrinking by 0.15
+		targetBulgeSize *= 1 - 0.15F * tightness;
 
 		if(bulgeSize < targetBulgeSize) {
 			bulgeSize += Math.abs(bulgeSize - targetBulgeSize) / 2f;

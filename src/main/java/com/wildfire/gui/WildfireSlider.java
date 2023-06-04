@@ -103,7 +103,7 @@ public class WildfireSlider extends ClickableWidget {
 	}
 
 	protected MutableText getNarrationMessage() {
-		return new TranslatableText("gui.narrate.slider", new Object[]{this.getMessage()});
+		return new TranslatableText("gui.narrate.slider", this.getMessage());
 	}
 
 

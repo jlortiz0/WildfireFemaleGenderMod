@@ -23,11 +23,9 @@ import com.wildfire.api.IHurtSound;
 import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfirePlayerList;
 import com.wildfire.main.GenderPlayer;
-import com.wildfire.main.GenderPlayer.Pronouns;
 import com.wildfire.main.WildfireGender;
 import javax.annotation.Nullable;
 
-import com.wildfire.main.WildfireGenderServer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -141,23 +139,20 @@ public class WildfirePlayerListScreen extends Screen {
 				this.textRenderer.drawWithShadow(m, pEntity.getDisplayName().copy().formatted(Formatting.UNDERLINE), dialogX, dialogY - 2, 0xFFFFFF);
 			}
 
-			Pronouns pronouns = HOVER_PLAYER.getGender();
-			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.label.gender").append(" ").append(pronouns.getDisplayName()), dialogX, dialogY + 10, 0xBBBBBB);
-			if (pronouns.canHaveBreasts()) {
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.breast_size", Math.round(HOVER_PLAYER.getBustSize() * 100)), dialogX, dialogY + 20, 0xBBBBBB);
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.char_settings.physics", new TranslatableText(HOVER_PLAYER.hasBreastPhysics() ? "wildfire_gender.label.enabled" : "wildfire_gender.label.disabled")), dialogX, dialogY + 40, 0xBBBBBB);
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.breast_momentum", Math.round(HOVER_PLAYER.getFloppiness() * 100)), dialogX + 6, dialogY + 60, 0xBBBBBB);
-				if (!WildfireGender.isCurseforgeNerfed)
-					this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.bulge_size", Math.round(HOVER_PLAYER.getBulge().getSize() * 100)), dialogX, dialogY + 80, 0xBBBBBB);
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.buns_size", Math.round(HOVER_PLAYER.getBunsSize() * 100)), dialogX, dialogY + 90, 0xBBBBBB);
+			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.label.gender").append(" ").append(HOVER_PLAYER.getPronounText()), dialogX, dialogY + 10, 0xBBBBBB);
+			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.breast_size", Math.round(HOVER_PLAYER.getBustSize() * 100)), dialogX, dialogY + 20, 0xBBBBBB);
+			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.char_settings.physics", new TranslatableText(HOVER_PLAYER.hasBreastPhysics() ? "wildfire_gender.label.enabled" : "wildfire_gender.label.disabled")), dialogX, dialogY + 40, 0xBBBBBB);
+			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);
+			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.breast_momentum", Math.round(HOVER_PLAYER.getFloppiness() * 100)), dialogX + 6, dialogY + 60, 0xBBBBBB);
+			if (!WildfireGender.isCurseforgeNerfed)
+				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.bulge_size", Math.round(HOVER_PLAYER.getBulge().getSize() * 100)), dialogX, dialogY + 80, 0xBBBBBB);
+			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.buns_size", Math.round(HOVER_PLAYER.getBunsSize() * 100)), dialogX, dialogY + 90, 0xBBBBBB);
 
-				IHurtSound hs = WildfireGender.hurtSounds.get(HOVER_PLAYER.getHurtSounds());
-				if (hs == null) {
-					hs = WildfireGender.hurtSounds.get((Identifier) null);
-				}
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(hs.getName())), dialogX, dialogY + 110, 0xBBBBBB);
+			IHurtSound hs = WildfireGender.hurtSounds.get(HOVER_PLAYER.getHurtSounds());
+			if (hs == null) {
+				hs = WildfireGender.hurtSounds.get((Identifier) null);
 			}
+			this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(hs.getName())), dialogX, dialogY + 110, 0xBBBBBB);
 			if(pEntity != null) {
 				WardrobeBrowserScreen.drawEntityOnScreen(x - 110, y + 45, 45, (x - 300), (y - 26 - f2), pEntity);
 			}

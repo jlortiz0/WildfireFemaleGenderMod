@@ -109,14 +109,6 @@ public class WildfireBunsCustomizationScreen extends BaseWildfireScreen {
             minecraft.setScreen(new WildfirePlayerListScreen(minecraft));
         }
 
-        boolean canHaveBuns = plr.getGender().canHaveBuns();
-        bunsSlider.visible = canHaveBuns;
-        xOffsetBunSlider.visible = canHaveBuns;
-        yOffsetBunSlider.visible = canHaveBuns;
-        zOffsetBunSlider.visible = canHaveBuns;
-        gapSlider.visible = canHaveBuns;
-        rotSlider.visible = canHaveBuns;
-
         int x = this.width / 2;
         int y = this.height / 2;
         fill(m, x + 28, y - 64, x + 190, y + 79, 0x55000000);
