@@ -59,11 +59,6 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modCompileOnly('com.minelittlepony:hdskins:6.5.2')
-	//
-	// to-do: be able to fetch a maven url for 3d skin layers or just get rid of this.
-	// modCompileOnly('com.tr9zw:3dskinlayers:1.4.2')
-
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:4.2.0"
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:4.2.0"
 	modImplementation("curse.maven:trinkets-341284:3786685")
