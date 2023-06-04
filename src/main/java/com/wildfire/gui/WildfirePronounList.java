@@ -91,7 +91,7 @@ public class WildfirePronounList extends EntryListWidget<WildfirePronounList.Ent
 
             if (nInfo != null) {
                 btnOpenGUI.active = true;
-                font.draw(m, nInfo.getDisplayName(), left + 23, top + 5, 0xFFFFFF);
+                font.draw(m, nInfo.getDisplayName(), left + 23, top + 6, 0xFFFFFF);
             } else {
                 btnOpenGUI.active = false;
                 font.draw(m, new TranslatableText("wildfire_gender.label.too_far").formatted(Formatting.RED), left + 23, top + 11, 0xFFFFFF);
