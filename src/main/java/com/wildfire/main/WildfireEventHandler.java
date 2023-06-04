@@ -97,29 +97,6 @@ public class WildfireEventHandler {
 				}
 			}
 
-			//Receive hurt
-
-			ClientPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "hurt"),
-					(client2, handler, buf, responseSender) -> {
-						UUID uuid = buf.readUuid();
-						GenderPlayer aPlr = WildfireGender.getPlayerById(uuid);
-						if (aPlr == null) {
-							return;
-						}
-
-						//Vector3d pos = new Vector3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
-
-						Identifier hurtSoundID = aPlr.getHurtSounds();
-						if(hurtSoundID == null) return;
-						IHurtSound hurtSound = WildfireGender.hurtSounds.get(hurtSoundID);
-						if (hurtSound == null) return;
-
-						PlayerEntity ent = MinecraftClient.getInstance().world.getPlayerByUuid(uuid);
-						if (ent != null) {
-							client.getSoundManager().play(new EntityTrackingSoundInstance(hurtSound.getSnd(), SoundCategory.PLAYERS, 1f, 1f, ent));
-						}
-					});
-
 			while (toggleEditGUI.wasPressed()) {
 				client.setScreen(new WildfirePlayerListScreen(client));
 			}
@@ -127,6 +104,28 @@ public class WildfireEventHandler {
 
 		ClientPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "sync"),
 				PacketSync::handle);
+
+		//Receive hurt
+		ClientPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "hurt"),
+		(client, handler, buf, responseSender) -> {
+			UUID uuid = buf.readUuid();
+			GenderPlayer aPlr = WildfireGender.getPlayerById(uuid);
+			if (aPlr == null) {
+				return;
+			}
+
+			//Vector3d pos = new Vector3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
+
+			Identifier hurtSoundID = aPlr.getHurtSounds();
+			if(hurtSoundID == null) return;
+			IHurtSound hurtSound = WildfireGender.hurtSounds.get(hurtSoundID);
+			if (hurtSound == null) return;
+
+			PlayerEntity ent = MinecraftClient.getInstance().world.getPlayerByUuid(uuid);
+			if (ent != null) {
+				client.execute(() -> client.getSoundManager().play(new EntityTrackingSoundInstance(hurtSound.getSnd(), SoundCategory.PLAYERS, 1f, 1f, ent)));
+			}
+		});
 	}
 
 	//TODO: Eventually we may want to replace this with a map or something and replace things like drowning sounds with other drowning sounds
