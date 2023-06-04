@@ -394,6 +394,9 @@ public class GenderPlayer {
 		SHE_THEY(new LiteralText("she/they").formatted(Formatting.DARK_PURPLE)),
 		THEY_HE(new LiteralText("they/he").formatted(Formatting.GREEN)),
 		THEY_SHE(new LiteralText("they/she").formatted(Formatting.GREEN)),
+		THEY_HE_SHE(new LiteralText("they/he/she").formatted(Formatting.GREEN)),
+		HE_SHE_THEY(new LiteralText("he/she/they").formatted(Formatting.BLUE)),
+		SHE_HE_THEY(new LiteralText("she/he/they").formatted(Formatting.LIGHT_PURPLE)),
 		ANY(new LiteralText("any/all").formatted(Formatting.GOLD)),
 		ASK(new LiteralText("please ask").formatted(Formatting.WHITE));
 
