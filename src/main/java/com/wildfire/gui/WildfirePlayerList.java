@@ -47,6 +47,7 @@ public class WildfirePlayerList extends ObjectSelectionList<WildfirePlayerList.E
     private static final ResourceLocation TXTR_UNKNOWN = new ResourceLocation(WildfireGender.MODID, "textures/unknown.png");
 
     private final int listWidth;
+    private int colorTicks = 0;
 
     private WildfirePlayerListScreen parent;
 
@@ -80,7 +81,9 @@ public class WildfirePlayerList extends ObjectSelectionList<WildfirePlayerList.E
     }
 
     @Override
-    protected void renderBackground(@Nonnull PoseStack mStack) {}
+    protected void renderBackground(@Nonnull PoseStack mStack) {
+        colorTicks++;
+    }
 
     public boolean isLoadingPlayers() {
         boolean loadingPlayers = false;
@@ -141,7 +144,7 @@ public class WildfirePlayerList extends ObjectSelectionList<WildfirePlayerList.E
             if(aPlr != null) {
                 btnOpenGUI.active = !aPlr.lockSettings;
 
-                font.draw(m, aPlr.getGender().getDisplayName(), left + 23, top + 11, 0xFFFFFF);
+                font.draw(m, aPlr.getPronouns(), left + 23, top + 11, aPlr.getPronounColorOnTick(colorTicks));
                 if (aPlr.getSyncStatus() == GenderPlayer.SyncStatus.SYNCED) {
                     RenderSystem.setShaderTexture(0, TXTR_SYNC);
                     GuiComponent.blit(m, left + 98, top + 11, 12, 8, 0, 0, 12, 8, 12, 8);

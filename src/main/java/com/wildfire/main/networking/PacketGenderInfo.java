@@ -20,13 +20,13 @@ package com.wildfire.main.networking;
 
 import com.wildfire.main.Breasts;
 import com.wildfire.main.GenderPlayer;
-import com.wildfire.main.GenderPlayer.Gender;
 import java.util.UUID;
 import net.minecraft.network.FriendlyByteBuf;
 
 public abstract class PacketGenderInfo {
     protected final UUID uuid;
-    private final Gender gender;
+    private final String pronouns;
+    private final Formatting[] pronounColor;
     private final float bust_size;
 
     //physics variables
@@ -66,7 +66,11 @@ public abstract class PacketGenderInfo {
 
     protected PacketGenderInfo(FriendlyByteBuf buffer) {
         this.uuid = buffer.readUUID();
-        this.gender = buffer.readEnum(Gender.class);
+        this.pronouns = buffer.readString();
+        this.pronounColor = new Formatting[Math.min(buffer.readInt(), 8)];
+        for (int i = 0; i < this.pronounColor.length; i++) {
+            this.pronounColor[i] = Formatting.byColorIndex(buffer.readInt());
+        }
         this.bust_size = buffer.readFloat();
         this.hurtSounds = buffer.readBoolean();
 
@@ -86,7 +90,11 @@ public abstract class PacketGenderInfo {
 
     public void encode(FriendlyByteBuf buffer) {
         buffer.writeUUID(this.uuid);
-        buffer.writeEnum(this.gender);
+        buffer.writeString(this.pronouns);
+        buffer.writeInt(this.pronounColor.length);
+        for (Formatting f : this.pronounColor) {
+            buffer.writeInt(f.getColorIndex());
+        }
         buffer.writeFloat(this.bust_size);
         buffer.writeBoolean(this.hurtSounds);
         buffer.writeBoolean(this.breast_physics);

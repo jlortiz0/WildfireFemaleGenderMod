@@ -20,9 +20,11 @@ package com.wildfire.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.wildfire.gui.WildfireButton;
+import com.wildfire.gui.WildfireColorButton;
 import com.wildfire.main.GenderPlayer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -39,6 +41,7 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 
 	private TextFieldWidget textFieldWidget;
 	private final GenderPlayer aPlr;
+	private int colorTicks = 0;
 
 	public WildfirePronounScreen(Screen parent, UUID plr) {
 		super(new TranslatableText("wildfire_gender.player_list.female_sounds"), parent, plr);
@@ -54,13 +57,12 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 		textFieldWidget.setMaxLength(16);
 		textFieldWidget.setTextFieldFocused(true);
 		textFieldWidget.setText(aPlr.getPronouns());
-		textFieldWidget.setEditableColor(aPlr.getPronounColor().getColorValue());
 		this.addSelectableChild(this.textFieldWidget);
 		this.setInitialFocus(this.textFieldWidget);
 
-		this.addDrawableChild(new WildfireButton(this.width / 2 - 100, (this.height * 3) / 4, 200, 20, new TranslatableText("wildfire_gender.acknowledge.cancel"),
+		this.addDrawableChild(new WildfireButton(this.width / 2 - 100, y + 110, 200, 20, new TranslatableText("wildfire_gender.acknowledge.cancel"),
 				button -> MinecraftClient.getInstance().setScreen(parent)));
-		this.addDrawableChild(new WildfireButton(this.width / 2 - 100, (this.height * 3) / 4 - 22, 200, 20, new TranslatableText("wildfire_gender.acknowledge.confirm"),
+		this.addDrawableChild(new WildfireButton(this.width / 2 - 100, y + 84, 200, 20, new TranslatableText("wildfire_gender.acknowledge.confirm"),
 				button -> {
 					if (aPlr.updatePronouns(textFieldWidget.getText())) {
 						GenderPlayer.saveGenderInfo(aPlr);
@@ -70,21 +72,33 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 
 		for (int i = 1; i < 16; i++) {
 			Formatting f = Formatting.byColorIndex(i);
-			this.addDrawableChild(new WildfireColorButton(x - 178 + i * 21, y + 32, 19, f, button -> this.setColor(f)));
+			this.addDrawableChild(new WildfireColorButton(x - 178 + i * 21, y + 32, 19, this::setColor, f));
 		}
+		this.addDrawableChild(new WildfireColorButton(x - 157, y + 54, 20, this::setColor, Formatting.LIGHT_PURPLE, Formatting.WHITE, Formatting.BLUE));
+		this.addDrawableChild(new WildfireColorButton(x - 136, y + 54, 20, this::setColor, Formatting.GOLD, Formatting.WHITE, Formatting.DARK_PURPLE, Formatting.BLACK));
+		this.addDrawableChild(new WildfireColorButton(x - 115, y + 54, 20, this::setColor, Formatting.BLACK, Formatting.GRAY, Formatting.WHITE, Formatting.GREEN));
+		this.addDrawableChild(new WildfireColorButton(x - 115, y + 54, 20, this::setColor, Formatting.LIGHT_PURPLE, Formatting.WHITE, Formatting.GREEN));
+		this.addDrawableChild(new WildfireColorButton(x - 94, y + 54, 20, this::setColor, Formatting.LIGHT_PURPLE, Formatting.WHITE, Formatting.DARK_PURPLE, Formatting.BLACK, Formatting.DARK_BLUE));
+		this.addDrawableChild(new WildfireColorButton(x - 73, y + 54, 20, this::setColor, Formatting.DARK_GRAY, Formatting.GRAY, Formatting.BLUE, Formatting.WHITE));
+		this.addDrawableChild(new WildfireColorButton(x - 52, y + 54, 20, this::setColor, Formatting.DARK_GRAY, Formatting.GRAY, Formatting.LIGHT_PURPLE, Formatting.WHITE));
+		this.addDrawableChild(new WildfireColorButton(x - 31, y + 54, 20, this::setColor, Formatting.DARK_PURPLE, Formatting.LIGHT_PURPLE, Formatting.GRAY, Formatting.WHITE, Formatting.GRAY, Formatting.BLUE, Formatting.DARK_BLUE));
+		this.addDrawableChild(new WildfireColorButton(x - 10, y + 54, 20, this::setColor, Formatting.DARK_PURPLE, Formatting.GOLD, Formatting.DARK_PURPLE));
 
 		super.init();
 	}
 
-	public void setColor(Formatting f) {
-		if (aPlr.updatePronounColor(f)) {
-			textFieldWidget.setEditableColor(f.getColorValue());
+	public void setColor(ButtonWidget btn) {
+		if (!(btn instanceof WildfireColorButton button)) return;
+		Formatting[] colors = button.getColors();
+		if (aPlr.updatePronounColor(colors)) {
+			colorTicks = 0;
 			GenderPlayer.saveGenderInfo(aPlr);
 		}
 	}
 
 	@Override
 	public void render(MatrixStack m, int f1, int f2, float f3) {
+		colorTicks++;
 		super.renderBackground(m);
 		MinecraftClient mc = MinecraftClient.getInstance();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -100,8 +114,9 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 		int x = (this.width / 2);
 		int y = (this.height / 2);
 
+		textFieldWidget.setEditableColor(aPlr.getPronounColorOnTick(colorTicks));
 		this.textFieldWidget.render(m, f1, f2, f3);
-		fill(m, x - 160, y, x + 160, y + 24, 0x55000000);
+		fill(m, x - 160, y, x + 160, y + 48, 0x55000000);
 		super.render(m, f1, f2, f3);
 
 		this.textRenderer.draw(m, new TranslatableText("wildfire_gender.pronouns_list.title"), x - 40, 20, 16777215);

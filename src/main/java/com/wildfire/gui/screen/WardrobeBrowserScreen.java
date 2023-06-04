@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.gui.screen;
 
-import com.wildfire.main.GenderPlayer.Gender;
+import com.wildfire.gui.WildfirePronounButton;
 import com.wildfire.main.WildfireGender;
 import java.util.UUID;
 
@@ -46,6 +46,7 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 
 	private ResourceLocation BACKGROUND;
 	public static float modelRotation = 0.5F;
+	private int colorTicks = 0;
 
 	public WardrobeBrowserScreen(Screen parent, UUID uuid) {
 		super(new TranslatableComponent("wildfire_gender.wardrobe.title"), parent, uuid);
@@ -57,17 +58,8 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 
 		GenderPlayer plr = getPlayer();
 
-		this.addRenderableWidget(new WildfireButton(this.width / 2 - 42, j - 52, 158, 20, getGenderLabel(plr.getGender()), button -> {
-			Gender gender = switch (plr.getGender()) {
-				case MALE -> Gender.FEMALE;
-				case FEMALE -> Gender.OTHER;
-				case OTHER -> Gender.MALE;
-			};
-			if (plr.updateGender(gender)) {
-				button.setMessage(getGenderLabel(gender));
-				GenderPlayer.saveGenderInfo(plr);
-			}
-		}));
+		this.addDrawableChild(new WildfirePronounButton(this.width / 2 - 42, j - 52, 158, 20, getGenderLabel(plr),
+				button -> MinecraftClient.getInstance().setScreen(new WildfirePronounScreen(WardrobeBrowserScreen.this, this.playerUUID)), plr::getPronounColorOnTick));
 
 		this.addRenderableWidget(new WildfireButton(this.width / 2 - 42, j - 32, 158, 20, new TranslatableComponent("wildfire_gender.appearance_settings.title").append("..."),
 			button -> Minecraft.getInstance().setScreen(new WildfireBreastCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
@@ -77,16 +69,16 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 
 		this.addRenderableWidget(new WildfireButton(this.width / 2 + 111, j - 63, 9, 9, new TranslatableComponent("wildfire_gender.label.exit"),
 			button -> Minecraft.getInstance().setScreen(parent)));
-	    
+
 	    modelRotation = 0.6F;
 
 	    this.BACKGROUND = new ResourceLocation(WildfireGender.MODID, "textures/gui/wardrobe_bg.png");
-    
+
 	    super.init();
   	}
 
-	private Component getGenderLabel(Gender gender) {
-		return new TranslatableComponent("wildfire_gender.label.gender").append(" - ").append(gender.getDisplayName());
+	private Component getGenderLabel(GenderPlayer plr) {
+		return new TranslatableComponent("wildfire_gender.label.gender").append(" - ").append(plr.getPronounText());
 	}
 
   	@Override
@@ -109,7 +101,7 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 
 		int x = this.width / 2;
 	    int y = this.height / 2;
-	    
+
 	    this.font.draw(m, title, x - 42, y - 62, 4473924);
 
 	    modelRotation = 0.6f;

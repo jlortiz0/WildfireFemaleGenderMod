@@ -22,6 +22,8 @@ import com.google.gson.JsonObject;
 import com.wildfire.main.config.ConfigKey;
 import com.wildfire.main.config.ClientConfiguration;
 import com.wildfire.physics.BreastPhysics;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import java.util.UUID;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -32,7 +34,9 @@ public class GenderPlayer {
 
 	public boolean needsSync;
 	public final UUID uuid;
-	private Gender gender;
+	private String pronouns;
+	private Formatting[] pronounColor = ClientConfiguration.GENDER_COLOR.getDefault();
+	private Component pronounText;
 	private float pBustSize = ClientConfiguration.BUST_SIZE.getDefault();
 
 	private boolean hurtSounds = ClientConfiguration.HURT_SOUNDS.getDefault();
@@ -94,12 +98,55 @@ public class GenderPlayer {
 		return false;
 	}
 
-	public Gender getGender() {
-		return gender;
+	public String getPronouns() {
+		return pronouns;
 	}
 
-	public boolean updateGender(Gender value) {
-		return updateValue(ClientConfiguration.GENDER, value, v -> this.gender = v);
+	public boolean updatePronouns(String value) {
+		return updateValue(Configuration.GENDER, value, v -> {
+			this.pronouns = v;
+			this.pronounText = null;
+		});
+	}
+
+	public Formatting[] getPronounColor() {
+		return pronounColor;
+	}
+
+	public boolean updatePronounColor(Formatting[] value) {
+		return updateValue(Configuration.GENDER_COLOR, value, v -> {
+			this.pronounColor = v;
+			this.pronounText = null;
+		});
+	}
+
+	public Text getPronounText() {
+		if (pronounText == null) {
+			pronounText = new LiteralText(this.pronouns).formatted(this.pronounColor[0]);
+		}
+		return pronounText;
+	}
+
+	private static final int ticksPerColor = 40;
+
+	public int getPronounColorOnTick(int tick) {
+		if (pronounColor.length == 1) {
+			return pronounColor[0].getColorValue();
+		}
+		int ind = (tick / ticksPerColor) % pronounColor.length;
+		float per = (float) (tick % ticksPerColor) / ticksPerColor;
+		float invPer = 1 - per;
+		Color color1 = new Color(pronounColor[ind].getColorValue());
+		Color color2;
+		if (ind + 1 == pronounColor.length) {
+			color2 = new Color(pronounColor[0].getColorValue());
+		} else {
+			color2 = new Color(pronounColor[ind + 1].getColorValue());
+		}
+		Color output = new Color((color1.getRed() * invPer + color2.getRed() * per) / 255,
+				(color1.getGreen() * invPer + color2.getGreen() * per) / 255, (color1.getBlue() * invPer + color2.getBlue() * per) / 255);
+
+		return output.getRGB();
 	}
 
 	public float getBustSize() {

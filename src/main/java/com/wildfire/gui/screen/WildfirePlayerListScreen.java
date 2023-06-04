@@ -44,8 +44,9 @@ import java.util.UUID;
 public class WildfirePlayerListScreen extends Screen {
 
 	private static final UUID CREATOR_UUID = UUID.fromString("33c937ae-6bfc-423e-a38e-3a613e7c1256");
-	private ResourceLocation TXTR_BACKGROUND;
-	private static final ResourceLocation TXTR_RIBBON = new ResourceLocation(WildfireGender.MODID, "textures/bc_ribbon.png");
+	private Identifier TXTR_BACKGROUND;
+	private static final Identifier TXTR_RIBBON = new Identifier(WildfireGender.MODID, "textures/bc_ribbon.png");
+    private int colorTick = 0;
 
 	@Nullable
 	private Component tooltip = null;
@@ -127,6 +128,7 @@ public class WildfirePlayerListScreen extends Screen {
 	  	RenderSystem.disableScissor();
 
 	    if(HOVER_PLAYER != null) {
+			colorTick++;
 			int dialogX = x + 75;
 			int dialogY = y - 73;
 			Player pEntity = mc.level.getPlayerByUUID(HOVER_PLAYER.uuid);

@@ -18,43 +18,60 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.main.config;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.util.Formatting;
 
-public class ColorConfigKey extends ConfigKey<Formatting> {
+public class ColorConfigKey extends ConfigKey<Formatting[]> {
 
     //Do not modify
 
-    public ColorConfigKey(String key, Formatting defaultValue) {
+    public ColorConfigKey(String key, Formatting... defaultValue) {
         super(key, defaultValue);
     }
 
     @Override
-    protected Formatting read(JsonElement element) {
-        if (element.isJsonPrimitive()) {
-            JsonPrimitive primitive = element.getAsJsonPrimitive();
-            if (primitive.isNumber()) {
+    protected Formatting[] read(JsonElement element) {
+        if (element.isJsonArray()) {
+            JsonArray arr = element.getAsJsonArray();
+            Formatting[] output = new Formatting[Math.min(arr.size(), 8)];
+            for (int i = 0; i < output.length; i++) {
+                JsonElement e = arr.get(i);
+                if (!e.isJsonPrimitive()) return defaultValue;
+                JsonPrimitive primitive = e.getAsJsonPrimitive();
+                if (!primitive.isNumber()) return defaultValue;
                 Formatting f = Formatting.byColorIndex(primitive.getAsInt());
-                if (validate(f)) {
-                    return f;
-                }
+                if (!validate(f)) return defaultValue;
+                output[i] = f;
             }
+            return output;
         }
         return defaultValue;
     }
 
     @Override
-    public void save(JsonObject object, Formatting value) {
-        if (validate(value)) {
-            object.addProperty(key, value.getColorIndex());
-        } else {
-            object.addProperty(key, defaultValue.getColorIndex());
+    public void save(JsonObject object, Formatting[] value) {
+        if (!validate(value)) {
+            value = defaultValue;
         }
+        JsonArray arr = new JsonArray(value.length);
+        for (Formatting f : value) {
+            arr.add(f.getColorIndex());
+        }
+        object.add(key, arr);
     }
 
     @Override
+    public boolean validate(Formatting[] value) {
+        if (value == null || value.length == 0) return false;
+        for (Formatting formatting : value) {
+            if (!validate(formatting)) return false;
+        }
+        return true;
+    }
+
     public boolean validate(Formatting value) {
         return value != null && value.isColor();
     }
