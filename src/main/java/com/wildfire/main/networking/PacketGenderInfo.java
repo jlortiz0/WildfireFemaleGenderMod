@@ -26,7 +26,7 @@ import net.minecraft.network.FriendlyByteBuf;
 public abstract class PacketGenderInfo {
     protected final UUID uuid;
     private final String pronouns;
-    private final Formatting[] pronounColor;
+    private final int[] pronounColor;
     private final float bust_size;
 
     //physics variables
@@ -67,9 +67,9 @@ public abstract class PacketGenderInfo {
     protected PacketGenderInfo(FriendlyByteBuf buffer) {
         this.uuid = buffer.readUUID();
         this.pronouns = buffer.readString();
-        this.pronounColor = new Formatting[Math.min(buffer.readInt(), 8)];
+        this.pronounColor = new int[Math.min(buffer.readInt(), 8)];
         for (int i = 0; i < this.pronounColor.length; i++) {
-            this.pronounColor[i] = Formatting.byColorIndex(buffer.readInt());
+            this.pronounColor[i] = buffer.readInt();
         }
         this.bust_size = buffer.readFloat();
         this.hurtSounds = buffer.readBoolean();
@@ -92,8 +92,8 @@ public abstract class PacketGenderInfo {
         buffer.writeUUID(this.uuid);
         buffer.writeString(this.pronouns);
         buffer.writeInt(this.pronounColor.length);
-        for (Formatting f : this.pronounColor) {
-            buffer.writeInt(f.getColorIndex());
+        for (int f : this.pronounColor) {
+            buffer.writeInt(f);
         }
         buffer.writeFloat(this.bust_size);
         buffer.writeBoolean(this.hurtSounds);

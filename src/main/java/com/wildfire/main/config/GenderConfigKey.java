@@ -24,27 +24,27 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.util.Formatting;
 
-public class ColorConfigKey extends ConfigKey<Formatting[]> {
+import java.awt.*;
+
+public class ColorConfigKey extends ConfigKey<int[]> {
 
     //Do not modify
 
-    public ColorConfigKey(String key, Formatting... defaultValue) {
+    public ColorConfigKey(String key, int... defaultValue) {
         super(key, defaultValue);
     }
 
     @Override
-    protected Formatting[] read(JsonElement element) {
+    protected int[] read(JsonElement element) {
         if (element.isJsonArray()) {
             JsonArray arr = element.getAsJsonArray();
-            Formatting[] output = new Formatting[Math.min(arr.size(), 8)];
+            int[] output = new int[Math.min(arr.size(), 8)];
             for (int i = 0; i < output.length; i++) {
                 JsonElement e = arr.get(i);
                 if (!e.isJsonPrimitive()) return defaultValue;
                 JsonPrimitive primitive = e.getAsJsonPrimitive();
                 if (!primitive.isNumber()) return defaultValue;
-                Formatting f = Formatting.byColorIndex(primitive.getAsInt());
-                if (!validate(f)) return defaultValue;
-                output[i] = f;
+                output[i] = primitive.getAsInt();
             }
             return output;
         }
@@ -52,27 +52,27 @@ public class ColorConfigKey extends ConfigKey<Formatting[]> {
     }
 
     @Override
-    public void save(JsonObject object, Formatting[] value) {
+    public void save(JsonObject object, int[] value) {
         if (!validate(value)) {
             value = defaultValue;
         }
         JsonArray arr = new JsonArray(value.length);
-        for (Formatting f : value) {
-            arr.add(f.getColorIndex());
+        for (int f : value) {
+            arr.add(f);
         }
         object.add(key, arr);
     }
 
     @Override
-    public boolean validate(Formatting[] value) {
+    public boolean validate(int[] value) {
         if (value == null || value.length == 0) return false;
-        for (Formatting formatting : value) {
+        for (int formatting : value) {
             if (!validate(formatting)) return false;
         }
         return true;
     }
 
-    public boolean validate(Formatting value) {
-        return value != null && value.isColor();
+    public boolean validate(int value) {
+        return (value & 0xFFFFFF) == value;
     }
 }
