@@ -42,10 +42,10 @@ public class WildfireAPI {
      * Get the player's pronouns.
      *
      * @param  uuid  the uuid of the {@link PlayerEntity }.
-     * @see    Text
+     * @see    String
      */
-    public static Text getPlayerGender(UUID uuid) {
-        return WildfireGender.getPlayerById(uuid).getPronounText();
+    public static String getPlayerGender(UUID uuid) {
+        return WildfireGender.getPlayerById(uuid).getPronouns();
     }
 
     /**

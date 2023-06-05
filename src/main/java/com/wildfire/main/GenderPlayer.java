@@ -24,11 +24,7 @@ import com.wildfire.main.config.Configuration;
 import com.wildfire.physics.BreastPhysics;
 import com.wildfire.physics.BulgePhysics;
 import com.wildfire.physics.BunPhysics;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
 import java.util.UUID;
@@ -39,8 +35,7 @@ public class GenderPlayer {
 	public boolean needsSync;
 	public final UUID uuid;
 	private String pronouns;
-	private Formatting[] pronounColor = Configuration.GENDER_COLOR.getDefault();
-	private Text pronounText;
+	private int[] pronounColor = Configuration.GENDER_COLOR.getDefault();
 	private float pBustSize = Configuration.BUST_SIZE.getDefault();
 	private float pBunSize = Configuration.BUNS_SIZE.getDefault();
 
@@ -134,43 +129,34 @@ public class GenderPlayer {
 	public boolean updatePronouns(String value) {
 		return updateValue(Configuration.GENDER, value, v -> {
 			this.pronouns = v;
-			this.pronounText = null;
 		});
 	}
 
-	public Formatting[] getPronounColor() {
+	public int[] getPronounColor() {
 		return pronounColor;
 	}
 
-	public boolean updatePronounColor(Formatting[] value) {
+	public boolean updatePronounColor(int[] value) {
 		return updateValue(Configuration.GENDER_COLOR, value, v -> {
 			this.pronounColor = v;
-			this.pronounText = null;
 		});
-	}
-
-	public Text getPronounText() {
-		if (pronounText == null) {
-			pronounText = new LiteralText(this.pronouns).formatted(this.pronounColor[0]);
-		}
-		return pronounText;
 	}
 
 	private static final int ticksPerColor = 40;
 
 	public int getPronounColorOnTick(int tick) {
 		if (pronounColor.length == 1) {
-			return pronounColor[0].getColorValue();
+			return pronounColor[0];
 		}
 		int ind = (tick / ticksPerColor) % pronounColor.length;
 		float per = (float) (tick % ticksPerColor) / ticksPerColor;
 		float invPer = 1 - per;
-		Color color1 = new Color(pronounColor[ind].getColorValue());
+		Color color1 = new Color(pronounColor[ind]);
 		Color color2;
 		if (ind + 1 == pronounColor.length) {
-			color2 = new Color(pronounColor[0].getColorValue());
+			color2 = new Color(pronounColor[0]);
 		} else {
-			color2 = new Color(pronounColor[ind + 1].getColorValue());
+			color2 = new Color(pronounColor[ind + 1]);
 		}
 		Color output = new Color((color1.getRed() * invPer + color2.getRed() * per) / 255,
 				(color1.getGreen() * invPer + color2.getGreen() * per) / 255, (color1.getBlue() * invPer + color2.getBlue() * per) / 255);

@@ -6,13 +6,13 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
 
 public class WildfireColorButton extends WildfireButton {
-    private final Formatting[] colors;
-    public WildfireColorButton(int x, int y, int w, PressAction onPress, Formatting... colors) {
+    private final int[] colors;
+    public WildfireColorButton(int x, int y, int w, PressAction onPress, int... colors) {
         super(x, y, w, w, new LiteralText(""), onPress, NO_TOOLTIP);
         this.colors = colors;
     }
 
-    public Formatting[] getColors() {
+    public int[] getColors() {
         return colors;
     }
 
@@ -23,7 +23,7 @@ public class WildfireColorButton extends WildfireButton {
         fill(m, x, y, x + getWidth(), y + height, clr);
         float pieceH = (float) (height - 2) / colors.length;
         for (int i = 0; i < colors.length; i++) {
-            fill(m, x + 1, y + (int)(pieceH * i) + 1, x + getWidth() - 1, y + (int)(pieceH * (i + 1)) + 1, this.colors[i].getColorValue() + (184 << 22));
+            fill(m, x + 1, y + (int)(pieceH * i) + 1, x + getWidth() - 1, y + (int)(pieceH * (i + 1)) + 1, this.colors[i] + (184 << 24));
         }
 
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
