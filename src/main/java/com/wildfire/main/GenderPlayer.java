@@ -142,7 +142,7 @@ public class GenderPlayer {
 		});
 	}
 
-	private static final int ticksPerColor = 40;
+	private static final int ticksPerColor = 15;
 
 	public int getPronounColorOnTick(int tick) {
 		if (pronounColor.length == 1) {

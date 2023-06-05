@@ -41,7 +41,6 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 
 	private TextFieldWidget textFieldWidget;
 	private final GenderPlayer aPlr;
-	private int colorTicks = 0;
 
 	public WildfirePronounScreen(Screen parent, UUID plr) {
 		super(new TranslatableText("wildfire_gender.player_list.female_sounds"), parent, plr);
@@ -106,14 +105,12 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 		if (!(btn instanceof WildfireColorButton button)) return;
 		int[] colors = button.getColors();
 		if (aPlr.updatePronounColor(colors)) {
-			colorTicks = 0;
 			GenderPlayer.saveGenderInfo(aPlr);
 		}
 	}
 
 	@Override
 	public void render(MatrixStack m, int f1, int f2, float f3) {
-		colorTicks++;
 		super.renderBackground(m);
 		MinecraftClient mc = MinecraftClient.getInstance();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -129,7 +126,7 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 		int x = (this.width / 2);
 		int y = (this.height / 2);
 
-		textFieldWidget.setEditableColor(aPlr.getPronounColorOnTick(colorTicks));
+		textFieldWidget.setEditableColor(aPlr.getPronounColorOnTick(mc.player.age));
 		this.textFieldWidget.render(m, f1, f2, f3);
 		fill(m, x - 161, y, x + 162, y + 48, 0x55000000);
 		super.render(m, f1, f2, f3);

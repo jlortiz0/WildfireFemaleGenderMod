@@ -56,7 +56,6 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
     private static final Identifier TXTR_CACHED = new Identifier(WildfireGender.MODID, "textures/cached.png");
 
     private final int listWidth;
-    private int colorTicks = 0;
 
     private final WildfirePlayerListScreen parent;
 
@@ -93,9 +92,7 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
     }
 
     @Override
-    protected void renderBackground(MatrixStack mStack) {
-        colorTicks++;
-    }
+    protected void renderBackground(MatrixStack mStack) {}
 
     @Override
     public void appendNarrations(NarrationMessageBuilder builder) {
@@ -147,7 +144,7 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
             if(aPlr != null) {
                 btnOpenGUI.active = !aPlr.lockSettings;
 
-                font.draw(m, aPlr.getPronouns(), left + 23, top + 11, aPlr.getPronounColorOnTick(colorTicks));
+                font.draw(m, aPlr.getPronouns(), left + 23, top + 11, aPlr.getPronounColorOnTick(playerentity.age));
                 if (aPlr.getSyncStatus() == GenderPlayer.SyncStatus.SYNCED) {
                     RenderSystem.setShaderTexture(0, TXTR_SYNC);
                     Screen.drawTexture(m, left + 98, top + 11, 12, 8, 0, 0, 12, 8, 12, 8);

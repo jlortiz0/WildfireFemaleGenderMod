@@ -9,7 +9,6 @@ import net.minecraft.text.Text;
 import java.util.function.Function;
 
 public class WildfirePronounButton extends WildfireButton {
-    private int colorTicks = 0;
     private final Function<Integer, Integer> getColor;
 
     public WildfirePronounButton(int x, int y, int w, int h, Text text, PressAction onPress, Function<Integer, Integer> colorGetter) {
@@ -19,7 +18,6 @@ public class WildfirePronounButton extends WildfireButton {
 
     @Override
     public void renderButton(MatrixStack m, int mouseX, int mouseY, float partialTicks) {
-        colorTicks++;
         MinecraftClient minecraft = MinecraftClient.getInstance();
         TextRenderer font = minecraft.textRenderer;
         int clr = 0x444444 + (84 << 24);
@@ -27,7 +25,7 @@ public class WildfirePronounButton extends WildfireButton {
         if(!this.active)  clr = 0x222222 + (84 << 24);
         if(!transparent) fill(m, x, y, x + getWidth(), y + height, clr);
 
-        font.draw(m, this.getMessage(), x + (this.width / 2) - (font.getWidth(this.getMessage()) / 2) + 1, y + (int) Math.ceil((float) height / 2f) - font.fontHeight / 2, this.getColor.apply(colorTicks));
+        font.draw(m, this.getMessage(), x + (this.width / 2) - (font.getWidth(this.getMessage()) / 2) + 1, y + (int) Math.ceil((float) height / 2f) - font.fontHeight / 2, this.getColor.apply(minecraft.player.age));
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
     }
 }
