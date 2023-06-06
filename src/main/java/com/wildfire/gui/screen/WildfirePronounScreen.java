@@ -90,13 +90,17 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 		// Bigender
 		this.addDrawableChild(new WildfireColorButton(x + 1, y + 53, 22, this::setColor, 0xc479a2, 0xeda5cd, 0xd6c7e8, 0xffffff, 0xd6c7e8, 0x9ac7e8, 0x6d82d1));
 		// Intersex
-		this.addDrawableChild(new WildfireColorButton(x + 24, y + 53, 22, this::setColor, 0xebf367, 0x7210bc, 0xebf367));
-
+		this.addDrawableChild(new WildfireColorButton(x + 24, y + 53, 22, this::setColor, 0xd8abcf, 0xffffff, 0xa0cdee, 0xf0b7d6, 0xffffff, 0xd8abcf));
+		// Pride
 		this.addDrawableChild(new WildfireColorButton(x + 47, y + 53, 22, this::setColor, 0xe40303, 0xff8c00, 0xffed00, 0x008026, 0x24408e, 0x732982));
-		this.addDrawableChild(new WildfireColorButton(x + 70, y + 53, 22, this::setColor, 0));
-		this.addDrawableChild(new WildfireColorButton(x + 93, y + 53, 22, this::setColor, 0));
-		this.addDrawableChild(new WildfireColorButton(x + 116, y + 53, 22, this::setColor, 0));
-		this.addDrawableChild(new WildfireColorButton(x + 139, y + 53, 22, this::setColor, 0));
+		// Genderfae
+		this.addDrawableChild(new WildfireColorButton(x + 70, y + 53, 22, this::setColor, 0x97c3a5, 0xc3deae, 0xf9facd, 0xffffff, 0xfca2c4, 0xdb8ae4, 0xa97edd));
+		// Genderfaun
+		this.addDrawableChild(new WildfireColorButton(x + 93, y + 53, 22, this::setColor, 0xfcc689, 0xfff09d, 0xfbf9cc, 0xffffff, 0x8edfd8, 0x8dabdc, 0x9781eb));
+		// Genderflux
+		this.addDrawableChild(new WildfireColorButton(x + 116, y + 53, 22, this::setColor, 0xf57694, 0xf2a3b9, 0xcfcfcf, 0x7be1f5, 0x3ecdfa, 0xfff48c));
+		// Pangender
+		this.addDrawableChild(new WildfireColorButton(x + 139, y + 53, 22, this::setColor, 0xfff798, 0xffddcd, 0xffebfb, 0xffffff, 0xffebfb, 0xffddcd, 0xfff798));
 
 		super.init();
 	}
