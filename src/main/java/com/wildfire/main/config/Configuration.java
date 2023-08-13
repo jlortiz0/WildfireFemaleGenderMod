@@ -41,10 +41,8 @@ public class Configuration {
 	public static final UUIDConfigKey USERNAME = new UUIDConfigKey("username", UUID.nameUUIDFromBytes("UNKNOWN".getBytes(StandardCharsets.UTF_8)));
 	public static final StringConfigKey GENDER = new StringConfigKey("gender", "they/them");
 	public static final ColorConfigKey GENDER_COLOR = new ColorConfigKey("gender_color", Formatting.WHITE.getColorValue());
-	public static final FloatConfigKey FAKE_BUST_SIZE = new FloatConfigKey("_bust_size", 0, 0, 1.5f);
-	public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0, 0, 2.5f);
-	public static final FloatConfigKey FAKE_BUNS_SIZE = new FloatConfigKey("_bust_size", 0, 0, 1.5f);
-	public static final FloatConfigKey BUNS_SIZE = new FloatConfigKey("buns_size", 0, 0, 2.5f);
+	public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0, 0, 1.5f);
+	public static final FloatConfigKey BUNS_SIZE = new FloatConfigKey("buns_size", 0, 0, 1.5f);
 	public static final HurtSoundConfigKey HURT_SOUNDS = new HurtSoundConfigKey("hurt_sounds");
 
 	public static final FloatConfigKey BREASTS_OFFSET_X = new FloatConfigKey("breasts_xOffset", 0.0F, -1, 1);
@@ -74,14 +72,14 @@ public class Configuration {
 	private static final TypeAdapter<JsonObject> ADAPTER = new Gson().getAdapter(JsonObject.class);
 
 	private final File CFG_FILE;
-	public JsonObject SAVE_VALUES = new JsonObject();
+	public final JsonObject SAVE_VALUES = new JsonObject();
 
 	public Configuration(String saveLoc, String cfgName) {
 
 		Path saveDir = FabricLoader.getInstance().getConfigDir();
 		System.out.println("SAVE DIR: " + saveDir.toString());
 
-		System.out.println("SAVE DIR: " + saveDir.resolve(saveLoc).toString());
+		System.out.println("SAVE DIR: " + saveDir.resolve(saveLoc));
 		if(!Files.isDirectory(saveDir.resolve(saveLoc))) {
 			try {
 				Files.createDirectory(saveDir.resolve(saveLoc));

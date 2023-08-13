@@ -22,7 +22,7 @@ import com.wildfire.api.IHurtSound;
 import com.wildfire.gui.screen.WildfirePlayerListScreen;
 import com.wildfire.main.networking.PacketSendGenderInfo;
 import com.wildfire.main.networking.PacketSync;
-import java.util.Set;
+
 import java.util.UUID;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
@@ -36,8 +36,6 @@ import net.minecraft.client.sound.EntityTrackingSoundInstance;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
@@ -127,14 +125,6 @@ public class WildfireEventHandler {
 			}
 		});
 	}
-
-	//TODO: Eventually we may want to replace this with a map or something and replace things like drowning sounds with other drowning sounds
-	private final Set<SoundEvent> playerHurtSounds = Set.of(SoundEvents.ENTITY_PLAYER_HURT,
-			SoundEvents.ENTITY_PLAYER_HURT_DROWN,
-			SoundEvents.ENTITY_PLAYER_HURT_FREEZE,
-			SoundEvents.ENTITY_PLAYER_HURT_ON_FIRE,
-			SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH
-	);
 /*
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onPlaySound(PlaySoundAtEntityEvent event) {

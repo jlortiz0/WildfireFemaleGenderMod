@@ -32,7 +32,6 @@ import net.minecraft.util.Identifier;
 
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 public class PacketSync extends PacketGenderInfo {
 

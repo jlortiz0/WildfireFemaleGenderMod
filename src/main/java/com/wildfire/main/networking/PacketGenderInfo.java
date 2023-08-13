@@ -20,10 +20,8 @@ package com.wildfire.main.networking;
 
 import com.wildfire.main.*;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
-import java.text.Normalizer;
 import java.util.UUID;
 
 public abstract class PacketGenderInfo {

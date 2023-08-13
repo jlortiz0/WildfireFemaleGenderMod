@@ -127,9 +127,7 @@ public class GenderPlayer {
 	}
 
 	public boolean updatePronouns(String value) {
-		return updateValue(Configuration.GENDER, value, v -> {
-			this.pronouns = v;
-		});
+		return updateValue(Configuration.GENDER, value, v -> this.pronouns = v);
 	}
 
 	public int[] getPronounColor() {
@@ -137,9 +135,7 @@ public class GenderPlayer {
 	}
 
 	public boolean updatePronounColor(int[] value) {
-		return updateValue(Configuration.GENDER_COLOR, value, v -> {
-			this.pronounColor = v;
-		});
+		return updateValue(Configuration.GENDER_COLOR, value, v -> this.pronounColor = v);
 	}
 
 	private static final int ticksPerColor = 15;

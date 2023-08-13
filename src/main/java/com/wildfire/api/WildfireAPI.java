@@ -4,8 +4,6 @@ import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.WildfireGender;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -15,7 +13,7 @@ import java.util.UUID;
 
 public class WildfireAPI {
 
-    private static Map<Item, IGenderArmor> GENDER_ARMORS = new HashMap<>();
+    private static final Map<Item, IGenderArmor> GENDER_ARMORS = new HashMap<>();
 
     /**
      * Add custom attributes to the armor you apply this to.

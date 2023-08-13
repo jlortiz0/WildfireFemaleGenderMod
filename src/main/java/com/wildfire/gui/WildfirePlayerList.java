@@ -145,16 +145,13 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
                 btnOpenGUI.active = !aPlr.lockSettings;
 
                 font.draw(m, aPlr.getPronouns(), left + 23, top + 11, aPlr.getPronounColorOnTick(playerentity.age));
-                if (aPlr.getSyncStatus() == GenderPlayer.SyncStatus.SYNCED) {
-                    RenderSystem.setShaderTexture(0, TXTR_SYNC);
+                if (aPlr.getSyncStatus() != GenderPlayer.SyncStatus.UNKNOWN && !playerentity.isMainPlayer()) {
+                    RenderSystem.setShaderTexture(0, aPlr.getSyncStatus() == GenderPlayer.SyncStatus.SYNCED ? TXTR_SYNC : TXTR_CACHED);
                     Screen.drawTexture(m, left + 98, top + 11, 12, 8, 0, 0, 12, 8, 12, 8);
                     if (mouseX > left + 98 - 2 && mouseY > top + 11 - 2 && mouseX < left + 98 + 12 + 2 && mouseY < top + 20) {
-                        parent.setTooltip(new TranslatableText("wildfire_gender.player_list.state.synced"));
+                        parent.setTooltip(new TranslatableText(aPlr.getSyncStatus() == GenderPlayer.SyncStatus.SYNCED ? "wildfire_gender.player_list.state.synced" : "wildfire_gender.player_list.state.cached"));
                     }
 
-                } else if (aPlr.getSyncStatus() == GenderPlayer.SyncStatus.UNKNOWN) {
-                    RenderSystem.setShaderTexture(0, TXTR_UNKNOWN);
-                    Screen.drawTexture(m, left + 98, top + 11, 12, 8, 0, 0, 12, 8, 12, 8);
                 }
             } else {
                 btnOpenGUI.active = false;

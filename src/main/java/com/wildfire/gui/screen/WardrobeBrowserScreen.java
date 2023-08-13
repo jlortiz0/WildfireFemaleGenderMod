@@ -46,8 +46,6 @@ import net.minecraft.util.math.Vec3f;
 public class WardrobeBrowserScreen extends BaseWildfireScreen {
 
 	private Identifier BACKGROUND;
-	public static float modelRotation = 0.5F;
-	private int colorTicks = 0;
 
 	public WardrobeBrowserScreen(Screen parent, UUID uuid) {
 		super(new TranslatableText("wildfire_gender.wardrobe.title"), parent, uuid);
@@ -87,8 +85,6 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		this.addDrawableChild(new WildfireButton(this.width / 2 + 111, j - 63, 9, 9, new TranslatableText("wildfire_gender.label.exit"),
 				button -> MinecraftClient.getInstance().setScreen(parent)));
 
-		modelRotation = 0.6F;
-
 		this.BACKGROUND = new Identifier(WildfireGender.MODID, "textures/gui/wardrobe_bg.png");
 
 		super.init();
@@ -120,8 +116,6 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		int y = this.height / 2;
 
 		this.textRenderer.draw(m, title, x - 42, y - 62, 4473924);
-
-		modelRotation = 0.6f;
 
 		try {
 			RenderSystem.setShaderColor(1f, 1.0F, 1.0F, 1.0F);
@@ -176,9 +170,7 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		entityRenderDispatcher.setRotation(quaternion2);
 		entityRenderDispatcher.setRenderShadows(false);
 		VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-		RenderSystem.runAsFancy(() -> {
-			entityRenderDispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixStack2, immediate, 15728880);
-		});
+		RenderSystem.runAsFancy(() -> entityRenderDispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixStack2, immediate, 15728880));
 		immediate.draw();
 		entityRenderDispatcher.setRenderShadows(true);
 		entity.bodyYaw = h;

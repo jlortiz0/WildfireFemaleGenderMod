@@ -21,12 +21,8 @@ package com.wildfire.main.config;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.wildfire.api.IHurtSound;
-import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
-import com.wildfire.main.WildfireGenderServer;
 import net.minecraft.util.Identifier;
-import org.lwjgl.system.CallbackI;
 
 public class HurtSoundConfigKey extends ConfigKey<Identifier> {
 

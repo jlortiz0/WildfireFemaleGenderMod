@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.main;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -27,19 +26,13 @@ import javax.annotation.Nullable;
 import com.wildfire.api.IHurtSound;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.SimpleRegistry;
-import org.lwjgl.system.CallbackI;
 
 public class WildfireGender implements ClientModInitializer {
-	public static final String VERSION = "2.11.2";
   	public static final String MODID = "wildfire_gender";
-
-	private static final String PROTOCOL_VERSION = "2";
-	public static Map<UUID, GenderPlayer> CLOTHING_PLAYERS = new HashMap<>();
+	public static final Map<UUID, GenderPlayer> CLOTHING_PLAYERS = new HashMap<>();
 
 	public static final boolean isCurseforgeNerfed = false;
 	public static final String GITHUB_LINK = "https://github.com/jlortiz0/WildfireGender";

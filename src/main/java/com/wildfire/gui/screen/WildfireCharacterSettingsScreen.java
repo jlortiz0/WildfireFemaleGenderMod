@@ -20,9 +20,7 @@ package com.wildfire.gui.screen;
 
 import com.wildfire.api.IHurtSound;
 import com.wildfire.gui.WildfireSlider;
-import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
-import com.wildfire.main.WildfireGenderServer;
 import com.wildfire.main.config.Configuration;
 import java.util.UUID;
 
@@ -34,7 +32,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;

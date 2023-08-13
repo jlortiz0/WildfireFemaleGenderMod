@@ -26,13 +26,11 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
-import java.text.Normalizer;
 import java.util.UUID;
 
 
@@ -118,14 +116,6 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 		super.renderBackground(m);
 		MinecraftClient mc = MinecraftClient.getInstance();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		if(this.TXTR_BACKGROUND != null) {
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			RenderSystem.setShaderTexture(0, this.TXTR_BACKGROUND);
-			int i = (this.width - 132) / 2;
-			int j = (this.height - 156) / 2 - 20;
-			drawTexture(m, i, j, 0, 0, 192, 174);
-		}
 
 		int x = (this.width / 2);
 		int y = (this.height / 2);

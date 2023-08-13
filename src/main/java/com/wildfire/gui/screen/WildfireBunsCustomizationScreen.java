@@ -56,7 +56,7 @@ public class WildfireBunsCustomizationScreen extends BaseWildfireScreen {
         this.addDrawableChild(new WildfireButton(this.width / 2 + 178, j - 61, 9, 9, new TranslatableText("wildfire_gender.label.exit"),
               button -> MinecraftClient.getInstance().setScreen(parent)));
 
-        this.addDrawableChild(this.bunsSlider = new WildfireSlider(this.width / 2 + 30, j - 48, 158, 20, Configuration.FAKE_BUNS_SIZE, plr.getBunsSize(),
+        this.addDrawableChild(this.bunsSlider = new WildfireSlider(this.width / 2 + 30, j - 48, 158, 20, Configuration.BUNS_SIZE, plr.getBunsSize(),
               plr::updateBunsSize, value -> new TranslatableText("wildfire_gender.wardrobe.slider.buns_size", Math.round(value * 100)), onSave));
 
         //Customization

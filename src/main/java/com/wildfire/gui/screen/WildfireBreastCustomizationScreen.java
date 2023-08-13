@@ -55,7 +55,7 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
         this.addDrawableChild(new WildfireButton(this.width / 2 + 178, j - 61, 9, 9, new TranslatableText("wildfire_gender.label.exit"),
               button -> MinecraftClient.getInstance().setScreen(parent)));
 
-        this.addDrawableChild(this.breastSlider = new WildfireSlider(this.width / 2 + 30, j - 48, 158, 20, Configuration.FAKE_BUST_SIZE, plr.getBustSize(),
+        this.addDrawableChild(this.breastSlider = new WildfireSlider(this.width / 2 + 30, j - 48, 158, 20, Configuration.BUST_SIZE, plr.getBustSize(),
               plr::updateBustSize, value -> new TranslatableText("wildfire_gender.wardrobe.slider.breast_size", Math.round(value * 100)), onSave));
 
         //Customization

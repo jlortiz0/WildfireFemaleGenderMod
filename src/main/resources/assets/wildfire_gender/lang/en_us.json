@@ -11,6 +11,7 @@
 	"wildfire_gender.player_list.sync_status": "Sync Status",
 	"wildfire_gender.player_list.state.loading": "Loading Data...",
 	"wildfire_gender.player_list.state.synced": "Synced Player",
+	"wildfire_gender.player_list.state.cached": "Cached Player",
 
 	"wildfire_gender.pronouns_list.title": "Select Pronouns",
 	"wildfire_gender.hurt_sound_list.title": "Select Hurt Sounds",

@@ -48,7 +48,6 @@ public class WildfireHurtSoundListScreen extends BaseWildfireScreen {
 
 	@Override
 	public void init() {
-		int x = this.width / 2;
 		int y = this.height / 2 - 20;
 
 		this.addDrawableChild(new WildfireButton(this.width / 2 + 53, y - 74, 9, 9, new TranslatableText("wildfire_gender.label.exit"), button -> MinecraftClient.getInstance().setScreen(parent)));

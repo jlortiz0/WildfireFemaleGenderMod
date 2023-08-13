@@ -111,7 +111,6 @@ public class WildfireSlider extends ClickableWidget {
 		if (this.visible) {
 			RenderSystem.disableDepthTest();
 			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-			int clr = 84 << 24;
 
 			int xP = x +4;
 			Screen.fill(matrices, xP-2, y+1, x + this.width - 1, y + this.height-1, 0x222222 + (128 << 24));

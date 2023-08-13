@@ -78,7 +78,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 	private BreastModelBox lBreast, rBreast;
 	private static final OverlayModelBox lBreastWear = new OverlayModelBox(true,64, 64, 17, 34, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
-	private static final OverlayModelBox rBreastWear = new OverlayModelBox(false,64, 64, 21, 34, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);;
+	private static final OverlayModelBox rBreastWear = new OverlayModelBox(false,64, 64, 21, 34, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 	private static final BreastModelBox lBoobArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 	private static final BreastModelBox rBoobArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 	private static final BreastModelBox lBoobArmorArclight = new BreastModelBox(460, 361, 116, 147, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
@@ -540,7 +540,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			float totalRotation = breastOffsetRotation - 0.15f;
 
 			if (bounceEnabled) {
-				totalRotation -= total - 2;
+				totalRotation -= total;
 			}
 			if (isChestplateOccupied) {
 				matrixStack.translate(0, 0, 0.01f);

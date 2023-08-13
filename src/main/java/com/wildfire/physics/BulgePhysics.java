@@ -33,17 +33,25 @@ import net.minecraft.util.math.Vec3d;
 
 public class BulgePhysics {
 
-	private float bounceVel = 0, targetBounce = 0, velocity = 0, wfg_bulge, wfg_preBounce;
-	private float bounceRotVel = 0, targetRotVel = 0, rotVelocity = 0, wfg_bounceRotation, wfg_preBounceRotation;
-	private float bounceVelX = 0, targetBounceX = 0, velocityX = 0, wfg_bulgeX, wfg_preBounceX;
+	private float bounceVel = 0;
+	private float velocity = 0;
+	private float wfg_bulge;
+	private float wfg_preBounce;
+	private float bounceRotVel = 0;
+	private float rotVelocity = 0;
+	private float wfg_bounceRotation;
+	private float wfg_preBounceRotation;
+	private float bounceVelX = 0;
+	private float velocityX = 0;
+	private float wfg_bulgeX;
+	private float wfg_preBounceX;
 
 	private boolean justSneaking = false, alreadySleeping = false;
 
 	private float bulgeSize = 0, preBulgeSize = 0;
 
-	private Vec3d motion;
 	private Vec3d prePos;
-	private GenderPlayer genderPlayer;
+	private final GenderPlayer genderPlayer;
 	public BulgePhysics(GenderPlayer genderPlayer) {
 		this.genderPlayer = genderPlayer;
 	}
@@ -61,7 +69,7 @@ public class BulgePhysics {
 			return;
 		}
 
-		float bulgeWeight = genderPlayer.getBulge().getSize() * 1.25f;
+		//float bulgeWeight = genderPlayer.getBulge().getSize() * 1.25f;
 		float targetBulgeSize = genderPlayer.getBulge().getSize();
 
 		float tightness = MathHelper.clamp(armor.tightness(), 0, 1);
@@ -75,7 +83,7 @@ public class BulgePhysics {
 		}
 
 
-		this.motion = plr.getPos().subtract(this.prePos);
+		Vec3d motion = plr.getPos().subtract(this.prePos);
 		this.prePos = plr.getPos();
 		//System.out.println(motion);
 
@@ -92,11 +100,11 @@ public class BulgePhysics {
 		if(plr.fallDistance == 0) alreadyFalling = false;
 
 
-		this.targetBounce = (float) motion.y * bounceIntensity;
-		this.targetBounce += bulgeWeight;
-		float horizVel = (float) Math.sqrt(Math.pow(motion.x, 2) + Math.pow(motion.z, 2)) * (bounceIntensity);
+		float targetBounce = (float) motion.y * bounceIntensity;
+  		//targetBounce += bulgeWeight;
+		//float horizVel = (float) Math.sqrt(Math.pow(motion.x, 2) + Math.pow(motion.z, 2)) * (bounceIntensity);
 		//float horizLocal = -horizVel * ((plr.getRotationYawHead()-plr.renderYawOffset)<0?-1:1);
-		this.targetRotVel = -((plr.bodyYaw - plr.prevBodyYaw) / 15f) * bounceIntensity;
+		float targetRotVel = -((plr.bodyYaw - plr.prevBodyYaw) / 15f) * bounceIntensity;
 
 
 		float f = 1.0F;
@@ -110,19 +118,19 @@ public class BulgePhysics {
 			f = 1.0F;
 		}
 
-		this.targetBounce += MathHelper.cos(plr.limbAngle * 0.6662F + (float)Math.PI) * 0.5F * plr.limbDistance * 0.5F / f;
+		targetBounce += MathHelper.cos(plr.limbAngle * 0.6662F + (float)Math.PI) * 0.5F * plr.limbDistance * 0.5F / f;
 		//System.out.println(plr.rotationYaw);
 
-		this.targetRotVel += (float) motion.y * bounceIntensity * randomB;
+		targetRotVel += (float) motion.y * bounceIntensity * randomB;
 
 
 		if(plr.getPose() == EntityPose.CROUCHING && !this.justSneaking) {
 			this.justSneaking = true;
-			this.targetBounce += bounceIntensity;
+			targetBounce += bounceIntensity;
 		}
 		if(plr.getPose() != EntityPose.CROUCHING && this.justSneaking) {
 			this.justSneaking = false;
-			this.targetBounce += bounceIntensity;
+			targetBounce += bounceIntensity;
 		}
 
 
@@ -136,7 +144,7 @@ public class BulgePhysics {
 				float rotationR = (float) MathHelper.clampedLerp(-(float)Math.PI / 4F, (float)Math.PI / 4F, (double) ((MathHelper.sin(-rowTime + 1.0F) + 1.0F) / 2.0F));
 				//System.out.println(rotationL + ", " + rotationR);
 				if(rotationL < -1 || rotationR < -0.6f) {
-					this.targetBounce = bounceIntensity / 3.25f;
+					targetBounce = bounceIntensity / 3.25f;
 				}
 			}
 
@@ -144,9 +152,9 @@ public class BulgePhysics {
 				float speed = (float) cart.getVelocity().lengthSquared();
 				if(Math.random() * speed < 0.5f && speed > 0.2f) {
 					if(Math.random() > 0.5) {
-						this.targetBounce = -bounceIntensity / 6f;
+						targetBounce = -bounceIntensity / 6f;
 					} else {
-						this.targetBounce = bounceIntensity / 6f;
+						targetBounce = bounceIntensity / 6f;
 					}
 				}
 				/*if(rotationL < -1 || rotationR < -1) {
@@ -156,7 +164,7 @@ public class BulgePhysics {
 			if(plr.getVehicle() instanceof HorseBaseEntity horse) {
 				float movement = (float) horse.getVelocity().lengthSquared();
 				if(horse.age % clampMovement(movement) == 5 && movement > 0.1f) {
-					this.targetBounce = bounceIntensity / 4f;
+					targetBounce = bounceIntensity / 4f;
 				}
 				//horse
 			}
@@ -164,22 +172,22 @@ public class BulgePhysics {
 				float movement = (float) pig.getVelocity().lengthSquared();
 				//System.out.println(movement);
 				if(pig.age % clampMovement(movement) == 5 && movement > 0.08f) {
-					this.targetBounce = bounceIntensity / 4f;
+					targetBounce = bounceIntensity / 4f;
 				}
 				//horse
 			}
 			if(plr.getVehicle() instanceof StriderEntity strider) {
-				this.targetBounce += ((float) (strider.getMountedHeightOffset()*3f) - 4.5f) * bounceIntensity;
+				targetBounce += ((float) (strider.getMountedHeightOffset()*3f) - 4.5f) * bounceIntensity;
 				//horse
 			}
 			//System.out.println("VEHICLE");
 		}
 		if(plr.getPose() == EntityPose.SLEEPING && !this.alreadySleeping) {
-			this.targetBounce = bounceIntensity;
+			targetBounce = bounceIntensity;
 			this.alreadySleeping = true;
 		}
 		if(plr.getPose() != EntityPose.SLEEPING && this.alreadySleeping) {
-			this.targetBounce = bounceIntensity;
+			targetBounce = bounceIntensity;
 			this.alreadySleeping = false;
 		}
 		/*if(plr.getPose() == EntityPose.SWIMMING) {
@@ -209,15 +217,16 @@ public class BulgePhysics {
 		if(targetRotVel < -25f) targetRotVel = -25f;
 		if(targetRotVel > 25f) targetRotVel = 25f;
 
-		this.velocity = MathHelper.lerp(bounceAmount, this.velocity, (this.targetBounce - this.bounceVel) * delta);
+		this.velocity = MathHelper.lerp(bounceAmount, this.velocity, (targetBounce - this.bounceVel) * delta);
 		//this.preY = MathHelper.lerp(0.5f, this.preY, (this.targetBounce - this.bounceVel) * 1.25f);
 		this.bounceVel += this.velocity * percent * 1.1625f;
 
 		//X
-		this.velocityX = MathHelper.lerp(bounceAmount, this.velocityX, (this.targetBounceX - this.bounceVelX) * delta);
+		float targetBounceX = 0;
+		this.velocityX = MathHelper.lerp(bounceAmount, this.velocityX, (targetBounceX - this.bounceVelX) * delta);
 		this.bounceVelX += this.velocityX * percent;
 
-		this.rotVelocity = MathHelper.lerp(bounceAmount, this.rotVelocity, (this.targetRotVel - this.bounceRotVel) * delta);
+		this.rotVelocity = MathHelper.lerp(bounceAmount, this.rotVelocity, (targetRotVel - this.bounceRotVel) * delta);
 		this.bounceRotVel += this.rotVelocity * percent;
 
 		this.wfg_bounceRotation = this.bounceRotVel;

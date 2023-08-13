@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package com.wildfire.mixins;
 import com.mojang.authlib.GameProfile;
 import com.wildfire.api.IGenderArmor;
-import com.wildfire.api.WildfireAPI;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.WildfireHelper;
@@ -33,7 +32,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
@@ -41,6 +39,7 @@ import net.minecraft.world.World;
 import nl.enjarai.showmeyourskin.config.ArmorConfig;
 import nl.enjarai.showmeyourskin.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -60,6 +59,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         tickWildfire();
     }
 
+    @Unique
     public void tickWildfire() {
         if(!this.world.isClient()) return;
         GenderPlayer aPlr = WildfireGender.getPlayerById(this.getUuid());

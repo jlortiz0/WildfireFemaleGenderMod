@@ -25,9 +25,6 @@ import com.wildfire.render.armor.EmptyGenderArmor;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WildfireHelper {

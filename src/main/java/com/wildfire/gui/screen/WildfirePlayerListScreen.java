@@ -56,7 +56,7 @@ public class WildfirePlayerListScreen extends Screen {
  	public static GenderPlayer HOVER_PLAYER;
 
 	WildfirePlayerList PLAYER_LIST;
-	private MinecraftClient client;
+	private final MinecraftClient client;
 	public WildfirePlayerListScreen(MinecraftClient mc) {
 		super(new TranslatableText("wildfire_gender.player_list.title"));
 		this.client = mc;
@@ -76,10 +76,8 @@ public class WildfirePlayerListScreen extends Screen {
 
 	@Override
   	public void init() {
-	  	MinecraftClient mc = MinecraftClient.getInstance();
 
-	    int x = this.width / 2;
-	    int y = this.height / 2 - 20;
+		int y = this.height / 2 - 20;
 		/*this.addButton(new SteinButton(this.width / 2 - 60, y + 75, 66, 15, new TranslationTextComponent("wildfire_gender.player_list.settings_button"), button -> {
 			mc.displayGuiScreen(new WildfireSettingsScreen(SteinPlayerListScreen.this));
 		}));*/
@@ -177,7 +175,7 @@ public class WildfirePlayerListScreen extends Screen {
 			textRenderer.draw(m, Formatting.ITALIC + "Hey, it's Breast Cancer Awareness Month!", this.width / 2 - 148, y + 117, 0xFFFFFF);
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			RenderSystem.setShaderTexture(0, this.TXTR_RIBBON);
+			RenderSystem.setShaderTexture(0, TXTR_RIBBON);
 			Screen.drawTexture(m, x + 130, y + 109, 26, 26, 0, 0, 20, 20, 20, 20);
 		}
 		if (tooltip != null) {
