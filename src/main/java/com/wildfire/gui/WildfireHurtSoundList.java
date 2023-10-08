@@ -35,7 +35,9 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class WildfireHurtSoundList extends EntryListWidget<WildfireHurtSoundList.Entry> {
     private final int listWidth;
@@ -48,8 +50,9 @@ public class WildfireHurtSoundList extends EntryListWidget<WildfireHurtSoundList
         this.parent = parent;
         this.listWidth = listWidth;
         this.cur = WildfireGender.hurtSounds.get(cur);
-        List<IHurtSound> hurtSoundList = WildfireGender.hurtSounds.stream().toList();
-        for (IHurtSound i : hurtSoundList) {
+        Stream<IHurtSound> hurtSoundList = WildfireGender.hurtSounds.stream();
+        for (Iterator<IHurtSound> it = hurtSoundList.iterator(); it.hasNext(); ) {
+            IHurtSound i = it.next();
             addEntry(new Entry(i));
         }
     }

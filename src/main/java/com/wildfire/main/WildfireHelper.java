@@ -45,11 +45,11 @@ public class WildfireHelper {
             return WildfireAPI.getGenderArmors().get(stack.getItem());
         } else {
             //TODO: Fabric Alternative to Capabilities? Maybe someone can help with this?
-            if (stack.getItem() instanceof ArmorItem armorItem && armorItem.getSlotType() == EquipmentSlot.CHEST) {
+            if (stack.getItem() instanceof ArmorItem && ((ArmorItem) stack.getItem()).getSlotType() == EquipmentSlot.CHEST) {
                 //Start by checking if it is a vanilla chestplate as we have custom configurations for those we check against
                 // the armor material instead of the item instance in case any mods define custom armor items using vanilla
                 // materials as then we can make a better guess at what we want the default implementation to be
-                ArmorMaterial material = armorItem.getMaterial();
+                ArmorMaterial material = ((ArmorItem) stack.getItem()).getMaterial();
                 if (material == ArmorMaterials.LEATHER) {
                     return SimpleGenderArmor.LEATHER;
                 } else if (material == ArmorMaterials.CHAIN) {

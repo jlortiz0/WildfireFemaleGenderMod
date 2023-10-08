@@ -53,7 +53,7 @@ public class ColorConfigKey extends ConfigKey<int[]> {
         if (!validate(value)) {
             value = defaultValue;
         }
-        JsonArray arr = new JsonArray(value.length);
+        JsonArray arr = new JsonArray();
         for (int f : value) {
             arr.add(f);
         }

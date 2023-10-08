@@ -21,7 +21,7 @@ package com.wildfire.main;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.wildfire.api.IHurtSound;
 import net.fabricmc.api.ClientModInitializer;

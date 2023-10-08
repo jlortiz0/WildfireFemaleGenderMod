@@ -138,7 +138,8 @@ public class BreastPhysics {
 
 		//button option for extra entities
 		if(plr.getVehicle() != null) {
-			if(plr.getVehicle() instanceof BoatEntity boat) {
+			if(plr.getVehicle() instanceof BoatEntity) {
+				BoatEntity boat = (BoatEntity) plr.getVehicle();
 				int rowTime = (int) boat.interpolatePaddlePhase(0, plr.limbAngle);
 				int rowTime2 = (int) boat.interpolatePaddlePhase(1, plr.limbAngle);
 
@@ -150,8 +151,8 @@ public class BreastPhysics {
 				}
 			}
 
-			if(plr.getVehicle() instanceof MinecartEntity cart) {
-				float speed = (float) cart.getVelocity().lengthSquared();
+			if(plr.getVehicle() instanceof MinecartEntity) {
+				float speed = (float) plr.getVehicle().getVelocity().lengthSquared();
 				if(Math.random() * speed < 0.5f && speed > 0.2f) {
 					if(Math.random() > 0.5) {
 						targetBounce = -bounceIntensity / 6f;
@@ -163,23 +164,23 @@ public class BreastPhysics {
 					aPlr.targetBounce = bounceIntensity / 3.25f;
 				}*/
 			}
-			if(plr.getVehicle() instanceof HorseBaseEntity horse) {
-				float movement = (float) horse.getVelocity().lengthSquared();
-				if(horse.age % clampMovement(movement) == 5 && movement > 0.1f) {
+			if(plr.getVehicle() instanceof HorseBaseEntity) {
+				float movement = (float) plr.getVehicle().getVelocity().lengthSquared();
+				if(plr.getVehicle().age % clampMovement(movement) == 5 && movement > 0.1f) {
 					targetBounce = bounceIntensity / 4f;
 				}
 				//horse
 			}
-			if(plr.getVehicle() instanceof PigEntity pig) {
-				float movement = (float) pig.getVelocity().lengthSquared();
+			if(plr.getVehicle() instanceof PigEntity) {
+				float movement = (float) plr.getVehicle().getVelocity().lengthSquared();
 				//System.out.println(movement);
-				if(pig.age % clampMovement(movement) == 5 && movement > 0.08f) {
+				if(plr.getVehicle().age % clampMovement(movement) == 5 && movement > 0.08f) {
 					targetBounce = bounceIntensity / 4f;
 				}
 				//horse
 			}
-			if(plr.getVehicle() instanceof StriderEntity strider) {
-				targetBounce += ((float) (strider.getMountedHeightOffset()*3f) - 4.5f) * bounceIntensity;
+			if(plr.getVehicle() instanceof StriderEntity) {
+				targetBounce += ((float) (plr.getVehicle().getMountedHeightOffset()*3f) - 4.5f) * bounceIntensity;
 				//horse
 			}
 			//System.out.println("VEHICLE");

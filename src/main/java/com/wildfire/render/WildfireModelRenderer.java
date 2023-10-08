@@ -317,11 +317,44 @@ public class WildfireModelRenderer {
 	      }
 	   }
 
-   public record PositionTextureVertex(float x, float y, float z, float texturePositionX, float texturePositionY) {
+   public static class PositionTextureVertex {
+	private final float x;
+	private final float y;
+	private final float z;
+	private final float texturePositionX;
+	private final float texturePositionY;
 
       public PositionTextureVertex withTexturePosition(float texU, float texV) {
          return new PositionTextureVertex(x, y, z, texU, texV);
       }
+
+	  public PositionTextureVertex(float x, float y, float z, float texturePositionX, float texturePositionY) {
+		  this.x = x;
+		  this.y = y;
+		  this.z = z;
+		  this.texturePositionX = texturePositionX;
+		  this.texturePositionY = texturePositionY;
+	  }
+
+	   public float x() {
+		   return x;
+	   }
+
+	   public float y() {
+		   return y;
+	   }
+
+	   public float z() {
+		   return z;
+	   }
+
+	   public float texturePositionX() {
+		   return texturePositionX;
+	   }
+
+	   public float texturePositionY() {
+		   return texturePositionY;
+	   }
    }
 
    public static class TexturedQuad {

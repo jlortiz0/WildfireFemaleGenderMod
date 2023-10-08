@@ -24,7 +24,7 @@ import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfirePlayerList;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.WildfireGender;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -70,7 +70,7 @@ public class WildfirePlayerListScreen extends Screen {
 	}
 
 	@Override
-	public boolean shouldPause() {
+	public boolean isPauseScreen() {
 		return false;
 	}
 

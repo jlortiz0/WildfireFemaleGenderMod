@@ -49,7 +49,8 @@ public class WildfireEventHandler {
 
 		ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
 			if(!world.isClient) return;
-			if(entity instanceof  AbstractClientPlayerEntity plr) {
+			if(entity instanceof AbstractClientPlayerEntity) {
+				AbstractClientPlayerEntity plr = (AbstractClientPlayerEntity) entity;
 				UUID uuid = plr.getUuid();
 				GenderPlayer aPlr = WildfireGender.getPlayerById(plr.getUuid());
 				if (aPlr == null) {

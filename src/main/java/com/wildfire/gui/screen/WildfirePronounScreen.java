@@ -104,7 +104,8 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 	}
 
 	public void setColor(ButtonWidget btn) {
-		if (!(btn instanceof WildfireColorButton button)) return;
+		if (!(btn instanceof WildfireColorButton)) return;
+		WildfireColorButton button = (WildfireColorButton) btn;
 		int[] colors = button.getColors();
 		if (aPlr.updatePronounColor(colors)) {
 			GenderPlayer.saveGenderInfo(aPlr);

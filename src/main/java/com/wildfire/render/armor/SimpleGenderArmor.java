@@ -23,7 +23,9 @@ import com.wildfire.api.IGenderArmor;
 /**
  * Base class to help define default implementations of {@link IGenderArmor}.
  */
-public record SimpleGenderArmor(float physicsResistance, float tightness) implements IGenderArmor {
+public class SimpleGenderArmor implements IGenderArmor {
+    private final float physicsResistance;
+    private final float tightness;
 
     public static final SimpleGenderArmor FALLBACK = new SimpleGenderArmor(0.5F);
     public static final SimpleGenderArmor LEATHER = new SimpleGenderArmor(0.3F, 0.5F);
@@ -35,5 +37,10 @@ public record SimpleGenderArmor(float physicsResistance, float tightness) implem
 
     public SimpleGenderArmor(float physicsResistance) {
         this(physicsResistance, 0);
+    }
+
+    public SimpleGenderArmor(float physicsResistance, float tightness) {
+        this.physicsResistance = physicsResistance;
+        this.tightness = tightness;
     }
 }

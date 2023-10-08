@@ -28,21 +28,12 @@ import com.wildfire.render.WildfireModelRenderer.BreastModelBox;
 import com.wildfire.render.WildfireModelRenderer.OverlayModelBox;
 import com.wildfire.render.WildfireModelRenderer.PositionTextureVertex;
 import java.util.UUID;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import com.wildfire.render.WildfireModelRenderer.BulgeModelBox;
 import com.wildfire.render.WildfireModelRenderer.BunModelBox;
-import com.wildfire.render.armor.EmptyGenderArmor;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.TrinketInventory;
-import io.github.apace100.apoli.power.ModelColorPower;
-import io.github.apace100.apoli.power.Power;
-import io.github.apace100.apoli.power.PowerType;
-import io.github.apace100.origins.component.OriginComponent;
-import io.github.apace100.origins.origin.Origin;
-import io.github.apace100.origins.origin.OriginLayer;
-import io.github.apace100.origins.origin.OriginLayers;
-import io.github.apace100.origins.registry.ModComponents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -68,8 +59,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
-import nl.enjarai.showmeyourskin.config.ArmorConfig;
-import nl.enjarai.showmeyourskin.config.ModConfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,24 +70,17 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	private static final OverlayModelBox rBreastWear = new OverlayModelBox(false,64, 64, 21, 34, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 	private static final BreastModelBox lBoobArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 	private static final BreastModelBox rBoobArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
-	private static final BreastModelBox lBoobArmorArclight = new BreastModelBox(460, 361, 116, 147, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
-	private static final BreastModelBox rBoobArmorArclight = new BreastModelBox(460, 361, 200, 147, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
-	private BulgeModelBox bulgeModel, bulgeModelArmor, bulgeModelArmorArclight;
+	private BulgeModelBox bulgeModel, bulgeModelArmor;
 	private BulgeModelBox bulgeWear;
 	private BunModelBox lBun, rBun;
 	private static final BunModelBox lBunWear = new BunModelBox(64, 64, 28, 44, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 	private static final BunModelBox rBunWear = new BunModelBox(64, 64, 32, 44, 0, 0.0F, 0F, 4, 4, 4, 0.0F, true);
 	private static final BreastModelBox lBunArmor = new BreastModelBox(64, 32, 0, 16, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 	private static final BreastModelBox rBunArmor = new BreastModelBox(64, 32, 0, 16, 0, 0.0F, 0F, 4, 4, 4, 0.0F, false);
-	private static final BreastModelBox lBunArmorArclight = new BreastModelBox(539, 292, 308, 0, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
-	private static final BreastModelBox rBunArmorArclight = new BreastModelBox(539, 292, 388, 0, 0, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 
 	private float preBreastSize = 0f;
 	private float preBulgeSize = 0f;
 	private float preBunSize = 0f;
-
-	private ModelColorPower modelColor = null;
-	private Identifier lastOrigin = null;
 
 	public GenderLayer(FeatureRendererContext render) {
 		super(render);
@@ -109,7 +91,6 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, 3, 0.0F, false);
 		bulgeWear = new BulgeModelBox(64, 64, 5, 36, -1F, 0F, 0F, 2, 2, 3, 0F, false);
 		bulgeModelArmor = new BulgeModelBox(64, 32, 5, 20, -1F, 0.0F, 0F, 2, 2, 4, 0.0F, false);
-		bulgeModelArmorArclight = new BulgeModelBox(539, 292, 103, 20, -1F, 0.0F, 0F, 2, 2, 4, 0.0F, false);
 
 		lBun = new BunModelBox(64, 64, 28, 28, -4F, 0.0F, 0F, 4, 4, 4, 0.0F, false);
 		rBun = new BunModelBox(64, 64, 32, 28, 0, 0.0F, 0F, 4, 4, 4, 0.0F, true);
@@ -125,7 +106,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int packedLightIn, @Nonnull AbstractClientPlayerEntity ent, float limbAngle,
+	public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int packedLightIn, @NotNull AbstractClientPlayerEntity ent, float limbAngle,
 					   float limbDistance, float partialTicks, float animationProgress, float headYaw, float headPitch) {
 		if (ent.isInvisibleTo(MinecraftClient.getInstance().player)) {
 			//Exit early if the entity shouldn't actually be seen
@@ -164,13 +145,6 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 
 			boolean isChestplateOccupied = armorConfig.alwaysHidesBreasts() || (!plr.showBreastsInArmor() && armorConfig.coversBreasts());
-			if (isChestplateOccupied && FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
-				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(playerUUID);
-				isChestplateOccupied = conf.getTransparency(EquipmentSlot.CHEST) != 0;
-				if (!isChestplateOccupied) {
-					armorConfig = EmptyGenderArmor.INSTANCE;
-				}
-			}
 
 			ItemStack armorStack2 = ent.getEquippedStack(EquipmentSlot.LEGS);
 			IGenderArmor armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
@@ -186,13 +160,6 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				}
 			}
 			boolean isLeggingsOccupied = armorConfig2.alwaysHidesBreasts() || (!plr.showBreastsInArmor() && armorConfig2.coversBreasts());
-			if (isLeggingsOccupied && FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
-				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(playerUUID);
-				isLeggingsOccupied = conf.getTransparency(EquipmentSlot.LEGS) != 0;
-				if (!isLeggingsOccupied) {
-					armorConfig2 = EmptyGenderArmor.INSTANCE;
-				}
-			}
 
 			PlayerEntityRenderer rend = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(ent);
 			PlayerEntityModel<AbstractClientPlayerEntity> model = rend.getModel();
@@ -206,22 +173,6 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			final float bSize = isChestplateOccupied ? 0 : leftBreastPhysics.getBreastSize(partialTicks);
 			float outwardAngle = (Math.round(breasts.getCleavage() * 100f) / 100f) * 100f;
 			outwardAngle = Math.min(outwardAngle, 10);
-
-			if (FabricLoader.getInstance().isModLoaded("origins")) {
-				OriginComponent component = ModComponents.ORIGIN.get(ent);
-				OriginLayer layer = OriginLayers.getLayer(new Identifier("origins", "origin"));
-				Origin or = component.getOrigin(layer);
-				if (or != null && (lastOrigin == null || !or.getIdentifier().equals(lastOrigin))) {
-					lastOrigin = or.getIdentifier();
-					this.modelColor = null;
-					for (PowerType<? extends Power> p : or.getPowerTypes()) {
-						if (p.get(ent) instanceof ModelColorPower) {
-							this.modelColor = (ModelColorPower) p.get(ent);
-							break;
-						}
-					}
-				}
-			}
 
 			float reducer = 0;
 			if (bSize < 0.84f) reducer++;
@@ -246,7 +197,6 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				bulgeModel = new BulgeModelBox(64, 64, 5, 20, -1F, 0.0F, 0F, 2, 2, (int) (3 - bulgeOffsetZ - reducer), 0.0F, false);
 				bulgeWear = new BulgeModelBox(64, 64, 5, 36, -1F, 0F, 0F, 2, 2, (int) (3 - bulgeOffsetZ - reducer), 0F, false);
 				bulgeModelArmor = new BulgeModelBox(64, 32, 5, 20, -1F, 0.0F, 0F, 2, 2, (int) (4 - bulgeOffsetZ - reducer), 0.0F, false);
-				bulgeModelArmorArclight = new BulgeModelBox(648, 292, 103, 20, -1F, 0.0F, 0F, 2, 2, (int) (4 - bulgeOffsetZ - reducer), 0.0F, false);
 				preBulgeSize = buSize;
 			}
 
@@ -277,12 +227,6 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			float overlayBlue = 1;
 			//Note: We only render if the entity is not visible to the player, so we can assume it is visible to the player
 			float overlayAlpha = ent.isInvisible() ? 0.15F : 1;
-			if (modelColor != null) {
-				overlayRed = modelColor.getRed();
-				overlayGreen = modelColor.getGreen();
-				overlayBlue = modelColor.getBlue();
-				overlayAlpha = ent.isInvisible() ? 0.15F : modelColor.getAlpha();
-			}
 
 			RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
@@ -475,31 +419,24 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		//TODO: Eventually we may want to expose a way via the API for mods to be able to override rendering
 		// be it because they are not an armor item or the way they render their armor item is custom
 		//Render Breast Armor
-		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
+		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem) {
+			ArmorItem armorItem = (ArmorItem) armorStack.getItem();
 			Identifier armorTexture = getArmorResource(armorItem, false);
 			float armorR = 1f;
 			float armorG = 1f;
 			float armorB = 1f;
-			if (armorItem instanceof DyeableArmorItem dyeableItem) {
-				int color = dyeableItem.getColor(armorStack);
+			if (armorItem instanceof DyeableArmorItem) {
+				int color = ((DyeableArmorItem) armorItem).getColor(armorStack);
 				armorR = (float) (color >> 16 & 255) / 255.0F;
 				armorG = (float) (color >> 8 & 255) / 255.0F;
 				armorB = (float) (color & 255) / 255.0F;
 			}
 			float armorA = 1f;
 			boolean glint = armorStack.hasGlint();
-			if (FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
-				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(entity.getUuid());
-				armorA = conf.getTransparency(armorItem.getSlotType()) / 100f;
-				if (armorA < 0.01f) return;
-				if (!conf.getGlint(armorItem.getSlotType())) {
-					glint = false;
-				}
-			}
 			matrixStack.push();
 			matrixStack.translate(left ? 0.001f : -0.001f, 0.015f, -0.015f);
 			matrixStack.scale(1.05f, 1, 1);
-			BreastModelBox armor = armorTexture.getNamespace().equals("arclight") ? (left ? lBoobArmorArclight : rBoobArmorArclight) : (left ? lBoobArmor : rBoobArmor);
+			BreastModelBox armor = (left ? lBoobArmor : rBoobArmor);
 			RenderLayer armorType = RenderLayer.getEntityTranslucent(armorTexture);
 			VertexConsumer armorVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, armorType, false, glint);
 			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, armorA);
@@ -569,32 +506,25 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		//TODO: Eventually we may want to expose a way via the API for mods to be able to override rendering
 		// be it because they are not an armor item or the way they render their armor item is custom
 		//Render Breast Armor
-		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
+		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem) {
+			ArmorItem armorItem = (ArmorItem) armorStack.getItem();
 			Identifier armorTexture = getArmorResource(armorItem, true);
 			float armorR = 1f;
 			float armorG = 1f;
 			float armorB = 1f;
-			if (armorItem instanceof DyeableArmorItem dyeableItem) {
+			if (armorItem instanceof DyeableArmorItem) {
 				//overlayTexture = getArmorResource(entity, armorStack, EquipmentSlot.CHEST, "overlay");
-				int color = dyeableItem.getColor(armorStack);
+				int color = ((DyeableArmorItem) armorItem).getColor(armorStack);
 				armorR = (float) (color >> 16 & 255) / 255.0F;
 				armorG = (float) (color >> 8 & 255) / 255.0F;
 				armorB = (float) (color & 255) / 255.0F;
 			}
 			float armorA = 1f;
 			boolean glint = armorStack.hasGlint();
-			if (FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
-				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(entity.getUuid());
-				armorA = conf.getTransparency(armorItem.getSlotType()) / 100f;
-				if (armorA < 0.01f) return;
-				if (!conf.getGlint(armorItem.getSlotType())) {
-					glint = false;
-				}
-			}
 			matrixStack.push();
 			matrixStack.scale(1.05f, 1.05f, 1.05f);
 			matrixStack.translate(0, -0.005f, 0.005f);
-			BulgeModelBox armor = armorTexture.getNamespace().equals("arclight") ? bulgeModelArmorArclight : bulgeModelArmor;
+			BulgeModelBox armor = bulgeModelArmor;
 			RenderLayer armorType = RenderLayer.getEntityTranslucent(armorTexture);
 			VertexConsumer armorVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, armorType, false, glint);
 			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, armorA);
@@ -670,31 +600,24 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		//TODO: Eventually we may want to expose a way via the API for mods to be able to override rendering
 		// be it because they are not an armor item or the way they render their armor item is custom
 		//Render Breast Armor
-		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem armorItem) {
+		if (!armorStack.isEmpty() && armorStack.getItem() instanceof ArmorItem) {
+			ArmorItem armorItem = (ArmorItem) armorStack.getItem();
 			Identifier armorTexture = getArmorResource(armorItem, true);
 			float armorR = 1f;
 			float armorG = 1f;
 			float armorB = 1f;
-			if (armorItem instanceof DyeableArmorItem dyeableItem) {
-				int color = dyeableItem.getColor(armorStack);
+			if (armorItem instanceof DyeableArmorItem) {
+				int color = ((DyeableArmorItem) armorItem).getColor(armorStack);
 				armorR = (float) (color >> 16 & 255) / 255.0F;
 				armorG = (float) (color >> 8 & 255) / 255.0F;
 				armorB = (float) (color & 255) / 255.0F;
 			}
 			float armorA = 1f;
 			boolean glint = armorStack.hasGlint();
-			if (FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
-				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(entity.getUuid());
-				armorA = conf.getTransparency(armorItem.getSlotType()) / 100f;
-				if (armorA < 0.01f) return;
-				if (!conf.getGlint(armorItem.getSlotType())) {
-					glint = false;
-				}
-			}
 			matrixStack.push();
 			matrixStack.translate(left ? 0.001f : -0.001f, -0.015f, -0.015f);
 			matrixStack.scale(1.05f, 1.1f, 1);
-			BreastModelBox armor = armorTexture.getNamespace().equals("arclight") ? (left ? lBunArmorArclight : rBunArmorArclight) : (left ? lBunArmor : rBunArmor);
+			BreastModelBox armor = (left ? lBunArmor : rBunArmor);
 			RenderLayer armorType = RenderLayer.getEntityTranslucent(armorTexture);
 			VertexConsumer armorVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, armorType, false, glint);
 			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.DEFAULT_UV, armorR, armorG, armorB, armorA);
@@ -704,8 +627,8 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 
 	private static void renderBox(WildfireModelRenderer.ModelBox model, MatrixStack matrixStack, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn,
 								  float red, float green, float blue, float alpha) {
-		Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
-		Matrix3f matrix3f = matrixStack.peek().getNormalMatrix();
+		Matrix4f matrix4f = matrixStack.peek().getModel();
+		Matrix3f matrix3f = matrixStack.peek().getNormal();
 		for (WildfireModelRenderer.TexturedQuad quad : model.quads) {
 			Vec3f vector3f = new Vec3f(quad.normal.getX(), quad.normal.getY(), quad.normal.getZ());
 			vector3f.transform(matrix3f);
