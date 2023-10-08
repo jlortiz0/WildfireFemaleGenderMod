@@ -7,7 +7,11 @@ import net.minecraft.text.LiteralText;
 public class WildfireColorButton extends WildfireButton {
     private final int[] colors;
     public WildfireColorButton(int x, int y, int w, PressAction onPress, int... colors) {
-        super(x, y, w, w, new LiteralText(""), onPress, NO_TOOLTIP);
+        this(x, y, w, onPress, NO_TOOLTIP, colors);
+    }
+
+    public WildfireColorButton(int x, int y, int w, PressAction onPress, TooltipSupplier tooltip, int... colors) {
+        super(x, y, w, w, new LiteralText(""), onPress, tooltip);
         this.colors = colors;
     }
 
@@ -31,4 +35,5 @@ public class WildfireColorButton extends WildfireButton {
             this.renderTooltip(m, mouseX, mouseY);
         }
     }
+
 }
