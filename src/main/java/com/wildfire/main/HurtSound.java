@@ -19,20 +19,24 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package com.wildfire.main;
 
 import com.wildfire.api.IHurtSound;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class HurtSound implements IHurtSound {
 	private final String name;
 	private final Identifier id;
 	private final SoundEvent snd;
-	public HurtSound(String name, Identifier id) {
+	private final boolean fem;
+
+	public HurtSound(String name, Identifier id, boolean fem) {
 		this.name = name;
+		this.fem = fem;
 		this.id = id;
 		if (id != null) {
-			this.snd = new SoundEvent(id);
-			Registry.register(Registry.SOUND_EVENT, id, snd);
+			this.snd = SoundEvent.of(id, 32);
+			Registry.register(Registries.SOUND_EVENT, id, snd);
 		} else {
 			this.snd = null;
 		}
@@ -48,5 +52,9 @@ public class HurtSound implements IHurtSound {
 
 	public Identifier getId() {
 		return id;
+	}
+
+	public boolean isFem() {
+		return this.fem;
 	}
 }

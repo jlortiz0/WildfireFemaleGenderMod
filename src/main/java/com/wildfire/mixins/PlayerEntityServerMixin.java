@@ -51,7 +51,7 @@ public abstract class PlayerEntityServerMixin extends LivingEntity {
             PlayerEntity self = (PlayerEntity) (Object) this;
 
             amount = this.applyArmorToDamage(source, amount);
-            amount = this.applyEnchantmentsToDamage(source, amount);
+            amount = this.modifyAppliedDamage(source, amount);
             amount = Math.max(amount - this.getAbsorptionAmount(), 0.0F);
 
             if(amount != 0.0f) {
@@ -60,7 +60,8 @@ public abstract class PlayerEntityServerMixin extends LivingEntity {
                 if (plr != null) {
                     PacketByteBuf buf = PacketByteBufs.create();
                     buf.writeUuid(plr.uuid);
-                    for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) world, world.getPlayerByUuid(plr.uuid).getBlockPos())) {
+                    buf.writeBoolean(plr.getHurtSounds() != null && WildfireGender.hurtSounds.get(plr.getHurtSounds()).isFem());
+                    for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) getWorld(), getWorld().getPlayerByUuid(plr.uuid).getBlockPos())) {
                         if (ServerPlayNetworking.canSend(player, new Identifier("wildfire_gender", "hurt"))) {
                             ServerPlayNetworking.send(player, new Identifier("wildfire_gender", "hurt"), buf);
                         }

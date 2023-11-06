@@ -25,11 +25,13 @@ import com.wildfire.gui.WildfireHurtSoundList;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.WildfireGender;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
 
 import java.util.UUID;
@@ -42,7 +44,7 @@ public class WildfireHurtSoundListScreen extends BaseWildfireScreen {
 	private final GenderPlayer aPlr;
 
 	public WildfireHurtSoundListScreen(Screen parent, UUID plr) {
-		super(new TranslatableText("wildfire_gender.player_list.female_sounds"), parent, plr);
+		super(Text.translatable("wildfire_gender.player_list.female_sounds"), parent, plr);
 		aPlr = getPlayer();
 	}
 
@@ -50,7 +52,7 @@ public class WildfireHurtSoundListScreen extends BaseWildfireScreen {
 	public void init() {
 		int y = this.height / 2 - 20;
 
-		this.addDrawableChild(new WildfireButton(this.width / 2 + 53, y - 74, 9, 9, new TranslatableText("wildfire_gender.label.exit"), button -> MinecraftClient.getInstance().setScreen(parent)));
+		this.addDrawableChild(new WildfireButton(this.width / 2 + 53, y - 74, 9, 9, Text.translatable("wildfire_gender.label.exit"), button -> MinecraftClient.getInstance().setScreen(parent)));
 
 		SOUND_LIST = new WildfireHurtSoundList(this, 118, (y - 61), (y + 71), aPlr.getHurtSounds());
 		SOUND_LIST.setRenderBackground(false);
@@ -71,23 +73,23 @@ public class WildfireHurtSoundListScreen extends BaseWildfireScreen {
     }
 
 	@Override
-	public void render(MatrixStack m, int f1, int f2, float f3) {
-		super.renderBackground(m);
+	public void render(DrawContext ctx, int f1, int f2, float f3) {
+		super.renderBackground(ctx);
 		MinecraftClient mc = MinecraftClient.getInstance();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		if(this.TXTR_BACKGROUND != null) {
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
+			RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem.setShaderTexture(0, this.TXTR_BACKGROUND);
 		}
 		int i = (this.width - 132) / 2;
 		int j = (this.height - 156) / 2 - 20;
-		drawTexture(m, i, j, 0, 0, 192, 174);
+		ctx.drawTexture(TXTR_BACKGROUND, i, j, 0, 0, 192, 174);
 
 		int x = (this.width / 2);
 		int y = (this.height / 2) - 20;
 
-		super.render(m, f1, f2, f3);
+		super.render(ctx, f1, f2, f3);
 
         double scale = mc.getWindow().getScaleFactor();
         int left = x - 59;
@@ -97,9 +99,9 @@ public class WildfireHurtSoundListScreen extends BaseWildfireScreen {
         RenderSystem.enableScissor((int)(left  * scale), (int) (bottom * scale),
 				(int)(width * scale), (int) (height * scale));
 
-		SOUND_LIST.render(m, f1, f2, f3);
+		SOUND_LIST.render(ctx, f1, f2, f3);
 		RenderSystem.disableScissor();
 
-		this.textRenderer.draw(m, new TranslatableText("wildfire_gender.hurt_sound_list.title"), x - 60, y - 73, 4473924);
+		ctx.drawText(this.textRenderer, Text.translatable("wildfire_gender.hurt_sound_list.title"), x - 60, y - 73, 4473924, false);
 	}
 }

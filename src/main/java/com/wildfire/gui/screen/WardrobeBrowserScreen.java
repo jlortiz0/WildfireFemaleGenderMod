@@ -26,7 +26,8 @@ import com.wildfire.gui.WildfireButton;
 import com.wildfire.main.GenderPlayer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ConfirmChatLinkScreen;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.GameRenderer;
@@ -36,19 +37,19 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Vector3f;
+import org.joml.Quaternionf;
 
 public class WardrobeBrowserScreen extends BaseWildfireScreen {
 
 	private Identifier BACKGROUND;
 
 	public WardrobeBrowserScreen(Screen parent, UUID uuid) {
-		super(new TranslatableText("wildfire_gender.wardrobe.title"), parent, uuid);
+		super(Text.translatable("wildfire_gender.wardrobe.title"), parent, uuid);
 	}
 
 	@Override
@@ -60,29 +61,29 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		this.addDrawableChild(new WildfirePronounButton(this.width / 2 - 42, j - 52, 158, 20, getGenderLabel(plr),
 				button -> MinecraftClient.getInstance().setScreen(new WildfirePronounScreen(WardrobeBrowserScreen.this, this.playerUUID)), plr::getPronounColorOnTick));
 
-		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 32, 158, 20, new TranslatableText("wildfire_gender.breast_settings.title").append("..."),
+		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 32, 158, 20, Text.translatable("wildfire_gender.breast_settings.title").append("..."),
 				button -> MinecraftClient.getInstance().setScreen(new WildfireBreastCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
 
-		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j + 28, 158, 20, new TranslatableText("wildfire_gender.char_settings.title").append("..."),
+		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j + 28, 158, 20, Text.translatable("wildfire_gender.char_settings.title").append("..."),
 				button -> MinecraftClient.getInstance().setScreen(new WildfireCharacterSettingsScreen(WardrobeBrowserScreen.this, this.playerUUID))));
 
 		if (WildfireGender.isCurseforgeNerfed) {
-			this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 12, 158, 20, new TranslatableText("wildfire_gender.bulge_settings_disabled").formatted(Formatting.UNDERLINE),
-					button -> this.client.setScreen(new ConfirmChatLinkScreen((bool) -> {
+			this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 12, 158, 20, Text.translatable("wildfire_gender.bulge_settings_disabled").formatted(Formatting.UNDERLINE),
+					button -> this.client.setScreen(new ConfirmLinkScreen((bool) -> {
 						if (bool) {
 							Util.getOperatingSystem().open(WildfireGender.GITHUB_LINK);
 						}
 						this.client.setScreen(this);
 					}, WildfireGender.GITHUB_LINK, false))));
 		} else {
-			this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 12, 158, 20, new TranslatableText("wildfire_gender.bulge_settings.title").append("..."),
+			this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j - 12, 158, 20, Text.translatable("wildfire_gender.bulge_settings.title").append("..."),
 					button -> MinecraftClient.getInstance().setScreen(new WildfireBulgeCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
 		}
 
-		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j + 8, 158, 20, new TranslatableText("wildfire_gender.buns_settings.title").append("..."),
+		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, j + 8, 158, 20, Text.translatable("wildfire_gender.buns_settings.title").append("..."),
 				button -> MinecraftClient.getInstance().setScreen(new WildfireBunsCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
 
-		this.addDrawableChild(new WildfireButton(this.width / 2 + 111, j - 63, 9, 9, new TranslatableText("wildfire_gender.label.exit"),
+		this.addDrawableChild(new WildfireButton(this.width / 2 + 111, j - 63, 9, 9, Text.translatable("wildfire_gender.label.exit"),
 				button -> MinecraftClient.getInstance().setScreen(parent)));
 
 		this.BACKGROUND = new Identifier(WildfireGender.MODID, "textures/gui/wardrobe_bg.png");
@@ -91,23 +92,22 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 	}
 
 	private Text getGenderLabel(GenderPlayer plr) {
-		return new TranslatableText("wildfire_gender.label.gender").append(" - ").append(plr.getPronouns());
+		return Text.translatable("wildfire_gender.label.gender").append(" - ").append(plr.getPronouns());
 	}
 
 	@Override
-	public void render(MatrixStack m, int f1, int f2, float f3) {
+	public void render(DrawContext ctx, int f1, int f2, float f3) {
 		MinecraftClient minecraft = MinecraftClient.getInstance();
 		GenderPlayer plr = getPlayer();
-		super.renderBackground(m);
+		super.renderBackground(ctx);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.setShaderTexture(0, this.BACKGROUND);
 
 		int i = (this.width - 248) / 2;
 		int j = (this.height - 134) / 2;
-		drawTexture(m, i, j, 0, 0, 248, 156);
+		ctx.drawTexture(BACKGROUND, i, j, 0, 0, 248, 156);
 
 		if(plr == null) return;
 
@@ -115,7 +115,7 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		int x = this.width / 2;
 		int y = this.height / 2;
 
-		this.textRenderer.draw(m, title, x - 42, y - 62, 4473924);
+		ctx.drawText(textRenderer, title, x - 42, y - 62, 4473924, false);
 
 		try {
 			RenderSystem.setShaderColor(1f, 1.0F, 1.0F, 1.0F);
@@ -132,7 +132,7 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 			//error, fallback
 			minecraft.setScreen(new WildfirePlayerListScreen(minecraft));
 		}
-		super.render(m, f1, f2, f3);
+		super.render(ctx, f1, f2, f3);
 	}
 
 	public static void drawEntityOnScreen(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity) {
@@ -150,9 +150,9 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		MatrixStack matrixStack2 = new MatrixStack();
 		matrixStack2.translate(0.0D, 0.0D, 800.0D);
 		matrixStack2.scale((float)size, (float)size, (float)size);
-		Quaternion quaternion = Vec3f.POSITIVE_Z.getDegreesQuaternion(180.0F);
-		Quaternion quaternion2 = Vec3f.POSITIVE_X.getDegreesQuaternion(g * 20.0F);
-		quaternion.hamiltonProduct(quaternion2);
+		Quaternionf quaternion = new Quaternionf().rotateZ((float) Math.PI);
+		Quaternionf quaternion2 = (new Quaternionf()).rotateX(g * (float) Math.PI / 9);
+		quaternion.mul(quaternion2);
 		matrixStack2.multiply(quaternion);
 		float h = entity.bodyYaw;
 		float i = entity.getYaw();

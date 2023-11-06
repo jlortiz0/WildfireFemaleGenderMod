@@ -39,7 +39,7 @@ import java.util.UUID;
 public class Configuration {
 
 	public static final UUIDConfigKey USERNAME = new UUIDConfigKey("username", UUID.nameUUIDFromBytes("UNKNOWN".getBytes(StandardCharsets.UTF_8)));
-	public static final StringConfigKey GENDER = new StringConfigKey("gender", "they/them");
+	public static final StringConfigKey GENDER = new StringConfigKey("gender", "please ask");
 	public static final ColorConfigKey GENDER_COLOR = new ColorConfigKey("gender_color", Formatting.WHITE.getColorValue());
 	public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0, 0, 1.5f);
 	public static final FloatConfigKey BUNS_SIZE = new FloatConfigKey("buns_size", 0, 0, 1.5f);

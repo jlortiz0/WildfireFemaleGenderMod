@@ -7,4 +7,5 @@ public interface IHurtSound {
     String getName();
     SoundEvent getSnd();
     Identifier getId();
+    boolean isFem();
 }

@@ -26,12 +26,14 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.LiteralTextContent;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
@@ -50,7 +52,7 @@ public class WildfireHurtSoundList extends EntryListWidget<WildfireHurtSoundList
         this.cur = WildfireGender.hurtSounds.get(cur);
         List<IHurtSound> hurtSoundList = WildfireGender.hurtSounds.stream().toList();
         for (IHurtSound i : hurtSoundList) {
-            addEntry(new Entry(i));
+            addEntry(new com.wildfire.gui.WildfireHurtSoundList.Entry(i));
         }
     }
 
@@ -61,13 +63,17 @@ public class WildfireHurtSoundList extends EntryListWidget<WildfireHurtSoundList
     }
 
     @Override
+    protected void drawSelectionHighlight(DrawContext context, int y, int entryWidth, int entryHeight, int borderColor, int fillColor) {
+    }
+
+    @Override
     public int getRowWidth()
     {
         return this.listWidth;
     }
 
     @Override
-    protected void renderBackground(MatrixStack mStack) {}
+    protected void renderBackground(DrawContext ctx) {}
 
     @Override
     public void appendNarrations(NarrationMessageBuilder builder) {
@@ -82,27 +88,27 @@ public class WildfireHurtSoundList extends EntryListWidget<WildfireHurtSoundList
 
         private Entry(final IHurtSound nInfo) {
             this.nInfo = nInfo;
-            btnOpenGUI = new WildfireButton(0, 0, 112, 20, new LiteralText(""), button -> parent.setHurtSound(nInfo));
+            btnOpenGUI = new WildfireButton(0, 0, 112, 20, Text.empty(), button -> parent.setHurtSound(nInfo));
             btnOpenGUI.active = nInfo != null;
         }
 
         @Override
-        public void render(MatrixStack m, int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean p_194999_5_, float partialTicks) {
+        public void render(DrawContext ctx, int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean p_194999_5_, float partialTicks) {
             TextRenderer font = MinecraftClient.getInstance().textRenderer;
 
             if(nInfo != null) {
                 btnOpenGUI.active = true;
-                font.draw(m, nInfo.getName(), left + 23, top + 6, 0xFFFFFF);
+                ctx.drawText(font, Text.literal(nInfo.getName()), left + 23, top + 6, 0xFFFFFF, false);
             } else {
                 btnOpenGUI.active = false;
-                font.draw(m, new TranslatableText("wildfire_gender.label.too_far").formatted(Formatting.RED), left + 23, top + 11, 0xFFFFFF);
+                ctx.drawText(font, Text.translatable("wildfire_gender.label.too_far").formatted(Formatting.RED), left + 23, top + 11, 0xFFFFFF, false);
             }
-            this.btnOpenGUI.x = left;
-            this.btnOpenGUI.y = top;
-            this.btnOpenGUI.render(m, mouseX, mouseY, partialTicks);
+            this.btnOpenGUI.setX(left);
+            this.btnOpenGUI.setY(top);
+            this.btnOpenGUI.render(ctx, mouseX, mouseY, partialTicks);
             RenderSystem.setShaderTexture(0, ClickableWidget.WIDGETS_TEXTURE);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            drawTexture(m, left + 3, top + 3, cur == nInfo ? 208 : 224, 0, 16, 16);
+            ctx.drawTexture(ClickableWidget.WIDGETS_TEXTURE, left + 3, top + 3, cur == nInfo ? 208 : 224, 0, 16, 16);
         }
 
 

@@ -22,7 +22,7 @@ import com.wildfire.api.IGenderArmor;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.WildfireHelper;
 import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.passive.HorseBaseEntity;
+import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.passive.StriderEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -96,7 +96,7 @@ public class BunPhysics {
 			bounceIntensity = bounceIntensity * WildfireHelper.randFloat(0.5f, 1.5f);
 		}
 		if(plr.fallDistance > 0 && !alreadyFalling) {
-			randomB = plr.world.random.nextBoolean() ? -1 : 1;
+			randomB = plr.getWorld().random.nextBoolean() ? -1 : 1;
 			alreadyFalling = true;
 		}
 		if(plr.fallDistance == 0) alreadyFalling = false;
@@ -120,7 +120,7 @@ public class BunPhysics {
 			f = 1.0F;
 		}
 
-		targetBounce += MathHelper.cos(plr.limbAngle * 0.6662F + (float)Math.PI) * 0.5F * plr.limbDistance * 0.5F / f;
+		targetBounce += MathHelper.cos(plr.limbAnimator.getPos() * 0.6662F + (float)Math.PI) * 0.5F * plr.limbAnimator.getSpeed() * 0.5F / f;
 		//System.out.println(plr.rotationYaw);
 
 		targetRotVel += (float) motion.y * bounceIntensity * randomB;
@@ -139,8 +139,8 @@ public class BunPhysics {
 		//button option for extra entities
 		if(plr.getVehicle() != null) {
 			if(plr.getVehicle() instanceof BoatEntity boat) {
-				int rowTime = (int) boat.interpolatePaddlePhase(0, plr.limbAngle);
-				int rowTime2 = (int) boat.interpolatePaddlePhase(1, plr.limbAngle);
+				int rowTime = (int) boat.interpolatePaddlePhase(0, plr.limbAnimator.getPos());
+				int rowTime2 = (int) boat.interpolatePaddlePhase(1, plr.limbAnimator.getPos());
 
 				float rotationL = (float) MathHelper.clampedLerp(-(float)Math.PI / 3F, -0.2617994F, (double) ((MathHelper.sin(-rowTime2) + 1.0F) / 2.0F));
 				float rotationR = (float) MathHelper.clampedLerp(-(float)Math.PI / 4F, (float)Math.PI / 4F, (double) ((MathHelper.sin(-rowTime + 1.0F) + 1.0F) / 2.0F));
@@ -163,7 +163,7 @@ public class BunPhysics {
 					aPlr.targetBounce = bounceIntensity / 3.25f;
 				}*/
 			}
-			if(plr.getVehicle() instanceof HorseBaseEntity horse) {
+			if(plr.getVehicle() instanceof AbstractHorseEntity horse) {
 				float movement = (float) horse.getVelocity().lengthSquared();
 				if(horse.age % clampMovement(movement) == 5 && movement > 0.1f) {
 					targetBounce = bounceIntensity / 4f;

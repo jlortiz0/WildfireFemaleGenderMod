@@ -7,6 +7,6 @@
 	"male_hurt1": {
 		"category": "blocks",
 		"subtitle": "wildfire_gender.hurt.male",
-		"sounds": [ "wildfire_gender:male_damage", "wildfire_gender:male_damage2" ]
+		"sounds": [ "wildfire_gender:male_damage" ]
 	}
 }

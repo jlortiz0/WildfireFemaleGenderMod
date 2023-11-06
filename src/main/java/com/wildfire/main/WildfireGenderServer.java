@@ -32,7 +32,7 @@ public class WildfireGenderServer implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "send_gender_info"),
                 PacketSendGenderInfo::handle);
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            if (!handler.getPlayer().world.isClient()) {
+            if (!handler.getPlayer().getWorld().isClient()) {
                 //Send all other players to the player who joined. Note: We don't send the player to
                 // other players as that will happen once the player finishes sending themselves to the server
                 ServerPlayerEntity uuid = handler.getPlayer();

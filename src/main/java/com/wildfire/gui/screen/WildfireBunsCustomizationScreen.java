@@ -26,11 +26,12 @@ import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.config.Configuration;
 import it.unimi.dsi.fastutil.floats.FloatConsumer;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.TranslatableText;
-
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 import java.util.UUID;
 
 public class WildfireBunsCustomizationScreen extends BaseWildfireScreen {
@@ -39,7 +40,7 @@ public class WildfireBunsCustomizationScreen extends BaseWildfireScreen {
     private WildfireSlider gapSlider, rotSlider;
 
     public WildfireBunsCustomizationScreen(Screen parent, UUID uuid) {
-        super(new TranslatableText("wildfire_gender.buns_settings.title"), parent, uuid);
+        super(Text.translatable("wildfire_gender.buns_settings.title"), parent, uuid);
     }
 
     @Override
@@ -53,30 +54,30 @@ public class WildfireBunsCustomizationScreen extends BaseWildfireScreen {
             GenderPlayer.saveGenderInfo(plr);
         };
 
-        this.addDrawableChild(new WildfireButton(this.width / 2 + 178, j - 61, 9, 9, new TranslatableText("wildfire_gender.label.exit"),
+        this.addDrawableChild(new WildfireButton(this.width / 2 + 178, j - 61, 9, 9, Text.translatable("wildfire_gender.label.exit"),
               button -> MinecraftClient.getInstance().setScreen(parent)));
 
         this.addDrawableChild(this.bunsSlider = new WildfireSlider(this.width / 2 + 30, j - 48, 158, 20, Configuration.BUNS_SIZE, plr.getBunsSize(),
-              plr::updateBunsSize, value -> new TranslatableText("wildfire_gender.wardrobe.slider.buns_size", Math.round(value * 100)), onSave));
+              plr::updateBunsSize, value -> Text.translatable("wildfire_gender.wardrobe.slider.buns_size", Math.round(value * 100)), onSave));
 
         //Customization
         this.addDrawableChild(this.xOffsetBunSlider = new WildfireSlider(this.width / 2 + 30, j - 27, 158, 20, Configuration.BUNS_OFFSET_X, buns.getXOffset(),
-              buns::updateXOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.separation", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
+              buns::updateXOffset, value -> Text.translatable("wildfire_gender.wardrobe.slider.separation", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
         this.addDrawableChild(this.yOffsetBunSlider = new WildfireSlider(this.width / 2 + 30, j - 6, 158, 20, Configuration.BUNS_OFFSET_Y, buns.getYOffset(),
-              buns::updateYOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.height", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
+              buns::updateYOffset, value -> Text.translatable("wildfire_gender.wardrobe.slider.height", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
         this.addDrawableChild(this.zOffsetBunSlider = new WildfireSlider(this.width / 2 + 30, j + 15, 158, 20, Configuration.BUNS_OFFSET_Z, buns.getZOffset(),
-              buns::updateZOffset, value -> new TranslatableText("wildfire_gender.wardrobe.slider.depth", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
+              buns::updateZOffset, value -> Text.translatable("wildfire_gender.wardrobe.slider.depth", Math.round((Math.round(value * 100f) / 100f) * 10)), onSave));
 
         this.addDrawableChild(this.gapSlider = new WildfireSlider(this.width / 2 + 30, j + 36, 158, 20, Configuration.BUNS_GAP, buns.getGap(),
-              buns::updateGap, value -> new TranslatableText("wildfire_gender.wardrobe.slider.rotation", Math.round((Math.round(value * 100f) / 100f) * 100)), onSave));
+              buns::updateGap, value -> Text.translatable("wildfire_gender.wardrobe.slider.rotation", Math.round((Math.round(value * 100f) / 100f) * 100)), onSave));
         this.addDrawableChild(this.rotSlider = new WildfireSlider(this.width / 2 + 30, j + 57, 158, 20, Configuration.BUNS_ROT, buns.getRot(),
-                buns::updateRot, value -> new TranslatableText("wildfire_gender.wardrobe.slider.rotation_vert", Math.round((Math.round(value * 100f) / 100f) * 100)), onSave));
+                buns::updateRot, value -> Text.translatable("wildfire_gender.wardrobe.slider.rotation_vert", Math.round((Math.round(value * 100f) / 100f) * 100)), onSave));
 
         this.addDrawableChild(new WildfireButton(this.width / 2 + 30, j + 78, 158, 20,
-              new TranslatableText("wildfire_gender.breast_customization.dual_physics", new TranslatableText(buns.isUnibun() ? "wildfire_gender.label.no" : "wildfire_gender.label.yes")), button -> {
+              Text.translatable("wildfire_gender.breast_customization.dual_physics", Text.translatable(buns.isUnibun() ? "wildfire_gender.label.no" : "wildfire_gender.label.yes")), button -> {
             boolean isUnibun = !buns.isUnibun();
             if (buns.updateUnibun(isUnibun)) {
-                button.setMessage(new TranslatableText("wildfire_gender.breast_customization.dual_physics", new TranslatableText(isUnibun ? "wildfire_gender.label.no" : "wildfire_gender.label.yes")));
+                button.setMessage(Text.translatable("wildfire_gender.breast_customization.dual_physics", Text.translatable(isUnibun ? "wildfire_gender.label.no" : "wildfire_gender.label.yes")));
                 GenderPlayer.saveGenderInfo(plr);
             }
         }));
@@ -85,10 +86,10 @@ public class WildfireBunsCustomizationScreen extends BaseWildfireScreen {
     }
 
     @Override
-    public void render(MatrixStack m, int f1, int f2, float f3) {
+    public void render(DrawContext ctx, int f1, int f2, float f3) {
         MinecraftClient minecraft = MinecraftClient.getInstance();
         GenderPlayer plr = getPlayer();
-        super.renderBackground(m);
+        super.renderBackground(ctx);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         if(plr == null) return;
@@ -111,10 +112,10 @@ public class WildfireBunsCustomizationScreen extends BaseWildfireScreen {
 
         int x = this.width / 2;
         int y = this.height / 2;
-        fill(m, x + 28, y - 64, x + 190, y + 79, 0x55000000);
-        fill(m, x + 29, y - 63, x + 189, y - 50, 0x55000000);
-        this.textRenderer.draw(m, getTitle(), x + 32, y - 60, 0xFFFFFF);
-        super.render(m, f1, f2, f3);
+        ctx.fill(x + 28, y - 64, x + 190, y + 79, 0x55000000);
+        ctx.fill(x + 29, y - 63, x + 189, y - 50, 0x55000000);
+        ctx.drawText(this.textRenderer, getTitle(), x + 32, y - 60, 0xFFFFFF, false);
+        super.render(ctx, f1, f2, f3);
     }
 
     @Override

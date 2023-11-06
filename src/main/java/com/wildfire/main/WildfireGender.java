@@ -26,9 +26,9 @@ import javax.annotation.Nullable;
 import com.wildfire.api.IHurtSound;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.SimpleRegistry;
 
 public class WildfireGender implements ClientModInitializer {
   	public static final String MODID = "wildfire_gender";
@@ -64,10 +64,10 @@ public class WildfireGender implements ClientModInitializer {
 	}
 
 	static {
-		Registry.register(hurtSounds, (Identifier) null, new HurtSound("Disabled", null));
+		Registry.register(hurtSounds, (Identifier) null, new HurtSound("Disabled", null, false));
 		Identifier id =  new Identifier(WildfireGender.MODID, "male_hurt1");
-		Registry.register(hurtSounds, id, new HurtSound("Masculine 1", id));
+		Registry.register(hurtSounds, id, new HurtSound("Masculine 1", id, false));
 		id = new Identifier(WildfireGender.MODID, "female_hurt1");
-		Registry.register(hurtSounds, id, new HurtSound("Feminine 1", id));
+		Registry.register(hurtSounds, id, new HurtSound("Feminine 1", id, true));
 	}
 }

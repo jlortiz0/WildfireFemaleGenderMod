@@ -23,6 +23,7 @@ import com.wildfire.gui.screen.WildfirePlayerListScreen;
 import com.wildfire.main.networking.PacketSendGenderInfo;
 import com.wildfire.main.networking.PacketSync;
 
+import java.util.Random;
 import java.util.UUID;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
@@ -33,10 +34,12 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.sound.EntityTrackingSoundInstance;
+import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 
 public class WildfireEventHandler {
@@ -107,6 +110,7 @@ public class WildfireEventHandler {
 		ClientPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "hurt"),
 		(client, handler, buf, responseSender) -> {
 			UUID uuid = buf.readUuid();
+			boolean fem = buf.readBoolean();
 			GenderPlayer aPlr = WildfireGender.getPlayerById(uuid);
 			if (aPlr == null) {
 				return;
@@ -117,11 +121,15 @@ public class WildfireEventHandler {
 			Identifier hurtSoundID = aPlr.getHurtSounds();
 			if(hurtSoundID == null) return;
 			IHurtSound hurtSound = WildfireGender.hurtSounds.get(hurtSoundID);
-			if (hurtSound == null) return;
+			if (hurtSound == null) {
+				hurtSound = WildfireGender.hurtSounds.get(new Identifier(WildfireGender.MODID, fem ? "female_hurt1" : "male_hurt1"));
+			}
+			final IHurtSound actualHurtSound = hurtSound;
 
 			PlayerEntity ent = MinecraftClient.getInstance().world.getPlayerByUuid(uuid);
 			if (ent != null) {
-				client.execute(() -> client.getSoundManager().play(new EntityTrackingSoundInstance(hurtSound.getSnd(), SoundCategory.PLAYERS, 1f, 1f, ent)));
+				float pitch = ent.getWorld().random.nextFloat() / 50 + 0.9f;
+				client.execute(() -> client.getSoundManager().play(new EntityTrackingSoundInstance(actualHurtSound.getSnd(), SoundCategory.PLAYERS, 1f, pitch, ent, ent.age)));
 			}
 		});
 	}

@@ -24,14 +24,15 @@ import it.unimi.dsi.fastutil.floats.Float2ObjectFunction;
 import it.unimi.dsi.fastutil.floats.FloatConsumer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 
@@ -54,18 +55,13 @@ public class WildfireSlider extends ClickableWidget {
 
 	public WildfireSlider(int xPos, int yPos, int width, int height, double minVal, double maxVal, double currentVal, FloatConsumer valueUpdate,
 		Float2ObjectFunction<Text> messageUpdate, FloatConsumer onSave) {
-		super(xPos, yPos, width, height, new LiteralText(""));
+		super(xPos, yPos, width, height, Text.empty());
 		this.minValue = minVal;
 		this.maxValue = maxVal;
 		this.valueUpdate = valueUpdate;
 		this.messageUpdate = messageUpdate;
 		this.onSave = onSave;
 		setValueInternal(currentVal);
-	}
-
-	@Override
-	protected int getYImage(boolean hovered) {
-		return 0;
 	}
 
 	protected void updateMessage() {
@@ -103,25 +99,33 @@ public class WildfireSlider extends ClickableWidget {
 	}
 
 	protected MutableText getNarrationMessage() {
-		return new TranslatableText("gui.narrate.slider", this.getMessage());
+		return Text.translatable("gui.narrate.slider", this.getMessage());
+	}
+
+	@Override
+	protected void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
+
 	}
 
 
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	@Override
+	public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		if (this.visible) {
 			RenderSystem.disableDepthTest();
-			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+			int x = this.getX();
+			int y = this.getY();
+			this.hovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
-			int xP = x +4;
-			Screen.fill(matrices, xP-2, y+1, x + this.width - 1, y + this.height-1, 0x222222 + (128 << 24));
+			int xP = this.getX() +4;
+			ctx.fill(xP-2, y+1, x + this.width - 1, y + this.height-1, 0x222222 + (128 << 24));
 			int xPos =  x + 4 + (int) (this.value * (float)(this.width - 6));
-			Screen.fill(matrices, x+3, y+2, xPos-1, y + this.height - 2, 0x222266 + (180 << 24));
+			ctx.fill(x+3, y+2, xPos-1, y + this.height - 2, 0x222266 + (180 << 24));
 
-			int xPos2 = this.x + 2 + (int) (this.value * (float)(this.width - 4));
-			Screen.fill(matrices,xPos2-2, y + 1, xPos2, y + this.height-1, 0xFFFFFF + (120 << 24));
+			int xPos2 = this.getX() + 2 + (int) (this.value * (float)(this.width - 4));
+			ctx.fill(xPos2-2, y + 1, xPos2, y + this.height-1, 0xFFFFFF + (120 << 24));
 			RenderSystem.enableDepthTest();
 			TextRenderer font = MinecraftClient.getInstance().textRenderer;
-			drawCenteredText(matrices, font, getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, this.hovered || changed ? 0xFFFF55 : 0xFFFFFF);
+			ctx.drawCenteredTextWithShadow(font, getMessage(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, this.hovered || changed ? 0xFFFF55 : 0xFFFFFF);
 		}
 	}
 
@@ -151,11 +155,12 @@ public class WildfireSlider extends ClickableWidget {
 	}
 
 	@Override
-	public void appendNarrations(NarrationMessageBuilder builder) {}
+	protected void appendClickableNarrations(NarrationMessageBuilder builder) {
 
+	}
 
 	private void setValueFromMouse(double mouseX) {
-		this.value = ((mouseX - (double)(this.x + 4)) / (double)(this.width - 8));
+		this.value = ((mouseX - (double)(this.getX() + 4)) / (double)(this.width - 8));
 		if (this.value < 0.0F) {
 			this.value = 0.0F;
 		}

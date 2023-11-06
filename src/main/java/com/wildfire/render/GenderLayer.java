@@ -27,6 +27,8 @@ import com.wildfire.physics.BunPhysics;
 import com.wildfire.render.WildfireModelRenderer.BreastModelBox;
 import com.wildfire.render.WildfireModelRenderer.OverlayModelBox;
 import com.wildfire.render.WildfireModelRenderer.PositionTextureVertex;
+
+import java.lang.Math;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 
@@ -68,8 +70,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
-import nl.enjarai.showmeyourskin.config.ArmorConfig;
-import nl.enjarai.showmeyourskin.config.ModConfig;
+import org.joml.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -164,13 +165,6 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 
 			boolean isChestplateOccupied = armorConfig.alwaysHidesBreasts() || (!plr.showBreastsInArmor() && armorConfig.coversBreasts());
-			if (isChestplateOccupied && FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
-				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(playerUUID);
-				isChestplateOccupied = conf.getTransparency(EquipmentSlot.CHEST) != 0;
-				if (!isChestplateOccupied) {
-					armorConfig = EmptyGenderArmor.INSTANCE;
-				}
-			}
 
 			ItemStack armorStack2 = ent.getEquippedStack(EquipmentSlot.LEGS);
 			IGenderArmor armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
@@ -186,13 +180,6 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				}
 			}
 			boolean isLeggingsOccupied = armorConfig2.alwaysHidesBreasts() || (!plr.showBreastsInArmor() && armorConfig2.coversBreasts());
-			if (isLeggingsOccupied && FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
-				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(playerUUID);
-				isLeggingsOccupied = conf.getTransparency(EquipmentSlot.LEGS) != 0;
-				if (!isLeggingsOccupied) {
-					armorConfig2 = EmptyGenderArmor.INSTANCE;
-				}
-			}
 
 			PlayerEntityRenderer rend = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(ent);
 			PlayerEntityModel<AbstractClientPlayerEntity> model = rend.getModel();
@@ -360,7 +347,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			// is less than or equal to 0.5 so that if we won't be rendering it we can avoid doing extra calculations
 			boolean breathingAnimation = resistance <= 0.5F &&
 					(!ent.isSubmergedInWater() || StatusEffectUtil.hasWaterBreathing(ent) ||
-							ent.world.getBlockState(new BlockPos(ent.getX(), ent.getEyeY(), ent.getZ())).isOf(Blocks.BUBBLE_COLUMN));
+							ent.getWorld().getBlockState(ent.getBlockPos()).isOf(Blocks.BUBBLE_COLUMN));
 			boolean bounceEnabled = plr.hasBreastPhysics() && (!isChestplateOccupied || plr.hasArmorBreastPhysics() && resistance < 1); //oh, you found this?
 			boolean bounceEnabled2 = plr.hasBreastPhysics() && (!isLeggingsOccupied || plr.hasArmorBreastPhysics() && resistance2 < 1);
 
@@ -402,13 +389,13 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		try {
 			matrixStack.translate(body.pivotX * 0.0625f, body.pivotY * 0.0625f, body.pivotZ * 0.0625f);
 			if (body.roll != 0.0F) {
-				matrixStack.multiply(new Quaternion(0f, 0f, body.roll, false));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(0f, 0f, body.roll));
 			}
 			if (body.yaw != 0.0F) {
-				matrixStack.multiply(new Quaternion(0f, body.yaw, 0f, false));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(0f, body.yaw, 0f));
 			}
 			if (body.pitch != 0.0F) {
-				matrixStack.multiply(new Quaternion(body.pitch, 0f, 0f, false));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(body.pitch, 0f, 0f));
 			}
 
 			if (bounceEnabled) {
@@ -422,7 +409,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				matrixStack.translate(-0.0625f * 2 * (left ? 1 : -1), 0, 0);
 			}
 			if (bounceEnabled) {
-				matrixStack.multiply(new Quaternion(0, bounceRotation, 0, true));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(0, bounceRotation * ((float) Math.PI / 180f), 0));
 			}
 			if (!uniboob) {
 				matrixStack.translate(0.0625f * 2 * (left ? 1 : -1), 0, 0);
@@ -446,12 +433,12 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				matrixStack.translate(0, 0, 0.01f);
 			}
 
-			matrixStack.multiply(new Quaternion(0, outwardAngle, 0, true));
-			matrixStack.multiply(new Quaternion(-35f * totalRotation, 0, 0, true));
+			matrixStack.multiply(new Quaternionf().rotationXYZ(0, outwardAngle * ((float) Math.PI / 180f), 0));
+			matrixStack.multiply(new Quaternionf().rotationXYZ(-35f * totalRotation * ((float) Math.PI / 180f), 0, 0));
 
 			if (breathingAnimation) {
 				float f5 = -MathHelper.cos(entity.age * 0.09F) * 0.45F + 0.45F;
-				matrixStack.multiply(new Quaternion(f5, 0, 0, true));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(f5 * ((float) Math.PI / 180f), 0, 0));
 			}
 
 			matrixStack.scale(0.9995f, 1f, 1f); //z-fighting FIXXX
@@ -488,14 +475,6 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 			float armorA = 1f;
 			boolean glint = armorStack.hasGlint();
-			if (FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
-				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(entity.getUuid());
-				armorA = conf.getTransparency(armorItem.getSlotType()) / 100f;
-				if (armorA < 0.01f) return;
-				if (!conf.getGlint(armorItem.getSlotType())) {
-					glint = false;
-				}
-			}
 			matrixStack.push();
 			matrixStack.translate(left ? 0.001f : -0.001f, 0.015f, -0.015f);
 			matrixStack.scale(1.05f, 1, 1);
@@ -517,17 +496,17 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		try {
 			matrixStack.translate(body.pivotX * 0.0625f, body.pivotY * 0.0625f, body.pivotZ * 0.0625f);
 			if (body.roll != 0.0F) {
-				matrixStack.multiply(new Quaternion(0f, 0f, body.roll * 0.125f, false));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(0f, 0f, body.roll * 0.125f));
 			}
 			if (body.yaw != 0.0F) {
-				matrixStack.multiply(new Quaternion(0f, body.yaw, 0f, false));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(0f, body.yaw, 0f));
 			}
 			if (Math.abs(body.pitch) > Math.PI / 2) {
-				matrixStack.multiply(new Quaternion(body.pitch, 0f, 0f, false));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(body.pitch, 0f, 0f));
 			} else if (Math.abs(body.pitch) > (Math.PI / 16) * 7) {
-				matrixStack.multiply(new Quaternion(body.pitch * 0.5f, 0f, 0f, false));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(body.pitch * 0.5f, 0f, 0f));
 			} else if (bounceEnabled) {
-				matrixStack.multiply(new Quaternion(body.pitch * 0.1f, 0f, 0f, false));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(body.pitch * 0.1f, 0f, 0f));
 			}
 
 			if (bounceEnabled) {
@@ -546,7 +525,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				matrixStack.translate(0, 0, 0.01f);
 			}
 
-			matrixStack.multiply(new Quaternion(-35f * totalRotation + 180f,  bounceEnabled ? bounceRotation * -8.75f : 0, 0, true));
+			matrixStack.multiply(new Quaternionf().rotationXYZ(-35f * totalRotation * ((float) Math.PI / 180f) + (float) Math.PI,  bounceEnabled ? bounceRotation * -8.75f * ((float) Math.PI / 180f) : 0, 0));
 
 			matrixStack.scale(0.9995f, 1f, 1f); //z-fighting FIXXX
 
@@ -583,14 +562,6 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 			float armorA = 1f;
 			boolean glint = armorStack.hasGlint();
-			if (FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
-				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(entity.getUuid());
-				armorA = conf.getTransparency(armorItem.getSlotType()) / 100f;
-				if (armorA < 0.01f) return;
-				if (!conf.getGlint(armorItem.getSlotType())) {
-					glint = false;
-				}
-			}
 			matrixStack.push();
 			matrixStack.scale(1.05f, 1.05f, 1.05f);
 			matrixStack.translate(0, -0.005f, 0.005f);
@@ -611,15 +582,15 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		try {
 			matrixStack.translate(body.pivotX * 0.0625f, body.pivotY * 0.0625f, body.pivotZ * 0.0625f);
 			if (body.roll != 0.0F) {
-				matrixStack.multiply(new Quaternion(0f, 0f, body.roll, false));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(0f, 0f, body.roll));
 			}
 			if (body.yaw != 0.0F) {
-				matrixStack.multiply(new Quaternion(0f, body.yaw, 0f, false));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(0f, body.yaw, 0f));
 			}
 			if (Math.abs(body.pitch) > Math.PI / 2) {
-				matrixStack.multiply(new Quaternion(body.pitch, 0f, 0f, false));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(body.pitch, 0f, 0f));
 			} else if (body.pitch != 0f) {
-				matrixStack.multiply(new Quaternion(body.pitch * 0.05f, 0f, 0f, false));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(body.pitch * 0.05f, 0f, 0f));
 			}
 
 			if (bounceEnabled) {
@@ -633,7 +604,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				matrixStack.translate(-0.0625f * 2 * (left ? 1 : -1), 0, 0);
 			}
 			if (bounceEnabled) {
-				matrixStack.multiply(new Quaternion(0, bounceRotation, 0, true));
+				matrixStack.multiply(new Quaternionf().rotationXYZ(0, bounceRotation * ((float) Math.PI / 180f), 0));
 			}
 			if (!uniboob) {
 				matrixStack.translate(0.0625f * 2 * (left ? 1 : -1), 0, 0);
@@ -646,8 +617,8 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				matrixStack.translate(0, 0.0625f, 0);
 			}
 
-			matrixStack.multiply(new Quaternion(yRot, outwardAngle, 0, true));
-			matrixStack.multiply(new Quaternion(-45f, 180f, 0, true));
+			matrixStack.multiply(new Quaternionf().rotationXYZ(yRot * ((float) Math.PI / 180f), outwardAngle * ((float) Math.PI / 180f), 0));
+			matrixStack.multiply(new Quaternionf().rotationXYZ((float) -Math.PI / 4, (float) Math.PI, 0));
 
 			matrixStack.scale(0.9995f, 1f, 1f); //z-fighting FIXXX
 
@@ -683,14 +654,6 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 			}
 			float armorA = 1f;
 			boolean glint = armorStack.hasGlint();
-			if (FabricLoader.getInstance().isModLoaded("showmeyourskin")) {
-				ArmorConfig conf = ModConfig.INSTANCE.getApplicable(entity.getUuid());
-				armorA = conf.getTransparency(armorItem.getSlotType()) / 100f;
-				if (armorA < 0.01f) return;
-				if (!conf.getGlint(armorItem.getSlotType())) {
-					glint = false;
-				}
-			}
 			matrixStack.push();
 			matrixStack.translate(left ? 0.001f : -0.001f, -0.015f, -0.015f);
 			matrixStack.scale(1.05f, 1.1f, 1);
@@ -707,18 +670,18 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 		Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
 		Matrix3f matrix3f = matrixStack.peek().getNormalMatrix();
 		for (WildfireModelRenderer.TexturedQuad quad : model.quads) {
-			Vec3f vector3f = new Vec3f(quad.normal.getX(), quad.normal.getY(), quad.normal.getZ());
-			vector3f.transform(matrix3f);
-			float normalX = vector3f.getX();
-			float normalY = vector3f.getY();
-			float normalZ = vector3f.getZ();
+			Vector3f vector3f = new Vector3f(quad.normal.x, quad.normal.y, quad.normal.z);
+			vector3f.mul(matrix3f);
+			float normalX = vector3f.x;
+			float normalY = vector3f.y;
+			float normalZ = vector3f.z;
 			for (PositionTextureVertex vertex : quad.vertexPositions) {
 				float j = vertex.x() / 16.0F;
 				float k = vertex.y() / 16.0F;
 				float l = vertex.z() / 16.0F;
 				Vector4f vector4f = new Vector4f(j, k, l, 1.0F);
-				vector4f.transform(matrix4f);
-				bufferIn.vertex(vector4f.getX(), vector4f.getY(), vector4f.getZ(), red, green, blue, alpha, vertex.texturePositionX(), vertex.texturePositionY(), packedOverlayIn, packedLightIn, normalX, normalY, normalZ);
+				vector4f.mul(matrix4f);
+				bufferIn.vertex(vector4f.x, vector4f.y, vector4f.z, red, green, blue, alpha, vertex.texturePositionX(), vertex.texturePositionY(), packedOverlayIn, packedLightIn, normalX, normalY, normalZ);
 			}
 		}
 	}
