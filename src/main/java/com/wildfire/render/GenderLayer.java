@@ -61,6 +61,7 @@ import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectUtil;
@@ -163,7 +164,11 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 					armorConfig = WildfireHelper.getArmorConfig(armorStack);
 				}
 			}
-
+			TextureManager texMgr = MinecraftClient.getInstance().getTextureManager();
+			if (texMgr.getOrDefault(getArmorResource((ArmorItem) armorStack.getItem(), false), null) == null) {
+				armorStack = null;
+				armorConfig = EmptyGenderArmor.INSTANCE;
+			}
 			boolean isChestplateOccupied = armorConfig.alwaysHidesBreasts() || (!plr.showBreastsInArmor() && armorConfig.coversBreasts());
 
 			ItemStack armorStack2 = ent.getEquippedStack(EquipmentSlot.LEGS);
@@ -178,6 +183,10 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 					armorStack2 = ti.getStack(0);
 					armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
 				}
+			}
+			if (texMgr.getOrDefault(getArmorResource((ArmorItem) armorStack2.getItem(), true), null) == null) {
+				armorStack2 = null;
+				armorConfig2 = EmptyGenderArmor.INSTANCE;
 			}
 			boolean isLeggingsOccupied = armorConfig2.alwaysHidesBreasts() || (!plr.showBreastsInArmor() && armorConfig2.coversBreasts());
 

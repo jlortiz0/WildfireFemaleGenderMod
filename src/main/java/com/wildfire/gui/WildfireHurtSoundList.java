@@ -22,6 +22,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.wildfire.api.IHurtSound;
 import com.wildfire.gui.screen.WildfireHurtSoundListScreen;
 import com.wildfire.main.WildfireGender;
+import com.wildfire.main.WildfireGenderClient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -49,8 +50,8 @@ public class WildfireHurtSoundList extends EntryListWidget<WildfireHurtSoundList
         super(MinecraftClient.getInstance(), parent.width-4, parent.height, top-6, bottom, 20);
         this.parent = parent;
         this.listWidth = listWidth;
-        this.cur = WildfireGender.hurtSounds.get(cur);
-        List<IHurtSound> hurtSoundList = WildfireGender.hurtSounds.stream().toList();
+        this.cur = WildfireGenderClient.hurtSounds.get(cur);
+        List<IHurtSound> hurtSoundList = WildfireGenderClient.hurtSounds.stream().toList();
         for (IHurtSound i : hurtSoundList) {
             addEntry(new com.wildfire.gui.WildfireHurtSoundList.Entry(i));
         }

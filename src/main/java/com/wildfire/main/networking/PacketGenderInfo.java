@@ -103,7 +103,12 @@ public abstract class PacketGenderInfo {
         }
         this.bust_size = buffer.readFloat();
         this.buns_size = buffer.readFloat();
-        this.hurtSounds = new Identifier(buffer.readString());
+        String s = buffer.readString();
+        if (s.isEmpty()) {
+            this.hurtSounds = null;
+        } else {
+            this.hurtSounds = new Identifier(s);
+        }
 
         //physics variables
         this.breast_physics = buffer.readBoolean();
@@ -140,7 +145,11 @@ public abstract class PacketGenderInfo {
         }
         buffer.writeFloat(this.bust_size);
         buffer.writeFloat(this.buns_size);
-        buffer.writeString(this.hurtSounds.toString());
+        if (this.hurtSounds == null) {
+            buffer.writeString("");
+        } else {
+            buffer.writeString(this.hurtSounds.toString());
+        }
 
         buffer.writeBoolean(this.breast_physics);
         buffer.writeBoolean(this.breast_physics_armor);

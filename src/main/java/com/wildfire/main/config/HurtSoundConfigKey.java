@@ -22,6 +22,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.wildfire.main.WildfireGender;
+import com.wildfire.main.WildfireGenderClient;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
 
 public class HurtSoundConfigKey extends ConfigKey<Identifier> {
@@ -54,6 +58,6 @@ public class HurtSoundConfigKey extends ConfigKey<Identifier> {
 
     @Override
     public boolean validate(Identifier value) {
-        return WildfireGender.hurtSounds.get(value) != null;
+        return true;
     }
 }

@@ -23,7 +23,6 @@ import com.wildfire.gui.screen.WildfirePlayerListScreen;
 import com.wildfire.main.networking.PacketSendGenderInfo;
 import com.wildfire.main.networking.PacketSync;
 
-import java.util.Random;
 import java.util.UUID;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
@@ -40,6 +39,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 import org.lwjgl.glfw.GLFW;
 
 public class WildfireEventHandler {
@@ -110,7 +110,6 @@ public class WildfireEventHandler {
 		ClientPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "hurt"),
 		(client, handler, buf, responseSender) -> {
 			UUID uuid = buf.readUuid();
-			boolean fem = buf.readBoolean();
 			GenderPlayer aPlr = WildfireGender.getPlayerById(uuid);
 			if (aPlr == null) {
 				return;
@@ -120,16 +119,13 @@ public class WildfireEventHandler {
 
 			Identifier hurtSoundID = aPlr.getHurtSounds();
 			if(hurtSoundID == null) return;
-			IHurtSound hurtSound = WildfireGender.hurtSounds.get(hurtSoundID);
-			if (hurtSound == null) {
-				hurtSound = WildfireGender.hurtSounds.get(new Identifier(WildfireGender.MODID, fem ? "female_hurt1" : "male_hurt1"));
-			}
-			final IHurtSound actualHurtSound = hurtSound;
+			IHurtSound hurtSound = WildfireGenderClient.hurtSounds.get(hurtSoundID);
 
 			PlayerEntity ent = MinecraftClient.getInstance().world.getPlayerByUuid(uuid);
 			if (ent != null) {
-				float pitch = ent.getWorld().random.nextFloat() / 50 + 0.9f;
-				client.execute(() -> client.getSoundManager().play(new EntityTrackingSoundInstance(actualHurtSound.getSnd(), SoundCategory.PLAYERS, 1f, pitch, ent, ent.age)));
+				Random r = MinecraftClient.getInstance().player.getRandom();
+				float pitch = (r.nextFloat() - r.nextFloat()) * 0.2F + 1.0F;
+				client.execute(() -> client.getSoundManager().play(new EntityTrackingSoundInstance(hurtSound.getSnd(), SoundCategory.PLAYERS, 1f, pitch, ent, r.nextLong())));
 			}
 		});
 	}

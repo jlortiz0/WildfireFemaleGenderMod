@@ -23,25 +23,41 @@ import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Nullable;
 
-import com.wildfire.api.IHurtSound;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.SimpleRegistry;
+import com.wildfire.main.networking.PacketSendGenderInfo;
+import com.wildfire.main.networking.PacketSync;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
-public class WildfireGender implements ClientModInitializer {
+public class WildfireGender implements ModInitializer {
   	public static final String MODID = "wildfire_gender";
 	public static final Map<UUID, GenderPlayer> CLOTHING_PLAYERS = new HashMap<>();
 
 	public static final boolean isCurseforgeNerfed = false;
 	public static final String GITHUB_LINK = "https://github.com/jlortiz0/WildfireGender";
-	public static final SimpleRegistry<IHurtSound> hurtSounds = FabricRegistryBuilder.createSimple(IHurtSound.class, new Identifier(WildfireGender.MODID, "hurt_sound_registry")).buildAndRegister();
 
 	@Override
-  	public void onInitializeClient() {
-		WildfireEventHandler.registerClientEvents();
-    }
+	public void onInitialize() {
+		ServerPlayNetworking.registerGlobalReceiver(new Identifier(WildfireGender.MODID, "send_gender_info"),
+				PacketSendGenderInfo::handle);
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+			if (!handler.getPlayer().getWorld().isClient()) {
+				//Send all other players to the player who joined. Note: We don't send the player to
+				// other players as that will happen once the player finishes sending themselves to the server
+				ServerPlayerEntity uuid = handler.getPlayer();
+				Thread thread = new Thread(() -> {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {}
+					PacketSync.sendTo(uuid);
+				} );
+				thread.setName("WFGM_Sync-" + uuid.getUuid());
+				thread.start();
+			}
+		});
+	}
 
 	@Nullable
 	public static GenderPlayer getPlayerById(UUID id) {
@@ -61,13 +77,5 @@ public class WildfireGender implements ClientModInitializer {
 
 	public static GenderPlayer loadGenderInfo(UUID uuid, boolean markForSync) {
 		return GenderPlayer.loadCachedPlayer(uuid, markForSync);
-	}
-
-	static {
-		Registry.register(hurtSounds, (Identifier) null, new HurtSound("Disabled", null, false));
-		Identifier id =  new Identifier(WildfireGender.MODID, "male_hurt1");
-		Registry.register(hurtSounds, id, new HurtSound("Masculine 1", id, false));
-		id = new Identifier(WildfireGender.MODID, "female_hurt1");
-		Registry.register(hurtSounds, id, new HurtSound("Feminine 1", id, true));
 	}
 }

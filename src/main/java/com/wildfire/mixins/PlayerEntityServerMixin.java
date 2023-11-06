@@ -60,7 +60,6 @@ public abstract class PlayerEntityServerMixin extends LivingEntity {
                 if (plr != null) {
                     PacketByteBuf buf = PacketByteBufs.create();
                     buf.writeUuid(plr.uuid);
-                    buf.writeBoolean(plr.getHurtSounds() != null && WildfireGender.hurtSounds.get(plr.getHurtSounds()).isFem());
                     for (ServerPlayerEntity player : PlayerLookup.tracking((ServerWorld) getWorld(), getWorld().getPlayerByUuid(plr.uuid).getBlockPos())) {
                         if (ServerPlayNetworking.canSend(player, new Identifier("wildfire_gender", "hurt"))) {
                             ServerPlayNetworking.send(player, new Identifier("wildfire_gender", "hurt"), buf);

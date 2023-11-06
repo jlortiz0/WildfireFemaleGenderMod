@@ -21,6 +21,7 @@ package com.wildfire.gui.screen;
 import com.wildfire.api.IHurtSound;
 import com.wildfire.gui.WildfireSlider;
 import com.wildfire.main.WildfireGender;
+import com.wildfire.main.WildfireGenderClient;
 import com.wildfire.main.config.Configuration;
 import java.util.UUID;
 
@@ -117,9 +118,9 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
             }
         }));
 
-        IHurtSound hs = WildfireGender.hurtSounds.get(aPlr.getHurtSounds());
+        IHurtSound hs = WildfireGenderClient.hurtSounds.get(aPlr.getHurtSounds());
         if (hs == null) {
-            hs = WildfireGender.hurtSounds.get((Identifier) null);
+            hs = WildfireGenderClient.hurtSounds.get((Identifier) null);
         }
         this.addDrawableChild(new WildfireButton(xPos, yPos + 100, 157, 20,
                 Text.translatable("wildfire_gender.player_list.female_sounds", hs.getName()),
