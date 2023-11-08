@@ -165,7 +165,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				}
 			}
 			TextureManager texMgr = MinecraftClient.getInstance().getTextureManager();
-			if (texMgr.getOrDefault(getArmorResource((ArmorItem) armorStack.getItem(), false), null) == null) {
+			if ((armorStack.getItem() instanceof ArmorItem) && texMgr.getOrDefault(getArmorResource((ArmorItem) armorStack.getItem(), false), null) == null) {
 				armorStack = null;
 				armorConfig = EmptyGenderArmor.INSTANCE;
 			}
@@ -184,7 +184,7 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 					armorConfig2 = WildfireHelper.getArmorConfig(armorStack2);
 				}
 			}
-			if (texMgr.getOrDefault(getArmorResource((ArmorItem) armorStack2.getItem(), true), null) == null) {
+			if ((armorStack2.getItem() instanceof ArmorItem) && texMgr.getOrDefault(getArmorResource((ArmorItem) armorStack2.getItem(), true), null) == null) {
 				armorStack2 = null;
 				armorConfig2 = EmptyGenderArmor.INSTANCE;
 			}

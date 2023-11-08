@@ -46,7 +46,7 @@ public class PacketSync extends PacketGenderInfo {
     public static void handle(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
         PacketSync packet = new PacketSync(buf);
 
-        if (!packet.uuid.equals(MinecraftClient.getInstance().player.getUuid())) {
+        if (MinecraftClient.getInstance().player == null || !packet.uuid.equals(MinecraftClient.getInstance().player.getUuid())) {
             GenderPlayer plr = WildfireGender.getOrAddPlayerById(packet.uuid);
             packet.updatePlayerFromPacket(plr);
             plr.syncStatus = GenderPlayer.SyncStatus.SYNCED;
