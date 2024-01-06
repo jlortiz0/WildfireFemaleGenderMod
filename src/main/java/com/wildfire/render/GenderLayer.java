@@ -129,10 +129,6 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	@Override
 	public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int packedLightIn, @Nonnull AbstractClientPlayerEntity ent, float limbAngle,
 					   float limbDistance, float partialTicks, float animationProgress, float headYaw, float headPitch) {
-		if (ent.isInvisibleTo(MinecraftClient.getInstance().player)) {
-			//Exit early if the entity shouldn't actually be seen
-			return;
-		}
 		//Surround with a try/catch to fix for essential mod.
 		try {
 			//0.5 or 0
@@ -189,6 +185,10 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 				armorConfig2 = EmptyGenderArmor.INSTANCE;
 			}
 			boolean isLeggingsOccupied = armorConfig2.alwaysHidesBreasts() || (!plr.showBreastsInArmor() && armorConfig2.coversBreasts());
+			if (armorStack.isEmpty() && armorStack2.isEmpty() && ent.isInvisibleTo(MinecraftClient.getInstance().player)) {
+				//Exit early if the entity shouldn't actually be seen
+				return;
+			}
 
 			PlayerEntityRenderer rend = (PlayerEntityRenderer) MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(ent);
 			PlayerEntityModel<AbstractClientPlayerEntity> model = rend.getModel();
@@ -462,11 +462,13 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	private void renderBreast(AbstractClientPlayerEntity entity, ItemStack armorStack, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, RenderLayer breastRenderType,
 							  int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha, boolean left) {
 		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(breastRenderType);
-		renderBox(left ? lBreast : rBreast, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-		if (entity.isPartVisible(PlayerModelPart.JACKET)) {
-			matrixStack.translate(0, 0, -0.015f);
-			matrixStack.scale(1.05f, 1.05f, 1.05f);
-			renderBox(left ? lBreastWear : rBreastWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		if (!entity.isInvisibleTo(MinecraftClient.getInstance().player)) {
+			renderBox(left ? lBreast : rBreast, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			if (entity.isPartVisible(PlayerModelPart.JACKET)) {
+				matrixStack.translate(0, 0, -0.015f);
+				matrixStack.scale(1.05f, 1.05f, 1.05f);
+				renderBox(left ? lBreastWear : rBreastWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			}
 		}
 		//TODO: Eventually we may want to expose a way via the API for mods to be able to override rendering
 		// be it because they are not an armor item or the way they render their armor item is custom
@@ -548,11 +550,13 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	private void renderBulge(AbstractClientPlayerEntity entity, ItemStack armorStack, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, RenderLayer breastRenderType,
 							 int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(breastRenderType);
-		renderBox(bulgeModel, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-		if (entity.isPartVisible(PlayerModelPart.JACKET)) {
-			matrixStack.scale(1.05f, 1.05f, 1.05f);
-			matrixStack.translate(0, -0.005f, 0.005f);
-			renderBox(bulgeWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		if (!entity.isInvisibleTo(MinecraftClient.getInstance().player)) {
+			renderBox(bulgeModel, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			if (entity.isPartVisible(PlayerModelPart.JACKET)) {
+				matrixStack.scale(1.05f, 1.05f, 1.05f);
+				matrixStack.translate(0, -0.005f, 0.005f);
+				renderBox(bulgeWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			}
 		}
 		//TODO: Eventually we may want to expose a way via the API for mods to be able to override rendering
 		// be it because they are not an armor item or the way they render their armor item is custom
@@ -641,11 +645,13 @@ public class GenderLayer extends FeatureRenderer<AbstractClientPlayerEntity, Pla
 	private void renderBuns(AbstractClientPlayerEntity entity, ItemStack armorStack, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, RenderLayer breastRenderType,
 							int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha, boolean left) {
 		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(breastRenderType);
-		renderBox(left ? lBun : rBun, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-		if (entity.isPartVisible(left ? PlayerModelPart.LEFT_PANTS_LEG : PlayerModelPart.RIGHT_PANTS_LEG)) {
-			matrixStack.translate(left ? 0.001f : -0.001f, -0.015f, -0.015f);
-			matrixStack.scale(1.05f, 1.05f, 1.05f);
-			renderBox(left ? lBunWear: rBunWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		if (!entity.isInvisibleTo(MinecraftClient.getInstance().player)) {
+			renderBox(left ? lBun : rBun, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			if (entity.isPartVisible(left ? PlayerModelPart.LEFT_PANTS_LEG : PlayerModelPart.RIGHT_PANTS_LEG)) {
+				matrixStack.translate(left ? 0.001f : -0.001f, -0.015f, -0.015f);
+				matrixStack.scale(1.05f, 1.05f, 1.05f);
+				renderBox(left ? lBunWear : rBunWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			}
 		}
 		//TODO: Eventually we may want to expose a way via the API for mods to be able to override rendering
 		// be it because they are not an armor item or the way they render their armor item is custom

@@ -159,11 +159,13 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		float j = entity.getPitch();
 		float k = entity.prevHeadYaw;
 		float l = entity.headYaw;
+		boolean m = entity.isInvisibleTo(MinecraftClient.getInstance().player);
 		entity.bodyYaw = initialYaw + f * 20.0F;
 		entity.setYaw(initialYaw + f * 40.0F);
 		entity.setPitch(-g * 20.0F);
 		entity.headYaw = entity.getYaw();
 		entity.prevHeadYaw = entity.getYaw();
+		entity.setInvisible(false);
 		DiffuseLighting.method_34742();
 		EntityRenderDispatcher entityRenderDispatcher = MinecraftClient.getInstance().getEntityRenderDispatcher();
 		quaternion2.conjugate();
@@ -178,6 +180,7 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		entity.setPitch(j);
 		entity.prevHeadYaw = k;
 		entity.headYaw = l;
+		entity.setInvisible(m);
 		matrixStack.pop();
 		RenderSystem.applyModelViewMatrix();
 		DiffuseLighting.enableGuiDepthLighting();

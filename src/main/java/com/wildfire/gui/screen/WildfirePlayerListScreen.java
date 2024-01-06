@@ -149,7 +149,7 @@ public class WildfirePlayerListScreen extends Screen {
 				if (hs == null) {
 					hs = WildfireGenderClient.hurtSounds.get((Identifier) null);
 				}
-				ctx.drawText(this.textRenderer, Text.translatable("wildfire_gender.player_list.female_sounds", new LiteralTextContent(hs.getName())), dialogX, dialogY + 110, 0xBBBBBB, true);
+				ctx.drawText(this.textRenderer, Text.translatable("wildfire_gender.player_list.female_sounds", Text.literal(hs.getName())), dialogX, dialogY + 110, 0xBBBBBB, true);
 				WardrobeBrowserScreen.drawEntityOnScreen(x - 110, y + 45, 45, (x - 300), (y - 26 - f2), pEntity);
 			}
 		}
