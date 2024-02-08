@@ -56,7 +56,6 @@ public class BreastPhysics {
 		this.wfg_preBounceRotation = this.wfg_bounceRotation;
 		this.preBreastSize = this.breastSize;
 
-		// TODO: See if this has negative side effects
 		if (genderPlayer.getBustSize() < 0.001f) {
 			return;
 		}

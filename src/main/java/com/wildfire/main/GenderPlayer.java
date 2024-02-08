@@ -119,7 +119,7 @@ public class GenderPlayer {
 		});
 	}
 
-	private static final int ticksPerColor = 15;
+	private static final int ticksPerColor = 10;
 
 	public int getPronounColorOnTick(int tick) {
 		if (pronounColor.length == 1) {
@@ -158,7 +158,7 @@ public class GenderPlayer {
 	}
 
 	public boolean updateHurtSounds(HurtSound value) {
-		return updateHurtSounds(value.getId().getPath());
+		return updateHurtSounds(value.getId() == null ? null : value.getId().getPath());
 	}
 
 	public boolean hasBreastPhysics() {

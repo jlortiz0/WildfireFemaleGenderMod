@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.gui.screen;
 
+import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.wildfire.gui.WildfireSlider;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.WildfireSounds;
@@ -130,10 +131,8 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
 
         this.addRenderableWidget(new WildfireButton(xPos, yPos + 100, 157, 20,
               new TranslatableComponent("wildfire_gender.char_settings.hurt_sounds", WildfireSounds.get(aPlr.getHurtSounds()).getName()), button -> {
-            if (aPlr.updateHurtSounds(WildfireSounds.getNext(aPlr.getHurtSounds()))) {
-                button.setMessage(new TranslatableComponent("wildfire_gender.char_settings.hurt_sounds", WildfireSounds.get(aPlr.getHurtSounds()).getName()));
-                GenderPlayer.saveGenderInfo(aPlr);
-            }
+            minecraft.setScreen(new WildfireHurtSoundListScreen(minecraft, aPlr.uuid));
+            button.setMessage(new TranslatableComponent("wildfire_gender.char_settings.hurt_sounds", WildfireSounds.get(aPlr.getHurtSounds()).getName()));
         }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, new TranslatableComponent("wildfire_gender.tooltip.hurt_sounds"), mouseX, mouseY)));
 
         this.BACKGROUND = new ResourceLocation(WildfireGender.MODID, "textures/gui/settings_bg.png");

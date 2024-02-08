@@ -118,7 +118,7 @@ public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 			UUID playerUUID = ent.getUUID();
 			//System.out.println(playerUUID);
 			GenderPlayer plr = WildfireGender.getPlayerById(playerUUID);
-			if(plr == null) return;
+			if(plr == null || plr.getBustSize() < 0.01f) return;
 
 			ItemStack armorStack = ent.getItemBySlot(EquipmentSlot.CHEST);
 			//Note: When the stack is empty the helper will fall back to an implementation that returns the proper data

@@ -40,7 +40,6 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 
 public class WildfirePlayerList extends ObjectSelectionList<WildfirePlayerList.Entry>
 {
-    private static String stripControlCodes(String value) { return net.minecraft.util.StringUtil.stripColor(value); }
 
     private static final ResourceLocation TXTR_SYNC = new ResourceLocation(WildfireGender.MODID, "textures/sync.png");
     private static final ResourceLocation TXTR_CACHED = new ResourceLocation(WildfireGender.MODID, "textures/cached.png");

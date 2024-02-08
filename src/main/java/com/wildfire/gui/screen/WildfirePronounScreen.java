@@ -28,17 +28,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
-
-import java.text.Normalizer;
 import java.util.UUID;
 
 
 public class WildfirePronounScreen extends BaseWildfireScreen {
-	private ResourceLocation TXTR_BACKGROUND;
 
 	private EditBox textFieldWidget;
 	private final GenderPlayer aPlr;
@@ -119,14 +113,6 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 		super.renderBackground(m);
 		Minecraft mc = Minecraft.getInstance();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		if(this.TXTR_BACKGROUND != null) {
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			RenderSystem.setShaderTexture(0, this.TXTR_BACKGROUND);
-			int i = (this.width - 132) / 2;
-			int j = (this.height - 156) / 2 - 20;
-			blit(m, i, j, 0, 0, 192, 174);
-		}
 
 		int x = (this.width / 2);
 		int y = (this.height / 2);
@@ -136,6 +122,6 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 		fill(m, x - 161, y, x + 162, y + 48, 0x55000000);
 		super.render(m, f1, f2, f3);
 
-		this.font.draw(m, new TranslatableComponent("wildfire_gender.pronouns_list.title"), x - 40, 20, 16777215);
+		drawCenteredString(m, this.font, new TranslatableComponent("wildfire_gender.label.gender"), this.width / 2, 20, 0xFFFFFF);
 	}
 }

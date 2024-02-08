@@ -31,7 +31,9 @@ import javax.annotation.Nullable;
 
 import com.wildfire.main.WildfireSounds;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.renderer.GameRenderer;
@@ -83,12 +85,12 @@ public class WildfirePlayerListScreen extends Screen {
 			mc.displayGuiScreen(new WildfireSettingsScreen(SteinPlayerListScreen.this));
 		}));*/
 
-		this.addWidget(new WildfireButton(this.width / 2 + 53, y - 74, 9, 9, new TranslatableComponent("wildfire_gender.label.exit"), button -> Minecraft.getInstance().setScreen(null)));
-
 	    PLAYER_LIST = new WildfirePlayerList(this, 118, (y - 61), (y + 71));
 		PLAYER_LIST.setRenderBackground(false);
 		PLAYER_LIST.setRenderTopAndBottom(false);
 	    this.addRenderableWidget(this.PLAYER_LIST);
+
+		this.addWidget(new WildfireButton(this.width / 2 + 53, y - 74, 9, 9, new TranslatableComponent("wildfire_gender.label.exit"), button -> Minecraft.getInstance().setScreen(null)));
 
 	    this.TXTR_BACKGROUND = new ResourceLocation(WildfireGender.MODID, "textures/gui/player_list.png");
 
@@ -144,7 +146,7 @@ public class WildfirePlayerListScreen extends Screen {
 				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.player_list.breast_momentum", Math.round(HOVER_PLAYER.getFloppiness() * 100)), dialogX + 6, dialogY + 60, 0xBBBBBB);
 
 				HurtSound hs = WildfireSounds.get(HOVER_PLAYER.getHurtSounds());
-				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.player_list.female_sounds", new TextComponent(hs.getName())), dialogX, dialogY + 110, 0xBBBBBB);
+				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.player_list.female_sounds", new TextComponent(hs.getName())), dialogX, dialogY + 80, 0xBBBBBB);
 				WardrobeBrowserScreen.drawEntityOnScreen(x - 110, y + 45, 45, (x - 300), (y - 26 - f2), pEntity);
 			}
 		}
@@ -164,17 +166,16 @@ public class WildfirePlayerListScreen extends Screen {
 			drawCenteredString(m, this.font, new TranslatableComponent("wildfire_gender.label.with_creator"), this.width / 2, y + 100, 0xFF00FF);
 		}
 
-		//Breast Cancer Awareness Month Donation Prompt (I don't know if this is legal for mods, so it's commented...)
-		/*if(Calendar.getInstance().get(Calendar.MONTH) == 9) {
+		//Breast Cancer Awareness Month Donation Prompt
+		if(Calendar.getInstance().get(Calendar.MONTH) == Calendar.OCTOBER) {
 			fill(m, x - 159, y + 106, x + 159, y + 136, 0x55000000);
 			font.draw(m, ChatFormatting.ITALIC + "Hey, it's Breast Cancer Awareness Month!", this.width / 2 - 155, y + 110, 0xFFFFFF);
-			font.draw(m, "Click here to donate to " + ChatFormatting.LIGHT_PURPLE + "Susan G. Komen Foundation" + ChatFormatting.WHITE + "!", this.width / 2 - 155, y + 124, 0xAAAAAA);
 			font.draw(m, "Click here to donate to " + ChatFormatting.LIGHT_PURPLE + "Susan G. Komen Foundation" + ChatFormatting.WHITE + "!", this.width / 2 - 155, y + 124, 0xAAAAAA);
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem.setShaderTexture(0, this.TXTR_RIBBON);
 			Screen.blit(m, x + 130, y + 109, 26, 26, 0, 0, 20, 20, 20, 20);
-		}*/
+		}
 		if (tooltip != null) {
 			this.renderTooltip(m, tooltip, f1, f2);
 		}
@@ -185,14 +186,14 @@ public class WildfirePlayerListScreen extends Screen {
 		int x = (this.width / 2);
 		int y = (this.height / 2) - 20;
 
-		/*if(mouseX > x - 159 && mouseY > y + 106 && mouseX < x + 159 && mouseY < y + 136) {
-			this.client.openScreen(new ConfirmChatLinkScreen((bool) -> {
+		if(mouseX > x - 159 && mouseY > y + 106 && mouseX < x + 159 && mouseY < y + 136) {
+			this.client.setScreen(new ConfirmLinkScreen((bool) -> {
 				if (bool) {
-					Util.getOperatingSystem().open("https://www.komen.org/how-to-help/donate/");
+					Util.getPlatform().openUri("https://www.komen.org/how-to-help/donate/");
 				}
-				this.client.openScreen(this);
+				this.client.setScreen(this);
 			}, "https://www.komen.org/how-to-help/donate/", true));
-		}*/
+		}
 		return super.mouseClicked(mouseX, mouseY, button);
 	}
 

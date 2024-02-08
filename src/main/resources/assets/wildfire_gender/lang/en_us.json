@@ -1,10 +1,12 @@
 {
 	"category.wildfire_gender.generic": "Wildfire's Female Gender Mod",
-	"key.wildfire_gender.gender_menu": "Female Gender Menu",
+	"key.wildfire_gender.gender_menu": "Gender Menu",
 
-	"wildfire_gender.hurt.female": "Female Player Hurt",
+	"wildfire_gender.hurt.female": "Player hurt",
+	"wildfire_gender.hurt.male": "Player hurt",
+	"wildfire_gender.hurt.other": "Player hurt",
 
-	"wildfire_gender.player_list.title": "Female Gender Mod",
+	"wildfire_gender.player_list.title": "Gender Mod",
 	"wildfire_gender.player_list.settings_button": "Settings",
 	"wildfire_gender.player_list.sync_status": "Sync Status",
 	"wildfire_gender.player_list.state.loading": "Loading Data...",
@@ -25,24 +27,21 @@
 	"wildfire_gender.tooltip.armor_physics": "Enables Breast Physics with Armor Equipped",
 	"wildfire_gender.char_settings.hide_in_armor": "Hide In Armor: %s",
 	"wildfire_gender.tooltip.hide_in_armor": "Hide Breast Model When Wearing Armors",
-	"wildfire_gender.char_settings.hurt_sounds": "Female Hurt Sounds: %s",
-	"wildfire_gender.tooltip.hurt_sounds": "Enables the Female Hurt Sounds",
+	"wildfire_gender.char_settings.hurt_sounds": "Hurt Sounds: %s",
+	"wildfire_gender.tooltip.hurt_sounds": "Select Hurt Sounds",
 
 	"wildfire_gender.breast_customization.dual_physics": "Dual-Physics: %s",
 
 	"wildfire_gender.player_list.bounce_multiplier": "Bounce Multiplier: %sx",
 	"wildfire_gender.player_list.breast_momentum": "Breast Momentum: %s%%",
-	"wildfire_gender.player_list.female_sounds": "Female Sounds: %s",
+	"wildfire_gender.player_list.female_sounds": "Hurt Sounds: %s",
 
 	"wildfire_gender.settings.title": "Wildfire's Settings Menu",
 
 	"wildfire_gender.acknowledge.confirm": "Okay",
+	"wildfire_gender.acknowledge.cancel": "Cancel",
 
-	"wildfire_gender.label.gender": "Gender",
-	"wildfire_gender.label.female": "Female",
-	"wildfire_gender.label.male": "Male",
-	"wildfire_gender.label.other": "Other",
-
+	"wildfire_gender.label.gender": "Pronouns",
 	"wildfire_gender.label.enabled": "Enabled",
 	"wildfire_gender.label.disabled": "Disabled",
 	"wildfire_gender.label.yes": "Yes",

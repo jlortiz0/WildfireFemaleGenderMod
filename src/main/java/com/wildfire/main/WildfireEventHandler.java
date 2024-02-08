@@ -195,26 +195,19 @@ public class WildfireEventHandler {
 	public void onPlaySound(PlaySoundAtEntityEvent event) {
 		if (event.getSound() != null && playerHurtSounds.contains(event.getSound()) && event.getEntity() instanceof Player p && p.level.isClientSide) {
 			//Cancel as we handle all hurt sounds manually so that we can
-			event.setCanceled(true);
-			SoundEvent soundEvent = event.getSound();
+			// event.setCanceled(true);
+			SoundEvent soundEvent = null;
 			if (p.hurtTime == p.hurtDuration && p.hurtTime > 0) {
 				//Note: We check hurtTime == hurtDuration and hurtTime > 0 or otherwise when the server sends a hurt sound to the client
 				// and the client will check itself instead of the player who was damaged.
 				GenderPlayer plr = WildfireGender.getPlayerById(p.getUUID());
-				// TODO: This
 				if (plr != null && plr.getHurtSounds() != null) {
 					//If the player who produced the hurt sound is a female sound replace it
 					soundEvent = WildfireSounds.get(plr.getHurtSounds()).getSnd();
 				}
-			} else if (p.getUUID().equals(Minecraft.getInstance().player.getUUID())) {
-				//Skip playing remote hurt sounds. Note: sounds played via /playsound will not be intercepted
-				// as they are played directly
-				//Note: This might behave slightly strangely if a mod is manually firing a player damage sound
-				// only on the server and not also on the client
-				//TODO: Ideally we would fix that edge case but I find it highly unlikely it will ever actually occur
-				return;
 			}
-			p.level.playLocalSound(p.getX(), p.getY(), p.getZ(), soundEvent, event.getCategory(), event.getVolume(), event.getPitch(), false);
+			if (soundEvent != null)
+				p.level.playLocalSound(p.getX(), p.getY(), p.getZ(), soundEvent, event.getCategory(), event.getVolume(), event.getPitch(), false);
 		}
 	}
 }

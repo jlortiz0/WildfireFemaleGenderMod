@@ -21,11 +21,13 @@ package com.wildfire.main;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 public class WildfireSounds {
-	private static HashMap<ResourceLocation, Integer> hsMap = new HashMap<>(12);
+	private static HashMap<String, Integer> hsMap = new HashMap<>(12);
 	private static HurtSound[] hsArr;
 
 	static {
@@ -43,20 +45,21 @@ public class WildfireSounds {
 		HurtSound OOF = new HurtSound("Roblox", new ResourceLocation(WildfireGender.MODID, "oof_hurt"));
 
 		hsArr = new HurtSound[]{NOTHING, FEMALE_HURT, FEMALE_HURT2, FEMALE_HURT3, FEMALE_HURT4, MALE_HURT1, MALE_HURT2, MALE_HURT3, MALE_HURT4, INKLING, ROBOT, OOF};
-		for (int i = 0; i < hsArr.length; i++) {
-			hsMap.put(hsArr[i].getId(), i);
+		hsMap.put(null, 0);
+		for (int i = 1; i < hsArr.length; i++) {
+			hsMap.put(hsArr[i].getId().getPath(), i);
 		}
 	}
 
 	public static HurtSound get(ResourceLocation loc) {
-		return hsArr[hsMap.get(loc)];
+		return get(loc.getPath());
 	}
 
 	public static HurtSound get(String loc) {
-		return get(new ResourceLocation(WildfireGender.MODID, loc));
+		return hsArr[hsMap.get(loc)];
 	}
 
-	public static HurtSound getNext(ResourceLocation loc) {
+	public static HurtSound getNext(String loc) {
 		int i = hsMap.get(loc) + 1;
 		if (i >= hsArr.length) {
 			return hsArr[0];
@@ -64,7 +67,11 @@ public class WildfireSounds {
 		return hsArr[i];
 	}
 
-	public static HurtSound getNext(String loc) {
-		return getNext(new ResourceLocation(WildfireGender.MODID, loc));
+	public static HurtSound getNext(ResourceLocation loc) {
+		return getNext(loc.getPath());
+	}
+
+	public static Iterator<HurtSound> iter() {
+		return Arrays.stream(hsArr).iterator();
 	}
 }
