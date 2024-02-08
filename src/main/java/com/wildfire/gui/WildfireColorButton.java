@@ -1,16 +1,19 @@
 package com.wildfire.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.TextComponent;
 
 public class WildfireColorButton extends WildfireButton {
     private final int[] colors;
-    public WildfireColorButton(int x, int y, int w, Button.OnPress onPress, int... colors) {
-        super(x, y, w, w, TextComponent.EMPTY, onPress, NO_TOOLTIP);
+    public WildfireColorButton(int x, int y, int w, Button.OnPress onPress, Button.OnTooltip tooltip, int... colors) {
+        super(x, y, w, w, TextComponent.EMPTY, onPress, tooltip);
         this.colors = colors;
+    }
+
+    public WildfireColorButton(int x, int y, int w, Button.OnPress onPress, int... colors) {
+        this(x, y, w, onPress, NO_TOOLTIP, colors);
     }
 
     public int[] getColors() {
