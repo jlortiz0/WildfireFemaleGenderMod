@@ -21,13 +21,50 @@ package com.wildfire.main;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 public class WildfireSounds {
-	private static final ResourceLocation femaleHurt1 = new ResourceLocation(WildfireGender.MODID, "female_hurt1");
-	public static SoundEvent FEMALE_HURT1 = new SoundEvent(femaleHurt1);
-	
-	private static final ResourceLocation femaleHurt2 = new ResourceLocation(WildfireGender.MODID, "female_hurt2");
-	public static SoundEvent FEMALE_HURT2 = new SoundEvent(femaleHurt2);
-	
-	/*private static ResourceLocation maleHurt1 = new ResourceLocation(WildfireGender.MODID, "male_hurt1");
-	public static SoundEvent MALE_HURT1 = new SoundEvent(maleHurt1);*/
+	private static HashMap<ResourceLocation, Integer> hsMap = new HashMap<>(12);
+	private static HurtSound[] hsArr;
+
+	static {
+		HurtSound NOTHING = new HurtSound("None", null);
+		HurtSound FEMALE_HURT = new HurtSound("Female", new ResourceLocation(WildfireGender.MODID, "female_hurt"));
+		HurtSound FEMALE_HURT2 = new HurtSound("Terraria (F)", new ResourceLocation(WildfireGender.MODID, "female_hurt2"));
+		HurtSound FEMALE_HURT3 = new HurtSound("Femscout", new ResourceLocation(WildfireGender.MODID, "female_hurt3"));
+		HurtSound FEMALE_HURT4 = new HurtSound("Femsniper", new ResourceLocation(WildfireGender.MODID, "female_hurt4"));
+		HurtSound MALE_HURT1 = new HurtSound("Male", new ResourceLocation(WildfireGender.MODID, "male_hurt"));
+		HurtSound MALE_HURT2 = new HurtSound("Terraria (M)", new ResourceLocation(WildfireGender.MODID, "male_hurt2"));
+		HurtSound MALE_HURT3 = new HurtSound("Soldier", new ResourceLocation(WildfireGender.MODID, "male_hurt3"));
+		HurtSound MALE_HURT4 = new HurtSound("Scout", new ResourceLocation(WildfireGender.MODID, "male_hurt4"));
+		HurtSound INKLING = new HurtSound("Inkling", new ResourceLocation(WildfireGender.MODID, "squid_hurt"));
+		HurtSound ROBOT = new HurtSound("SWORDSMACHINE", new ResourceLocation(WildfireGender.MODID, "robo_hurt"));
+		HurtSound OOF = new HurtSound("Roblox", new ResourceLocation(WildfireGender.MODID, "oof_hurt"));
+
+		hsArr = new HurtSound[]{NOTHING, FEMALE_HURT, FEMALE_HURT2, FEMALE_HURT3, FEMALE_HURT4, MALE_HURT1, MALE_HURT2, MALE_HURT3, MALE_HURT4, INKLING, ROBOT, OOF};
+		for (int i = 0; i < hsArr.length; i++) {
+			hsMap.put(hsArr[i].getId(), i);
+		}
+	}
+
+	public static HurtSound get(ResourceLocation loc) {
+		return hsArr[hsMap.get(loc)];
+	}
+
+	public static HurtSound get(String loc) {
+		return get(new ResourceLocation(WildfireGender.MODID, loc));
+	}
+
+	public static HurtSound getNext(ResourceLocation loc) {
+		int i = hsMap.get(loc) + 1;
+		if (i >= hsArr.length) {
+			return hsArr[0];
+		}
+		return hsArr[i];
+	}
+
+	public static HurtSound getNext(String loc) {
+		return getNext(new ResourceLocation(WildfireGender.MODID, loc));
+	}
 }

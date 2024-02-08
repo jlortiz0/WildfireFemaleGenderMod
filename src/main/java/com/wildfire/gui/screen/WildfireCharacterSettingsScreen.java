@@ -20,6 +20,7 @@ package com.wildfire.gui.screen;
 
 import com.wildfire.gui.WildfireSlider;
 import com.wildfire.main.WildfireGender;
+import com.wildfire.main.WildfireSounds;
 import com.wildfire.main.config.ClientConfiguration;
 import com.wildfire.main.config.Configuration;
 
@@ -128,10 +129,9 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         }));
 
         this.addRenderableWidget(new WildfireButton(xPos, yPos + 100, 157, 20,
-              new TranslatableComponent("wildfire_gender.char_settings.hurt_sounds", aPlr.hasHurtSounds() ? ENABLED : DISABLED), button -> {
-            boolean enableHurtSounds = !aPlr.hasHurtSounds();
-            if (aPlr.updateHurtSounds(enableHurtSounds)) {
-                button.setMessage(new TranslatableComponent("wildfire_gender.char_settings.hurt_sounds", enableHurtSounds ? ENABLED : DISABLED));
+              new TranslatableComponent("wildfire_gender.char_settings.hurt_sounds", WildfireSounds.get(aPlr.getHurtSounds()).getName()), button -> {
+            if (aPlr.updateHurtSounds(WildfireSounds.getNext(aPlr.getHurtSounds()))) {
+                button.setMessage(new TranslatableComponent("wildfire_gender.char_settings.hurt_sounds", WildfireSounds.get(aPlr.getHurtSounds()).getName()));
                 GenderPlayer.saveGenderInfo(aPlr);
             }
         }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, new TranslatableComponent("wildfire_gender.tooltip.hurt_sounds"), mouseX, mouseY)));

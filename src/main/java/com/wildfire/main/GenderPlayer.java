@@ -39,7 +39,7 @@ public class GenderPlayer {
 	private int[] pronounColor = ClientConfiguration.PRONOUN_COLOR.getDefault();
     private float pBustSize = ClientConfiguration.BUST_SIZE.getDefault();
 
-	private boolean hurtSounds = ClientConfiguration.HURT_SOUNDS.getDefault();
+	private String hurtSounds = ClientConfiguration.HURT_SOUNDS.getDefault();
 
 	//physics variables
 	private boolean breastPhysics = ClientConfiguration.BREAST_PHYSICS.getDefault();
@@ -149,12 +149,16 @@ public class GenderPlayer {
 		return updateValue(ClientConfiguration.BUST_SIZE, value, v -> this.pBustSize = v);
 	}
 
-	public boolean hasHurtSounds() {
+	public String getHurtSounds() {
 		return hurtSounds;
 	}
 
-	public boolean updateHurtSounds(boolean value) {
+	public boolean updateHurtSounds(String value) {
 		return updateValue(ClientConfiguration.HURT_SOUNDS, value, v -> this.hurtSounds = v);
+	}
+
+	public boolean updateHurtSounds(HurtSound value) {
+		return updateHurtSounds(value.getId().getPath());
 	}
 
 	public boolean hasBreastPhysics() {
@@ -211,7 +215,7 @@ public class GenderPlayer {
 		ClientConfiguration.PRONOUNS.save(obj, plr.getPronouns());
 		ClientConfiguration.PRONOUN_COLOR.save(obj, plr.getPronounColor());
 		ClientConfiguration.BUST_SIZE.save(obj, plr.getBustSize());
-		ClientConfiguration.HURT_SOUNDS.save(obj, plr.hasHurtSounds());
+		ClientConfiguration.HURT_SOUNDS.save(obj, plr.getHurtSounds());
 
 		ClientConfiguration.BREAST_PHYSICS.save(obj, plr.hasBreastPhysics());
 		ClientConfiguration.BREAST_PHYSICS_ARMOR.save(obj, plr.hasArmorBreastPhysics());
@@ -291,7 +295,7 @@ public class GenderPlayer {
 		config.set(ClientConfiguration.PRONOUNS, plr.getPronouns());
 		config.set(ClientConfiguration.PRONOUN_COLOR, plr.getPronounColor());
 		config.set(ClientConfiguration.BUST_SIZE, plr.getBustSize());
-		config.set(ClientConfiguration.HURT_SOUNDS, plr.hasHurtSounds());
+		config.set(ClientConfiguration.HURT_SOUNDS, plr.getHurtSounds());
 
 		//physics
 		config.set(ClientConfiguration.BREAST_PHYSICS, plr.hasBreastPhysics());

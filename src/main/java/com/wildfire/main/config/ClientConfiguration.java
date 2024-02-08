@@ -9,7 +9,7 @@ public class ClientConfiguration extends Configuration {
     public static final StringConfigKey PRONOUNS = new StringConfigKey("gender", "please ask");
     public static final ColorConfigKey PRONOUN_COLOR = new ColorConfigKey("gender_color", 0xFFFFFF);
     public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0.6F, 0, 1);
-    public static final BooleanConfigKey HURT_SOUNDS = new BooleanConfigKey("hurt_sounds", true);
+    public static final StringConfigKey HURT_SOUNDS = new StringConfigKey("hurt_sounds", null);
 
     public static final FloatConfigKey BREASTS_OFFSET_X = new FloatConfigKey("breasts_xOffset", 0.0F, -1, 1);
     public static final FloatConfigKey BREASTS_OFFSET_Y = new FloatConfigKey("breasts_yOffset", 0.0F, -1, 1);

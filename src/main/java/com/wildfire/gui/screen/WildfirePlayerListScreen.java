@@ -24,9 +24,12 @@ import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfirePlayerList;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.GenderPlayer.Gender;
+import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.wildfire.main.WildfireSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -140,10 +143,7 @@ public class WildfirePlayerListScreen extends Screen {
 				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);
 				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.player_list.breast_momentum", Math.round(HOVER_PLAYER.getFloppiness() * 100)), dialogX + 6, dialogY + 60, 0xBBBBBB);
 
-				IHurtSound hs = WildfireGender.hurtSounds.get(HOVER_PLAYER.getHurtSounds());
-				if (hs == null) {
-					hs = WildfireGender.hurtSounds.get((Identifier) null);
-				}
+				HurtSound hs = WildfireSounds.get(HOVER_PLAYER.getHurtSounds());
 				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.player_list.female_sounds", new TextComponent(hs.getName())), dialogX, dialogY + 110, 0xBBBBBB);
 				WardrobeBrowserScreen.drawEntityOnScreen(x - 110, y + 45, 45, (x - 300), (y - 26 - f2), pEntity);
 			}

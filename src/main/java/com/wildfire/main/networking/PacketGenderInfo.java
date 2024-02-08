@@ -40,14 +40,14 @@ public abstract class PacketGenderInfo {
     private final boolean uniboob;
     private final float cleavage;
 
-    private final boolean hurtSounds;
+    private final String hurtSounds;
 
     protected PacketGenderInfo(GenderPlayer plr) {
         this.uuid = plr.uuid;
         this.pronouns = plr.getPronouns();
         this.pronounColor = plr.getPronounColor();
         this.bust_size = plr.getBustSize();
-        this.hurtSounds = plr.hasHurtSounds();
+        this.hurtSounds = plr.getHurtSounds();
 
         //physics variables
         this.breast_physics = plr.hasBreastPhysics();
@@ -73,7 +73,7 @@ public abstract class PacketGenderInfo {
             this.pronounColor[i] = buffer.readInt();
         }
         this.bust_size = buffer.readFloat();
-        this.hurtSounds = buffer.readBoolean();
+        this.hurtSounds = buffer.readUtf();
 
         //physics variables
         this.breast_physics = buffer.readBoolean();
@@ -97,7 +97,7 @@ public abstract class PacketGenderInfo {
             buffer.writeInt(f);
         }
         buffer.writeFloat(this.bust_size);
-        buffer.writeBoolean(this.hurtSounds);
+        buffer.writeUtf(this.hurtSounds);
         buffer.writeBoolean(this.breast_physics);
         buffer.writeBoolean(this.breast_physics_armor);
         buffer.writeBoolean(this.show_in_armor);

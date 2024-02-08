@@ -204,7 +204,7 @@ public class WildfireEventHandler {
 				// TODO: This
 				if (plr != null && plr.getHurtSounds() != null) {
 					//If the player who produced the hurt sound is a female sound replace it
-					soundEvent = Math.random() > 0.5f ? WildfireSounds.FEMALE_HURT1 : WildfireSounds.FEMALE_HURT2;
+					soundEvent = WildfireSounds.get(plr.getHurtSounds()).getSnd();
 				}
 			} else if (p.getUUID().equals(Minecraft.getInstance().player.getUUID())) {
 				//Skip playing remote hurt sounds. Note: sounds played via /playsound will not be intercepted
