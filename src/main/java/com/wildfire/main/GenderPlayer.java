@@ -22,11 +22,12 @@ import com.google.gson.JsonObject;
 import com.wildfire.main.config.ConfigKey;
 import com.wildfire.main.config.ClientConfiguration;
 import com.wildfire.physics.BreastPhysics;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
+import net.minecraft.ChatFormatting;
+
+import java.awt.*;
 import java.util.UUID;
 import java.util.function.Consumer;
-import net.minecraft.ChatFormatting;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 
@@ -35,7 +36,7 @@ public class GenderPlayer {
 	public boolean needsSync;
 	public final UUID uuid;
 	private String pronouns;
-	private int[] pronounColor = ClientConfiguration.GENDER_COLOR.getDefault();
+	private int[] pronounColor = ClientConfiguration.PRONOUN_COLOR.getDefault();
     private float pBustSize = ClientConfiguration.BUST_SIZE.getDefault();
 
 	private boolean hurtSounds = ClientConfiguration.HURT_SOUNDS.getDefault();
@@ -56,18 +57,19 @@ public class GenderPlayer {
 	private final Breasts breasts;
 
 	public GenderPlayer(UUID uuid) {
-		this(uuid, ClientConfiguration.GENDER.getDefault());
+		this(uuid, ClientConfiguration.PRONOUNS.getDefault());
 	}
 
-	public GenderPlayer(UUID uuid, Gender gender) {
+	public GenderPlayer(UUID uuid, String pronouns) {
 		lBreastPhysics = new BreastPhysics(this);
 		rBreastPhysics = new BreastPhysics(this);
 		breasts = new Breasts();
 		this.uuid = uuid;
-		this.gender = gender;
+		this.pronouns = pronouns;
 		this.cfg = new ClientConfiguration("WildfireGender", this.uuid.toString());
 		this.cfg.set(ClientConfiguration.USERNAME, this.uuid);
-		this.cfg.setDefault(ClientConfiguration.GENDER);
+		this.cfg.setDefault(ClientConfiguration.PRONOUNS);
+		this.cfg.setDefault(ClientConfiguration.PRONOUN_COLOR);
 		this.cfg.setDefault(ClientConfiguration.BUST_SIZE);
 		this.cfg.setDefault(ClientConfiguration.HURT_SOUNDS);
 
@@ -102,7 +104,7 @@ public class GenderPlayer {
 	}
 
 	public boolean updatePronouns(String value) {
-		return updateValue(Configuration.GENDER, value, v -> {
+		return updateValue(ClientConfiguration.PRONOUNS, value, v -> {
 			this.pronouns = v;
 		});
 	}
@@ -112,7 +114,7 @@ public class GenderPlayer {
 	}
 
 	public boolean updatePronounColor(int[] value) {
-		return updateValue(Configuration.GENDER_COLOR, value, v -> {
+		return updateValue(ClientConfiguration.PRONOUN_COLOR, value, v -> {
 			this.pronounColor = v;
 		});
 	}
@@ -206,7 +208,8 @@ public class GenderPlayer {
 	public static JsonObject toJsonObject(GenderPlayer plr) {
 		JsonObject obj = new JsonObject();
 		ClientConfiguration.USERNAME.save(obj, plr.uuid);
-		ClientConfiguration.GENDER.save(obj, plr.getGender());
+		ClientConfiguration.PRONOUNS.save(obj, plr.getPronouns());
+		ClientConfiguration.PRONOUN_COLOR.save(obj, plr.getPronounColor());
 		ClientConfiguration.BUST_SIZE.save(obj, plr.getBustSize());
 		ClientConfiguration.HURT_SOUNDS.save(obj, plr.hasHurtSounds());
 
@@ -227,7 +230,8 @@ public class GenderPlayer {
 
 	public static GenderPlayer fromJsonObject(JsonObject obj) {
 		GenderPlayer plr = new GenderPlayer(ClientConfiguration.USERNAME.read(obj));
-		plr.updateGender(ClientConfiguration.GENDER.read(obj));
+		plr.updatePronouns(ClientConfiguration.PRONOUNS.read(obj));
+		plr.updatePronounColor(ClientConfiguration.PRONOUN_COLOR.read(obj));
 		plr.updateBustSize(ClientConfiguration.BUST_SIZE.read(obj));
 		plr.updateHurtSounds(ClientConfiguration.HURT_SOUNDS.read(obj));
 
@@ -255,7 +259,8 @@ public class GenderPlayer {
 			plr.lockSettings = false;
 			plr.syncStatus = SyncStatus.CACHED;
 			ClientConfiguration config = plr.getConfig();
-			plr.updateGender(config.get(ClientConfiguration.GENDER));
+			plr.updatePronouns(config.get(ClientConfiguration.PRONOUNS));
+			plr.updatePronounColor(config.get(ClientConfiguration.PRONOUN_COLOR));
 			plr.updateBustSize(config.get(ClientConfiguration.BUST_SIZE));
 			plr.updateHurtSounds(config.get(ClientConfiguration.HURT_SOUNDS));
 
@@ -283,7 +288,8 @@ public class GenderPlayer {
 	public static void saveGenderInfo(GenderPlayer plr) {
 		ClientConfiguration config = plr.getConfig();
 		config.set(ClientConfiguration.USERNAME, plr.uuid);
-		config.set(ClientConfiguration.GENDER, plr.getGender());
+		config.set(ClientConfiguration.PRONOUNS, plr.getPronouns());
+		config.set(ClientConfiguration.PRONOUN_COLOR, plr.getPronounColor());
 		config.set(ClientConfiguration.BUST_SIZE, plr.getBustSize());
 		config.set(ClientConfiguration.HURT_SOUNDS, plr.hasHurtSounds());
 

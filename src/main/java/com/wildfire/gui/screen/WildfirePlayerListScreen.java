@@ -33,6 +33,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -44,8 +45,8 @@ import java.util.UUID;
 public class WildfirePlayerListScreen extends Screen {
 
 	private static final UUID CREATOR_UUID = UUID.fromString("33c937ae-6bfc-423e-a38e-3a613e7c1256");
-	private Identifier TXTR_BACKGROUND;
-	private static final Identifier TXTR_RIBBON = new Identifier(WildfireGender.MODID, "textures/bc_ribbon.png");
+	private ResourceLocation TXTR_BACKGROUND;
+	private static final ResourceLocation TXTR_RIBBON = new ResourceLocation(WildfireGender.MODID, "textures/bc_ribbon.png");
 
 	@Nullable
 	private Component tooltip = null;
@@ -131,22 +132,19 @@ public class WildfirePlayerListScreen extends Screen {
 			int dialogY = y - 73;
 			Player pEntity = mc.level.getPlayerByUUID(HOVER_PLAYER.uuid);
 			if(pEntity != null) {
-				this.font.drawShadow(m, pEntity.getDisplayName().copy().formatted(Formatting.UNDERLINE), dialogX, dialogY - 2, 0xFFFFFF);
+				this.font.drawShadow(m, pEntity.getDisplayName().copy().withStyle(ChatFormatting.UNDERLINE), dialogX, dialogY - 2, 0xFFFFFF);
 
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.label.gender").append(" ").append(HOVER_PLAYER.getPronouns()), dialogX, dialogY + 10, HOVER_PLAYER.getPronounColorOnTick(pEntity.age));
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.breast_size", Math.round(HOVER_PLAYER.getBustSize() * 100)), dialogX, dialogY + 20, 0xBBBBBB);
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.char_settings.physics", new TranslatableText(HOVER_PLAYER.hasBreastPhysics() ? "wildfire_gender.label.enabled" : "wildfire_gender.label.disabled")), dialogX, dialogY + 40, 0xBBBBBB);
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.breast_momentum", Math.round(HOVER_PLAYER.getFloppiness() * 100)), dialogX + 6, dialogY + 60, 0xBBBBBB);
-				if (!WildfireGender.isCurseforgeNerfed)
-					this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.bulge_size", Math.round(HOVER_PLAYER.getBulge().getSize() * 100)), dialogX, dialogY + 80, 0xBBBBBB);
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.wardrobe.slider.buns_size", Math.round(HOVER_PLAYER.getBunsSize() * 100)), dialogX, dialogY + 90, 0xBBBBBB);
+				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.label.gender").append(" ").append(HOVER_PLAYER.getPronouns()), dialogX, dialogY + 10, HOVER_PLAYER.getPronounColorOnTick(pEntity.tickCount));
+				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.wardrobe.slider.breast_size", Math.round(HOVER_PLAYER.getBustSize() * 100)), dialogX, dialogY + 20, 0xBBBBBB);
+				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.char_settings.physics", new TranslatableComponent(HOVER_PLAYER.hasBreastPhysics() ? "wildfire_gender.label.enabled" : "wildfire_gender.label.disabled")), dialogX, dialogY + 40, 0xBBBBBB);
+				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);
+				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.player_list.breast_momentum", Math.round(HOVER_PLAYER.getFloppiness() * 100)), dialogX + 6, dialogY + 60, 0xBBBBBB);
 
 				IHurtSound hs = WildfireGender.hurtSounds.get(HOVER_PLAYER.getHurtSounds());
 				if (hs == null) {
 					hs = WildfireGender.hurtSounds.get((Identifier) null);
 				}
-				this.textRenderer.drawWithShadow(m, new TranslatableText("wildfire_gender.player_list.female_sounds", new LiteralText(hs.getName())), dialogX, dialogY + 110, 0xBBBBBB);
+				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.player_list.female_sounds", new TextComponent(hs.getName())), dialogX, dialogY + 110, 0xBBBBBB);
 				WardrobeBrowserScreen.drawEntityOnScreen(x - 110, y + 45, 45, (x - 300), (y - 26 - f2), pEntity);
 			}
 		}

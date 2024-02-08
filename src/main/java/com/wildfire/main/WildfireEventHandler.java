@@ -201,7 +201,8 @@ public class WildfireEventHandler {
 				//Note: We check hurtTime == hurtDuration and hurtTime > 0 or otherwise when the server sends a hurt sound to the client
 				// and the client will check itself instead of the player who was damaged.
 				GenderPlayer plr = WildfireGender.getPlayerById(p.getUUID());
-				if (plr != null && plr.hasHurtSounds() && plr.getGender().hasFemaleHurtSounds()) {
+				// TODO: This
+				if (plr != null && plr.getHurtSounds() != null) {
 					//If the player who produced the hurt sound is a female sound replace it
 					soundEvent = Math.random() > 0.5f ? WildfireSounds.FEMALE_HURT1 : WildfireSounds.FEMALE_HURT2;
 				}

@@ -58,8 +58,8 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 
 		GenderPlayer plr = getPlayer();
 
-		this.addDrawableChild(new WildfirePronounButton(this.width / 2 - 42, j - 52, 158, 20, getGenderLabel(plr),
-				button -> MinecraftClient.getInstance().setScreen(new WildfirePronounScreen(WardrobeBrowserScreen.this, this.playerUUID)), plr::getPronounColorOnTick));
+		this.addRenderableWidget(new WildfirePronounButton(this.width / 2 - 42, j - 52, 158, 20, getGenderLabel(plr),
+				button -> Minecraft.getInstance().setScreen(new WildfirePronounScreen(WardrobeBrowserScreen.this, this.playerUUID)), plr::getPronounColorOnTick));
 
 		this.addRenderableWidget(new WildfireButton(this.width / 2 - 42, j - 32, 158, 20, new TranslatableComponent("wildfire_gender.appearance_settings.title").append("..."),
 			button -> Minecraft.getInstance().setScreen(new WildfireBreastCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
@@ -78,7 +78,7 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
   	}
 
 	private Component getGenderLabel(GenderPlayer plr) {
-		return new TranslatableComponent("wildfire_gender.label.gender").append(" - ").append(plr.getPronounText());
+		return new TranslatableComponent("wildfire_gender.label.gender").append(" - ").append(plr.getPronouns());
 	}
 
   	@Override

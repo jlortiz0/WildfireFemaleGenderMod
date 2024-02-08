@@ -44,7 +44,8 @@ public abstract class PacketGenderInfo {
 
     protected PacketGenderInfo(GenderPlayer plr) {
         this.uuid = plr.uuid;
-        this.gender = plr.getGender();
+        this.pronouns = plr.getPronouns();
+        this.pronounColor = plr.getPronounColor();
         this.bust_size = plr.getBustSize();
         this.hurtSounds = plr.hasHurtSounds();
 
@@ -66,7 +67,7 @@ public abstract class PacketGenderInfo {
 
     protected PacketGenderInfo(FriendlyByteBuf buffer) {
         this.uuid = buffer.readUUID();
-        this.pronouns = buffer.readString();
+        this.pronouns = buffer.readUtf();
         this.pronounColor = new int[Math.min(buffer.readInt(), 8)];
         for (int i = 0; i < this.pronounColor.length; i++) {
             this.pronounColor[i] = buffer.readInt();
@@ -90,7 +91,7 @@ public abstract class PacketGenderInfo {
 
     public void encode(FriendlyByteBuf buffer) {
         buffer.writeUUID(this.uuid);
-        buffer.writeString(this.pronouns);
+        buffer.writeUtf(this.pronouns);
         buffer.writeInt(this.pronounColor.length);
         for (int f : this.pronounColor) {
             buffer.writeInt(f);
@@ -111,7 +112,8 @@ public abstract class PacketGenderInfo {
     }
 
     protected void updatePlayerFromPacket(GenderPlayer plr) {
-        plr.updateGender(gender);
+        plr.updatePronouns(pronouns);
+        plr.updatePronounColor(pronounColor);
         plr.updateBustSize(bust_size);
         plr.updateHurtSounds(hurtSounds);
 

@@ -56,6 +56,11 @@ public class BreastPhysics {
 		this.wfg_preBounceRotation = this.wfg_bounceRotation;
 		this.preBreastSize = this.breastSize;
 
+		// TODO: See if this has negative side effects
+		if (genderPlayer.getBustSize() < 0.001f) {
+			return;
+		}
+
 		if(this.prePos == null) {
 			this.prePos = plr.position();
 			return;
@@ -64,13 +69,9 @@ public class BreastPhysics {
 		float breastWeight = genderPlayer.getBustSize() * 1.25f;
 		float targetBreastSize = genderPlayer.getBustSize();
 
-		if (!genderPlayer.getGender().canHaveBreasts()) {
-			targetBreastSize = 0;
-		} else {
-			float tightness = Mth.clamp(armor.tightness(), 0, 1);
-			//Scale breast size by how tight the armor is, clamping at a max adjustment of shrinking by 0.15
-			targetBreastSize *= 1 - 0.15F * tightness;
-		}
+		float tightness = Mth.clamp(armor.tightness(), 0, 1);
+		//Scale breast size by how tight the armor is, clamping at a max adjustment of shrinking by 0.15
+		targetBreastSize *= 1 - 0.15F * tightness;
 
 		if(breastSize < targetBreastSize) {
 			breastSize += Math.abs(breastSize - targetBreastSize) / 2f;

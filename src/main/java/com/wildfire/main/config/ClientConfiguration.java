@@ -6,7 +6,8 @@ import java.util.UUID;
 public class ClientConfiguration extends Configuration {
 
     public static final UUIDConfigKey USERNAME = new UUIDConfigKey("username", UUID.nameUUIDFromBytes("UNKNOWN".getBytes(StandardCharsets.UTF_8)));
-    public static final GenderConfigKey GENDER = new GenderConfigKey("gender");
+    public static final StringConfigKey PRONOUNS = new StringConfigKey("gender", "please ask");
+    public static final ColorConfigKey PRONOUN_COLOR = new ColorConfigKey("gender_color", 0xFFFFFF);
     public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0.6F, 0, 1);
     public static final BooleanConfigKey HURT_SOUNDS = new BooleanConfigKey("hurt_sounds", true);
 

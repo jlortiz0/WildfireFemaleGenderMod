@@ -56,6 +56,7 @@ public class WildfireSlider extends AbstractSliderButton {
 		this.valueUpdate = valueUpdate;
 		this.messageUpdate = messageUpdate;
 		this.onSave = onSave;
+		this.visible = true;
 		setValueInternal(currentVal);
 	}
 

@@ -1,15 +1,15 @@
 package com.wildfire.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.Formatting;
+import net.minecraft.client.Minecraft;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.TextComponent;
 
 public class WildfireColorButton extends WildfireButton {
     private final int[] colors;
-    public WildfireColorButton(int x, int y, int w, PressAction onPress, int... colors) {
-        super(x, y, w, w, new LiteralText(""), onPress, NO_TOOLTIP);
+    public WildfireColorButton(int x, int y, int w, Button.OnPress onPress, int... colors) {
+        super(x, y, w, w, TextComponent.EMPTY, onPress, NO_TOOLTIP);
         this.colors = colors;
     }
 
@@ -18,9 +18,9 @@ public class WildfireColorButton extends WildfireButton {
     }
 
     @Override
-    public void renderButton(MatrixStack m, int mouseX, int mouseY, float partialTicks) {
+    public void renderButton(PoseStack m, int mouseX, int mouseY, float partialTicks) {
         int clr = 0x222222 + (84 << 24);
-        if (this.isHovered()) clr = 0x666666 + (84 << 24);
+        if (this.isHoveredOrFocused()) clr = 0x666666 + (84 << 24);
         fill(m, x, y, x + getWidth(), y + height, clr);
         float pieceH = (float) (height - 2) / colors.length;
         for (int i = 0; i < colors.length; i++) {
@@ -29,8 +29,8 @@ public class WildfireColorButton extends WildfireButton {
 
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-        if (this.isHovered()) {
-            this.renderTooltip(m, mouseX, mouseY);
+        if (this.isHoveredOrFocused()) {
+            this.renderToolTip(m, mouseX, mouseY);
         }
     }
 }

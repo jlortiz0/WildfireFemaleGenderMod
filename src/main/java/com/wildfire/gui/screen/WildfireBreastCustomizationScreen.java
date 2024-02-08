@@ -109,13 +109,6 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
             minecraft.setScreen(new WildfirePlayerListScreen(minecraft));
         }
 
-        boolean canHaveBreasts = plr.getGender().canHaveBreasts();
-        breastSlider.visible = canHaveBreasts;
-        xOffsetBoobSlider.visible = canHaveBreasts;
-        yOffsetBoobSlider.visible = canHaveBreasts;
-        zOffsetBoobSlider.visible = canHaveBreasts;
-        cleavageSlider.visible = canHaveBreasts;
-
         int x = this.width / 2;
         int y = this.height / 2;
         fill(m, x + 28, y - 64, x + 190, y + 79, 0x55000000);
