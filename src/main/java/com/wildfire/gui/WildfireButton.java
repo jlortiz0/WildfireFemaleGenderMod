@@ -20,11 +20,12 @@ package com.wildfire.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import javax.annotation.Nonnull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+
+import javax.annotation.Nonnull;
 
 public class WildfireButton extends Button {
    public static final Button.OnTooltip NO_TOOLTIP = (button, matrixStack, mouseX, mouseY) -> {};

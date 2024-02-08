@@ -30,6 +30,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+
 import java.util.UUID;
 
 
@@ -48,7 +49,7 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 		int x = this.width / 2;
 		int y = this.height / 2 - 30;
 
-		textFieldWidget = new EditBox(this.font, this.width / 2 - 100, y, 200, 20, new TranslatableComponent("wildfire_gender.pronoun_list.title"));
+		textFieldWidget = new EditBox(this.font, this.width / 2 - 100, y, 200, 20, new TranslatableComponent("wildfire_gender.label.gender"));
 		textFieldWidget.setMaxLength(16);
 		textFieldWidget.setFocus(true);
 		textFieldWidget.setValue(aPlr.getPronouns());

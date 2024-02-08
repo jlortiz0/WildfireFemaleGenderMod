@@ -23,7 +23,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.wildfire.main.config.FloatConfigKey;
 import it.unimi.dsi.fastutil.floats.Float2ObjectFunction;
 import it.unimi.dsi.fastutil.floats.FloatConsumer;
-import javax.annotation.Nonnull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractSliderButton;
@@ -31,6 +30,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.Mth;
 import org.lwjgl.glfw.GLFW;
+
+import javax.annotation.Nonnull;
 
 public class WildfireSlider extends AbstractSliderButton {
 

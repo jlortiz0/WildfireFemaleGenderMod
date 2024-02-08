@@ -20,27 +20,14 @@ package com.wildfire.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.wildfire.gui.screen.WardrobeBrowserScreen;
 import com.wildfire.gui.screen.WildfireHurtSoundListScreen;
-import com.wildfire.gui.screen.WildfirePlayerListScreen;
-import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.HurtSound;
-import com.wildfire.main.WildfireGender;
 import com.wildfire.main.WildfireSounds;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ObjectSelectionList;
-import net.minecraft.client.gui.components.Widget;
-import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.PlayerModelPart;
 
 import javax.annotation.Nonnull;
 import java.util.Iterator;

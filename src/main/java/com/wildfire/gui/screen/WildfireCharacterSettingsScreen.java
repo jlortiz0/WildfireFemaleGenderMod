@@ -18,35 +18,25 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.gui.screen;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
-import com.wildfire.gui.WildfireSlider;
-import com.wildfire.main.WildfireGender;
-import com.wildfire.main.WildfireSounds;
-import com.wildfire.main.config.ClientConfiguration;
-import com.wildfire.main.config.Configuration;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.wildfire.gui.WildfireButton;
+import com.wildfire.gui.WildfireSlider;
 import com.wildfire.main.GenderPlayer;
-import javax.annotation.Nonnull;
+import com.wildfire.main.WildfireGender;
+import com.wildfire.main.WildfireSounds;
+import com.wildfire.main.config.ClientConfiguration;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTextTooltip;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
+
+import javax.annotation.Nonnull;
+import java.util.UUID;
 
 public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
 

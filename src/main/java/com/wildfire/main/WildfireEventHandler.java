@@ -24,28 +24,16 @@ import com.wildfire.api.IGenderArmor;
 import com.wildfire.gui.screen.WildfirePlayerListScreen;
 import com.wildfire.main.networking.PacketSendGenderInfo;
 import com.wildfire.render.GenderLayer;
-
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.advancements.FrameType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.toasts.AdvancementToast;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
-import net.minecraft.client.gui.components.toasts.TutorialToast;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -63,6 +51,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.network.NetworkHooks;
 import org.lwjgl.glfw.GLFW;
+
+import java.util.Set;
+import java.util.UUID;
 
 public class WildfireEventHandler {
 

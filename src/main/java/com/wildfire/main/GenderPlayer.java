@@ -19,17 +19,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package com.wildfire.main;
 
 import com.google.gson.JsonObject;
-import com.wildfire.main.config.ConfigKey;
 import com.wildfire.main.config.ClientConfiguration;
+import com.wildfire.main.config.ConfigKey;
 import com.wildfire.physics.BreastPhysics;
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.awt.*;
 import java.util.UUID;
 import java.util.function.Consumer;
-
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 
 public class GenderPlayer {
 
@@ -327,29 +326,5 @@ public class GenderPlayer {
 
 	public enum SyncStatus {
 		CACHED, SYNCED, UNKNOWN
-	}
-
-	public enum Gender {
-		FEMALE(new TranslatableComponent("wildfire_gender.label.female").withStyle(ChatFormatting.LIGHT_PURPLE)),
-		MALE(new TranslatableComponent("wildfire_gender.label.male").withStyle(ChatFormatting.BLUE)),
-		OTHER(new TranslatableComponent("wildfire_gender.label.other").withStyle(ChatFormatting.GREEN));
-
-		private final Component name;
-
-		Gender(Component name) {
-			this.name = name;
-		}
-
-		public Component getDisplayName() {
-			return name;
-		}
-
-		public boolean hasFemaleHurtSounds() {
-			return this == FEMALE;
-		}
-
-		public boolean canHaveBreasts() {
-			return this != MALE;
-		}
 	}
 }

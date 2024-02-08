@@ -25,14 +25,13 @@ import com.wildfire.gui.WildfireSlider;
 import com.wildfire.main.Breasts;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.config.ClientConfiguration;
-import com.wildfire.main.config.Configuration;
 import it.unimi.dsi.fastutil.floats.FloatConsumer;
-import javax.annotation.Nonnull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {

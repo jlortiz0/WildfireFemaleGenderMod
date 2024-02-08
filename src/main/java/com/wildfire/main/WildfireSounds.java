@@ -19,12 +19,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package com.wildfire.main;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 
 public class WildfireSounds {
 	private static HashMap<String, Integer> hsMap = new HashMap<>(12);

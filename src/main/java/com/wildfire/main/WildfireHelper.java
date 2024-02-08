@@ -19,9 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package com.wildfire.main;
 
 import com.wildfire.api.IGenderArmor;
-import com.wildfire.render.armor.SimpleGenderArmor;
 import com.wildfire.render.armor.EmptyGenderArmor;
-import java.util.concurrent.ThreadLocalRandom;
+import com.wildfire.render.armor.SimpleGenderArmor;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
@@ -30,6 +29,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class WildfireHelper {
 

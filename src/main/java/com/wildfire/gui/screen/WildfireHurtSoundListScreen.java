@@ -18,34 +18,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.gui.screen;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfireHurtSoundList;
-import com.wildfire.gui.WildfirePlayerList;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
-import com.wildfire.main.WildfireSounds;
-import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Calendar;
 import java.util.UUID;
 
 
