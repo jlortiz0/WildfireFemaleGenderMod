@@ -28,8 +28,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 
 import java.util.UUID;
 
@@ -40,7 +39,7 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 	private final GenderPlayer aPlr;
 
 	public WildfirePronounScreen(Screen parent, UUID plr) {
-		super(new TranslatableComponent("wildfire_gender.player_list.female_sounds"), parent, plr);
+		super(Component.translatable("wildfire_gender.player_list.female_sounds"), parent, plr);
 		aPlr = getPlayer();
 	}
 
@@ -49,16 +48,16 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 		int x = this.width / 2;
 		int y = this.height / 2 - 30;
 
-		textFieldWidget = new EditBox(this.font, this.width / 2 - 100, y, 200, 20, new TranslatableComponent("wildfire_gender.label.gender"));
+		textFieldWidget = new EditBox(this.font, this.width / 2 - 100, y, 200, 20, Component.translatable("wildfire_gender.label.gender"));
 		textFieldWidget.setMaxLength(16);
 		textFieldWidget.setFocus(true);
 		textFieldWidget.setValue(aPlr.getPronouns());
 		this.addWidget(this.textFieldWidget);
 		this.setInitialFocus(this.textFieldWidget);
 
-		this.addRenderableWidget(new WildfireButton(this.width / 2 - 100, y + 110, 200, 20, new TranslatableComponent("wildfire_gender.acknowledge.cancel"),
+		this.addRenderableWidget(new WildfireButton(this.width / 2 - 100, y + 110, 200, 20, Component.translatable("wildfire_gender.acknowledge.cancel"),
 				button -> Minecraft.getInstance().setScreen(parent)));
-		this.addRenderableWidget(new WildfireButton(this.width / 2 - 100, y + 84, 200, 20, new TranslatableComponent("wildfire_gender.acknowledge.confirm"),
+		this.addRenderableWidget(new WildfireButton(this.width / 2 - 100, y + 84, 200, 20, Component.translatable("wildfire_gender.acknowledge.confirm"),
 				button -> {
 					if (aPlr.updatePronouns(textFieldWidget.getValue())) {
 						GenderPlayer.saveGenderInfo(aPlr);
@@ -150,10 +149,10 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 		fill(m, x - 161, y, x + 162, y + 48, 0x55000000);
 		super.render(m, f1, f2, f3);
 
-		drawCenteredString(m, this.font, new TranslatableComponent("wildfire_gender.label.gender"), this.width / 2, 20, 0xFFFFFF);
+		drawCenteredString(m, this.font, Component.translatable("wildfire_gender.label.gender"), this.width / 2, 20, 0xFFFFFF);
 	}
 	
 	public void drawFlagTooltip(PoseStack m, String text) {
-		drawCenteredString(m, this.font, new TextComponent(text), this.width / 2, this.height / 2 - 50, 0xFFFFFF);
+		drawCenteredString(m, this.font, Component.literal(text), this.width / 2, this.height / 2 - 50, 0xFFFFFF);
 	}
 }

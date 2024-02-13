@@ -28,7 +28,7 @@ import com.wildfire.main.WildfireGender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
@@ -43,10 +43,12 @@ public class WildfireHurtSoundListScreen extends Screen {
 
 	WildfireHurtSoundList SOUND_LIST;
 	private Minecraft client;
-	public WildfireHurtSoundListScreen(Minecraft mc, UUID plr) {
-		super(new TranslatableComponent("wildfire_gender.tooltip.hurt_sounds"));
+	private final BaseWildfireScreen parent;
+	public WildfireHurtSoundListScreen(Minecraft mc, UUID plr, BaseWildfireScreen parent) {
+		super(Component.translatable("wildfire_gender.tooltip.hurt_sounds"));
 		aPlr = WildfireGender.getPlayerById(plr);
 		client = mc;
+		this.parent = parent;
 	}
 
 	@Override
@@ -67,7 +69,7 @@ public class WildfireHurtSoundListScreen extends Screen {
 		SOUND_LIST.setRenderTopAndBottom(false);
 	    this.addRenderableWidget(this.SOUND_LIST);
 
-		this.addWidget(new WildfireButton(this.width / 2 + 53, y - 74, 9, 9, new TranslatableComponent("wildfire_gender.label.exit"), button -> Minecraft.getInstance().setScreen(null)));
+		this.addWidget(new WildfireButton(this.width / 2 + 53, y - 74, 9, 9, Component.translatable("wildfire_gender.label.exit"), button -> Minecraft.getInstance().setScreen(this.parent)));
 
 	    this.TXTR_BACKGROUND = new ResourceLocation(WildfireGender.MODID, "textures/gui/player_list.png");
 
@@ -113,6 +115,6 @@ public class WildfireHurtSoundListScreen extends Screen {
 		SOUND_LIST.render(m, f1, f2, f3);
 		RenderSystem.disableScissor();
 
-		this.font.draw(m, new TranslatableComponent("wildfire_gender.tooltip.hurt_sounds"), x - 60, y - 73, 4473924);
+		this.font.draw(m, Component.translatable("wildfire_gender.tooltip.hurt_sounds"), x - 60, y - 73, 4473924);
 	}
 }

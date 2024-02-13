@@ -27,7 +27,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 
 import javax.annotation.Nonnull;
 import java.util.Iterator;
@@ -74,7 +73,7 @@ public class WildfireHurtSoundList extends ObjectSelectionList<WildfireHurtSound
 
         private Entry(final HurtSound nInfo) {
             this.nInfo = nInfo;
-            btnOpenGUI = new WildfireButton(0, 0, 112, 20, TextComponent.EMPTY, button -> parent.setHurtSound(nInfo));
+            btnOpenGUI = new WildfireButton(0, 0, 112, 20, Component.empty(), button -> parent.setHurtSound(nInfo));
             btnOpenGUI.active = true;
         }
 
@@ -110,7 +109,7 @@ public class WildfireHurtSoundList extends ObjectSelectionList<WildfireHurtSound
         @Nonnull
         @Override
         public Component getNarration() {
-            return TextComponent.EMPTY;
+            return Component.empty();
         }
     }
 }

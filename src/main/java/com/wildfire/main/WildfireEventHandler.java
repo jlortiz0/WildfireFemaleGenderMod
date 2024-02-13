@@ -37,14 +37,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.PlayLevelSoundEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -73,8 +73,12 @@ public class WildfireEventHandler {
 
 		@SubscribeEvent
 		public static void setupClient(FMLClientSetupEvent event) {
-			ClientRegistry.registerKeyBinding(toggleEditGUI);
 			MinecraftForge.EVENT_BUS.register(new WildfireEventHandler());
+		}
+
+		@SubscribeEvent
+		public static void registerKeybindings(RegisterKeyMappingsEvent event) {
+			event.register(toggleEditGUI);
 		}
 	}
 
@@ -144,7 +148,7 @@ public class WildfireEventHandler {
 		}
  	}
  	@SubscribeEvent
-	public void onKeyInput(InputEvent.KeyInputEvent evt) {
+	public void onKeyInput(InputEvent.Key evt) {
 		if (toggleEditGUI.isDown()) {
 
 			//String playerUUID = Minecraft.getInstance().player.getGameProfile().getId().toString();
@@ -159,8 +163,8 @@ public class WildfireEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onPlayerJoin(EntityJoinWorldEvent evt) {
-		if (evt.getWorld().isClientSide && evt.getEntity() instanceof AbstractClientPlayer plr) {
+	public void onPlayerJoin(EntityJoinLevelEvent evt) {
+		if (evt.getLevel().isClientSide && evt.getEntity() instanceof AbstractClientPlayer plr) {
 			UUID uuid = plr.getUUID();
 			GenderPlayer aPlr = WildfireGender.getPlayerById(uuid);
 			if (aPlr == null) {
@@ -183,7 +187,7 @@ public class WildfireEventHandler {
 	);
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public void onPlaySound(PlaySoundAtEntityEvent event) {
+	public void onPlaySound(PlayLevelSoundEvent.AtEntity event) {
 		if (event.getSound() != null && playerHurtSounds.contains(event.getSound()) && event.getEntity() instanceof Player p && p.level.isClientSide) {
 			//Cancel as we handle all hurt sounds manually so that we can
 			// event.setCanceled(true);
@@ -198,7 +202,7 @@ public class WildfireEventHandler {
 				}
 			}
 			if (soundEvent != null)
-				p.level.playLocalSound(p.getX(), p.getY(), p.getZ(), soundEvent, event.getCategory(), event.getVolume(), event.getPitch(), false);
+				p.level.playLocalSound(p.getX(), p.getY(), p.getZ(), soundEvent, event.getSource(), event.getNewVolume(), event.getNewPitch(), false);
 		}
 	}
 }

@@ -34,8 +34,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
@@ -59,7 +57,7 @@ public class WildfirePlayerListScreen extends Screen {
 	WildfirePlayerList PLAYER_LIST;
 	private Minecraft client;
 	public WildfirePlayerListScreen(Minecraft mc) {
-		super(new TranslatableComponent("wildfire_gender.player_list.title"));
+		super(Component.translatable("wildfire_gender.player_list.title"));
 		this.client = mc;
 		Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
 	}
@@ -88,7 +86,7 @@ public class WildfirePlayerListScreen extends Screen {
 		PLAYER_LIST.setRenderTopAndBottom(false);
 	    this.addRenderableWidget(this.PLAYER_LIST);
 
-		this.addWidget(new WildfireButton(this.width / 2 + 53, y - 74, 9, 9, new TranslatableComponent("wildfire_gender.label.exit"), button -> Minecraft.getInstance().setScreen(null)));
+		this.addWidget(new WildfireButton(this.width / 2 + 53, y - 74, 9, 9, Component.translatable("wildfire_gender.label.exit"), button -> Minecraft.getInstance().setScreen(null)));
 
 	    this.TXTR_BACKGROUND = new ResourceLocation(WildfireGender.MODID, "textures/gui/player_list.png");
 
@@ -137,19 +135,19 @@ public class WildfirePlayerListScreen extends Screen {
 			if(pEntity != null) {
 				this.font.drawShadow(m, pEntity.getDisplayName().copy().withStyle(ChatFormatting.UNDERLINE), dialogX, dialogY - 2, 0xFFFFFF);
 
-				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.label.gender").append(" ").append(HOVER_PLAYER.getPronouns()), dialogX, dialogY + 10, HOVER_PLAYER.getPronounColorOnTick(pEntity.tickCount));
-				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.wardrobe.slider.breast_size", Math.round(HOVER_PLAYER.getBustSize() * 100)), dialogX, dialogY + 20, 0xBBBBBB);
-				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.char_settings.physics", new TranslatableComponent(HOVER_PLAYER.hasBreastPhysics() ? "wildfire_gender.label.enabled" : "wildfire_gender.label.disabled")), dialogX, dialogY + 40, 0xBBBBBB);
-				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);
-				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.player_list.breast_momentum", Math.round(HOVER_PLAYER.getFloppiness() * 100)), dialogX + 6, dialogY + 60, 0xBBBBBB);
+				this.font.drawShadow(m, Component.translatable("wildfire_gender.label.gender").append(" ").append(HOVER_PLAYER.getPronouns()), dialogX, dialogY + 10, HOVER_PLAYER.getPronounColorOnTick(pEntity.tickCount));
+				this.font.drawShadow(m, Component.translatable("wildfire_gender.wardrobe.slider.breast_size", Math.round(HOVER_PLAYER.getBustSize() * 100)), dialogX, dialogY + 20, 0xBBBBBB);
+				this.font.drawShadow(m, Component.translatable("wildfire_gender.char_settings.physics", Component.translatable(HOVER_PLAYER.hasBreastPhysics() ? "wildfire_gender.label.enabled" : "wildfire_gender.label.disabled")), dialogX, dialogY + 40, 0xBBBBBB);
+				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);
+				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.breast_momentum", Math.round(HOVER_PLAYER.getFloppiness() * 100)), dialogX + 6, dialogY + 60, 0xBBBBBB);
 
 				HurtSound hs = WildfireSounds.get(HOVER_PLAYER.getHurtSounds());
-				this.font.drawShadow(m, new TranslatableComponent("wildfire_gender.player_list.female_sounds", new TextComponent(hs.getName())), dialogX, dialogY + 80, 0xBBBBBB);
+				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.female_sounds", Component.literal(hs.getName())), dialogX, dialogY + 80, 0xBBBBBB);
 				WardrobeBrowserScreen.drawEntityOnScreen(x - 110, y + 45, 45, (x - 300), (y - 26 - f2), pEntity);
 			}
 		}
 
-	    this.font.draw(m, new TranslatableComponent("wildfire_gender.player_list.title"), x - 60, y - 73, 4473924);
+	    this.font.draw(m, Component.translatable("wildfire_gender.player_list.title"), x - 60, y - 73, 4473924);
 
 		boolean withCreator = false;
 		PlayerInfo[] playersC = this.minecraft.getConnection().getOnlinePlayers().toArray(new PlayerInfo[0]);
@@ -161,7 +159,7 @@ public class WildfirePlayerListScreen extends Screen {
 		}
 
 		if(withCreator) {
-			drawCenteredString(m, this.font, new TranslatableComponent("wildfire_gender.label.with_creator"), this.width / 2, y + 100, 0xFF00FF);
+			drawCenteredString(m, this.font, Component.translatable("wildfire_gender.label.with_creator"), this.width / 2, y + 100, 0xFF00FF);
 		}
 
 		//Breast Cancer Awareness Month Donation Prompt

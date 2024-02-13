@@ -22,9 +22,6 @@ import com.google.gson.JsonObject;
 import com.wildfire.main.config.ClientConfiguration;
 import com.wildfire.main.config.ConfigKey;
 import com.wildfire.physics.BreastPhysics;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 
 import java.awt.*;
 import java.util.UUID;
