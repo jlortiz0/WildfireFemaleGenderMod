@@ -113,7 +113,7 @@ public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 	@Override
 	public void render(@Nonnull PoseStack matrixStack, @Nonnull MultiBufferSource bufferSource, int packedLightIn, @Nonnull AbstractClientPlayer ent, float limbAngle,
 		float limbDistance, float partialTicks, float animationProgress, float headYaw, float headPitch) {
-		if (ent.isInvisibleTo(Minecraft.getInstance().player)) {
+		if (ent.isSpectator()) {
 			//Exit early if the entity shouldn't actually be seen
 			return;
 		}
@@ -126,6 +126,9 @@ public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 			if(plr == null || plr.getBustSize() < 0.01f) return;
 
 			ItemStack armorStack = ent.getItemBySlot(EquipmentSlot.CHEST);
+			if (armorStack.isEmpty() && ent.isInvisibleTo(Minecraft.getInstance().player)) {
+				return;
+			}
 			//Note: When the stack is empty the helper will fall back to an implementation that returns the proper data
 			IGenderArmor genderArmor = WildfireHelper.getArmorConfig(armorStack);
 			boolean isChestplateOccupied = genderArmor.coversBreasts();
@@ -293,11 +296,13 @@ public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 	private void renderBreast(AbstractClientPlayer entity, ItemStack armorStack, PoseStack matrixStack, MultiBufferSource bufferSource, RenderType breastRenderType,
 		int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha, boolean left) {
 		VertexConsumer vertexConsumer = bufferSource.getBuffer(breastRenderType);
-		renderBox(left ? lBreast : rBreast, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-		if (entity.isModelPartShown(PlayerModelPart.JACKET)) {
-			matrixStack.translate(0, 0, -0.015f);
-			matrixStack.scale(1.05f, 1.05f, 1.05f);
-			renderBox(left ? lBreastWear : rBreastWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		if (!entity.isInvisibleTo(Minecraft.getInstance().player)) {
+			renderBox(left ? lBreast : rBreast, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			if (entity.isModelPartShown(PlayerModelPart.JACKET)) {
+				matrixStack.translate(0, 0, -0.015f);
+				matrixStack.scale(1.05f, 1.05f, 1.05f);
+				renderBox(left ? lBreastWear : rBreastWear, matrixStack, vertexConsumer, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+			}
 		}
 		//TODO: Eventually we may want to expose a way via the API for mods to be able to override rendering
 		// be it because they are not an armor item or the way they render their armor item is custom
