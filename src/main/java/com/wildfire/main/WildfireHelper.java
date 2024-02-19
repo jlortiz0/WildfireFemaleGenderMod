@@ -18,9 +18,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.main;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.wildfire.api.IGenderArmor;
+import com.wildfire.render.GenderLayer;
 import com.wildfire.render.armor.EmptyGenderArmor;
+import com.wildfire.render.armor.MoveBoxGenderArmor;
 import com.wildfire.render.armor.SimpleGenderArmor;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
@@ -30,17 +36,22 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WildfireHelper {
 
     public static final Capability<IGenderArmor> GENDER_ARMOR_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Map<ResourceLocation, IGenderArmor> GENDER_ARMOR_MAP = new HashMap<>();
 
     public static float randFloat(float min, float max) {
         return (float) ThreadLocalRandom.current().nextDouble(min, (double) max + 1);
     }
 
-    public static IGenderArmor getArmorConfig(ItemStack stack) {
+    public static IGenderArmor getArmorConfig(ItemStack stack, ResourceLocation rl) {
         if (stack.isEmpty()) {
             return EmptyGenderArmor.INSTANCE;
         }
@@ -66,8 +77,8 @@ public class WildfireHelper {
                 } else if (material == ArmorMaterials.NETHERITE) {
                     return SimpleGenderArmor.NETHERITE;
                 }
+                return GENDER_ARMOR_MAP.getOrDefault(rl, SimpleGenderArmor.FALLBACK);
                 //Otherwise just fallback to our default armor implementation
-                return SimpleGenderArmor.FALLBACK;
             }
             //If it is not an armor item default as if "nothing is being worn that covers the breast area"
             // this might not be fully accurate and may need some tweaks but in general is likely relatively
@@ -75,5 +86,18 @@ public class WildfireHelper {
             // other wearables
             return EmptyGenderArmor.INSTANCE;
         });
+    }
+
+    public static void loadGenderArmorFile() {
+        JsonObject obj = GsonHelper.parse(new InputStreamReader(WildfireHelper.class.getResourceAsStream("/armors.json")));
+        for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
+            String key = entry.getKey();
+            JsonObject entryObj = entry.getValue().getAsJsonObject();
+            float physics = entryObj.has("physics") ? entryObj.get("physics").getAsFloat() : 0.5f;
+            int tW = entryObj.has("w") ? entryObj.get("w").getAsInt() : 64;
+            int tH = entryObj.has("h") ? entryObj.get("h").getAsInt() : 32;
+            int leftSub = entryObj.has("left") ? entryObj.get("left").getAsInt() : 4;
+            GENDER_ARMOR_MAP.put(new ResourceLocation(key), new MoveBoxGenderArmor(physics, tW, tH, entryObj.get("u").getAsInt(), entryObj.get("v").getAsInt(), leftSub));
+        }
     }
 }

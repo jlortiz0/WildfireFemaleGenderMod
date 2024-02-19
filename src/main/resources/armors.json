@@ -1,0 +1,14 @@
+{
+  "alexsmobs:textures/armor/rocky_chestplate.png": {
+    "h": 64,
+    "u": 11,
+    "v": 7,
+    "left": 6
+  },
+  "alexsmobs:textures/armor/unsettling_kimono.png": {
+    "h": 64,
+    "u": 3,
+    "v": 3,
+    "left": 3
+  }
+}

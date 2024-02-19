@@ -34,6 +34,15 @@ import com.wildfire.physics.BreastPhysics;
 import com.wildfire.render.WildfireModelRenderer.BreastModelBox;
 import com.wildfire.render.WildfireModelRenderer.OverlayModelBox;
 import com.wildfire.render.WildfireModelRenderer.PositionTextureVertex;
+import io.github.edwinmindcraft.apoli.api.ApoliAPI;
+import io.github.edwinmindcraft.apoli.api.IDynamicFeatureConfiguration;
+import io.github.edwinmindcraft.apoli.api.power.configuration.ConfiguredPower;
+import io.github.edwinmindcraft.apoli.api.power.factory.PowerFactory;
+import io.github.edwinmindcraft.apoli.common.power.ModelColorPower;
+import io.github.edwinmindcraft.apoli.common.power.configuration.ColorConfiguration;
+import io.github.edwinmindcraft.origins.api.OriginsAPI;
+import io.github.edwinmindcraft.origins.api.capabilities.IOriginContainer;
+import io.github.edwinmindcraft.origins.api.origin.Origin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -47,6 +56,8 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectUtil;
@@ -60,18 +71,18 @@ import net.minecraftforge.client.ForgeHooksClient;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
 
 	private BreastModelBox lBreast, rBreast;
 	private OverlayModelBox lBreastWear, rBreastWear;
-	private BreastModelBox lBoobArmor, rBoobArmor;
+	private WildfireModelRenderer.ModelBox lBoobArmor, rBoobArmor;
 
 	private float preBreastSize = 0f;
+	private ResourceLocation lastArmor = null;
+	private ResourceKey<Origin> origin = null;
+	private ColorConfiguration modelTint = new ColorConfiguration(1, 1, 1);
 
 	public GenderLayer(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> player) {
 		super(player);
@@ -80,16 +91,15 @@ public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 		rBreast = new BreastModelBox(64, 64, 20, 17, 0, 0.0F, 0F, 4, 5, 4, 0.0F, false);
 		lBreastWear = new OverlayModelBox(true,64, 64, 17, 34, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 		rBreastWear = new OverlayModelBox(false,64, 64, 21, 34, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
-
-		lBoobArmor = new BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
-		rBoobArmor = new BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 	}
 
 	private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = new HashMap<>();
 	//Copy of Forge's patched in HumanoidArmorLayer#getArmorResource
-	public ResourceLocation getArmorResource(AbstractClientPlayer entity, ItemStack stack, EquipmentSlot slot, @Nullable String type) {
+	public static ResourceLocation getArmorResource(AbstractClientPlayer entity, ItemStack stack, EquipmentSlot slot, @Nullable String type) {
 		ArmorItem item = (ArmorItem) stack.getItem();
-		String texture = item.getMaterial().getName();
+		String texture = item.getArmorTexture(stack, entity, slot, type);
+		if (texture != null) return new ResourceLocation(texture);
+		texture = item.getMaterial().getName();
 		String domain = "minecraft";
 		int idx = texture.indexOf(':');
 		if (idx != -1) {
@@ -130,13 +140,35 @@ public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 				return;
 			}
 			//Note: When the stack is empty the helper will fall back to an implementation that returns the proper data
-			IGenderArmor genderArmor = WildfireHelper.getArmorConfig(armorStack);
+			ResourceLocation armorTexture = armorStack.getItem() instanceof ArmorItem ? getArmorResource(ent, armorStack, EquipmentSlot.CHEST, null) : null;
+			IGenderArmor genderArmor = WildfireHelper.getArmorConfig(armorStack, armorTexture);
 			boolean isChestplateOccupied = genderArmor.coversBreasts();
 			if (genderArmor.alwaysHidesBreasts() || !plr.showBreastsInArmor() && isChestplateOccupied) {
 				//If the armor always hides breasts or there is armor and the player configured breasts
 				// to be hidden when wearing armor, we can just exit early rather than doing any calculations
 				return;
 			}
+			if (!armorStack.isEmpty()) {
+				if (!armorTexture.equals(lastArmor)) {
+					lBoobArmor = genderArmor.getLeftModel();
+					rBoobArmor = genderArmor.getRightModel();
+					lastArmor = armorTexture;
+				}
+			}
+
+			IOriginContainer.get(ent).ifPresent((iOriginContainer -> {
+				ResourceKey<Origin> oLoc = iOriginContainer.getOrigin(OriginsAPI.getActiveLayers().get(0));
+				if (!oLoc.equals(origin)) {
+					origin = oLoc;
+					modelTint = new ColorConfiguration(1, 1, 1);
+					for (Holder<ConfiguredPower<?, ?>> power : ApoliAPI.getPowerContainer(ent).getPowers()) {
+						if (power.get().getFactory() instanceof ModelColorPower) {
+							modelTint = (ColorConfiguration) power.get().getConfiguration();
+							break;
+						}
+					}
+				}
+			}));
 
 			PlayerRenderer rend = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(ent);
 			PlayerModel<AbstractClientPlayer> model = rend.getModel();
@@ -163,11 +195,11 @@ public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 			}
 
 			//DEPENDENCIES
-			float overlayRed = 1;
-			float overlayGreen = 1;
-			float overlayBlue = 1;
+			float overlayRed = modelTint.red();
+			float overlayGreen = modelTint.green();
+			float overlayBlue = modelTint.blue();
 			//Note: We only render if the entity is not visible to the player, so we can assume it is visible to the player
-			float overlayAlpha = ent.isInvisible() ? 0.15F : 1;
+			float overlayAlpha = ent.isInvisible() ? 0.15F : modelTint.alpha();
 
 			RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
@@ -323,7 +355,7 @@ public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 			matrixStack.pushPose();
 			matrixStack.translate(left ? 0.001f : -0.001f, 0.015f, -0.015f);
 			matrixStack.scale(1.05f, 1, 1);
-			WildfireModelRenderer.BreastModelBox armor = left ? lBoobArmor : rBoobArmor;
+			WildfireModelRenderer.ModelBox armor = left ? lBoobArmor : rBoobArmor;
 			RenderType armorType = RenderType.armorCutoutNoCull(armorTexture);
 			VertexConsumer armorVertexConsumer = ItemRenderer.getArmorFoilBuffer(bufferSource, armorType, false, armorStack.hasFoil());
 			renderBox(armor, matrixStack, armorVertexConsumer, packedLightIn, OverlayTexture.NO_OVERLAY, armorR, armorG, armorB, 1);

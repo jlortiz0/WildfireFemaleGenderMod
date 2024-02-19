@@ -20,6 +20,8 @@ package com.wildfire.render;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.piston.PistonBaseBlock;
 
 public class WildfireModelRenderer {
 

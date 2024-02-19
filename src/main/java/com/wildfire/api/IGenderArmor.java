@@ -18,6 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.api;
 
+import com.wildfire.render.WildfireModelRenderer;
+
 /**
  * Expose this as a capability on your chestplates or items that go in the chest slot to configure how it interacts with breast rendering.
  */
@@ -67,5 +69,16 @@ public interface IGenderArmor {
      */
     default float tightness() {
         return 0;
+    }
+
+    WildfireModelRenderer.ModelBox defaultLModel = new WildfireModelRenderer.BreastModelBox(64, 32, 16, 17, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);;
+    WildfireModelRenderer.ModelBox defaultRModel = new WildfireModelRenderer.BreastModelBox(64, 32, 20, 17, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
+
+    default WildfireModelRenderer.ModelBox getLeftModel() {
+        return defaultLModel;
+    }
+
+    default WildfireModelRenderer.ModelBox getRightModel() {
+        return defaultRModel;
     }
 }

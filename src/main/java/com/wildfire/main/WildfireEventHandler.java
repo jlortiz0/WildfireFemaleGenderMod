@@ -32,10 +32,13 @@ import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -73,6 +76,7 @@ public class WildfireEventHandler {
 
 		@SubscribeEvent
 		public static void setupClient(FMLClientSetupEvent event) {
+			WildfireHelper.loadGenderArmorFile();
 			MinecraftForge.EVENT_BUS.register(new WildfireEventHandler());
 		}
 
@@ -142,7 +146,12 @@ public class WildfireEventHandler {
 		if(evt.phase == TickEvent.Phase.END && evt.side.isClient()) {
 			GenderPlayer aPlr = WildfireGender.getPlayerById(evt.player.getUUID());
 			if(aPlr == null) return;
-			IGenderArmor armor = WildfireHelper.getArmorConfig(evt.player.getItemBySlot(EquipmentSlot.CHEST));
+			ItemStack chestItem = evt.player.getItemBySlot(EquipmentSlot.CHEST);
+			ResourceLocation armorTexture = null;
+			if (chestItem.getItem() instanceof ArmorItem) {
+				armorTexture = GenderLayer.getArmorResource((AbstractClientPlayer) evt.player, chestItem, EquipmentSlot.CHEST, null);
+			}
+			IGenderArmor armor = WildfireHelper.getArmorConfig(chestItem, armorTexture);
 			aPlr.getLeftBreastPhysics().update(evt.player, armor);
 			aPlr.getRightBreastPhysics().update(evt.player, armor);
 		}
