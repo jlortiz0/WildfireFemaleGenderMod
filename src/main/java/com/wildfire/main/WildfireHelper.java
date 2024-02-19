@@ -22,9 +22,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.wildfire.api.IGenderArmor;
 import com.wildfire.render.GenderLayer;
-import com.wildfire.render.armor.EmptyGenderArmor;
-import com.wildfire.render.armor.MoveBoxGenderArmor;
-import com.wildfire.render.armor.SimpleGenderArmor;
+import com.wildfire.render.armor.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -93,13 +91,30 @@ public class WildfireHelper {
         for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
             String key = entry.getKey();
             JsonObject entryObj = entry.getValue().getAsJsonObject();
+            if (entryObj.has("binder") && entryObj.get("binder").getAsBoolean()) {
+                GENDER_ARMOR_MAP.put(new ResourceLocation(key), BinderGenderArmor.INSTANCE);
+                continue;
+            }
             float physics = entryObj.has("physics") ? entryObj.get("physics").getAsFloat() : 0.5f;
             int tW = entryObj.has("w") ? entryObj.get("w").getAsInt() : 64;
             int tH = entryObj.has("h") ? entryObj.get("h").getAsInt() : 64;
             int leftSub = entryObj.has("left") ? entryObj.get("left").getAsInt() : 4;
             int u = entryObj.has("u") ? entryObj.get("u").getAsInt() : 20;
             int v = entryObj.has("v") ? entryObj.get("v").getAsInt() : 17;
-            GENDER_ARMOR_MAP.put(new ResourceLocation(key), new MoveBoxGenderArmor(physics, tW, tH, u, v, leftSub));
+            int extend = entryObj.has("extend") ? entryObj.get("extend").getAsInt() : -1;
+            int underU = entryObj.has("underU") ? entryObj.get("underU").getAsInt() : -1;
+            int underV = underU != -1 ? entryObj.get("underV").getAsInt() : -1;
+            boolean overlay = underU != -1 && entryObj.has("overlay") && entryObj.get("overlay").getAsBoolean();
+            float olWidth = overlay && entryObj.has("olW") ? entryObj.get("olW").getAsFloat() : 4;
+            if (extend != -1) {
+                GENDER_ARMOR_MAP.put(new ResourceLocation(key), new ExtendBottomGenderArmor(physics, tW, tH, u, v, leftSub, extend));
+            } else if (overlay) {
+                GENDER_ARMOR_MAP.put(new ResourceLocation(key), new OverlayGenderArmor(physics, tW, tH, u, v, leftSub, olWidth, underU, underV));
+            } else if (underU != -1) {
+                GENDER_ARMOR_MAP.put(new ResourceLocation(key), new UnderlayGenderArmor(physics, tW, tH, u, v, leftSub, (int) underU, underV));
+            } else {
+                GENDER_ARMOR_MAP.put(new ResourceLocation(key), new MoveBoxGenderArmor(physics, tW, tH, u, v, leftSub));
+            }
         }
     }
 }
