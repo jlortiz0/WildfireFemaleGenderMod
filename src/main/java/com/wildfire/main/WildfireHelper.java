@@ -95,9 +95,11 @@ public class WildfireHelper {
             JsonObject entryObj = entry.getValue().getAsJsonObject();
             float physics = entryObj.has("physics") ? entryObj.get("physics").getAsFloat() : 0.5f;
             int tW = entryObj.has("w") ? entryObj.get("w").getAsInt() : 64;
-            int tH = entryObj.has("h") ? entryObj.get("h").getAsInt() : 32;
+            int tH = entryObj.has("h") ? entryObj.get("h").getAsInt() : 64;
             int leftSub = entryObj.has("left") ? entryObj.get("left").getAsInt() : 4;
-            GENDER_ARMOR_MAP.put(new ResourceLocation(key), new MoveBoxGenderArmor(physics, tW, tH, entryObj.get("u").getAsInt(), entryObj.get("v").getAsInt(), leftSub));
+            int u = entryObj.has("u") ? entryObj.get("u").getAsInt() : 20;
+            int v = entryObj.has("v") ? entryObj.get("v").getAsInt() : 17;
+            GENDER_ARMOR_MAP.put(new ResourceLocation(key), new MoveBoxGenderArmor(physics, tW, tH, u, v, leftSub));
         }
     }
 }

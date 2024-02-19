@@ -1,14 +1,89 @@
 {
   "alexsmobs:textures/armor/rocky_chestplate.png": {
-    "h": 64,
     "u": 11,
     "v": 7,
     "left": 6
   },
   "alexsmobs:textures/armor/unsettling_kimono.png": {
-    "h": 64,
     "u": 3,
     "v": 3,
     "left": 3
-  }
+  },
+  "aquamirae:textures/entity/armor/terrible_chestplate.png": {
+    "u": 4,
+    "v": 1
+  },
+  "aquamirae:textures/entity/armor/three_bolt_chestplate.png": {
+    "u": 4,
+    "v": 1
+  },
+  "aquamirae:textures/entity/armor/abyssal_brigantine.png": {
+    "u": 4,
+    "v": 1
+  },
+  "malum:textures/armor/spirit_hunter_reforged.png": {
+    "h": 128,
+    "w": 128,
+    "u": 5,
+    "v": 20,
+    "left": 3
+  },
+  "malum:textures/armor/soul_stained_steel_reforged.png": {
+    "h": 128,
+    "w": 128,
+    "u": 8,
+    "v": 41,
+    "left": 5
+  },
+  "pyromancer:textures/entities/armor.png": {
+    "u": 4,
+    "v": 49
+  },
+  "pyromancer:textures/entities/armor_of_hellblaze_monarch_texture.png": {
+    "u": 4,
+    "v": 21
+  },
+  "cataclysm:textures/armor/ignitium_armor.png": {
+    "u": 35,
+    "v": 49,
+    "left": 3
+  },
+  "cataclysm:textures/armor/ignitium_elytra_chestplate.png": {
+    "u": 35,
+    "v": 49,
+    "left": 3,
+    "h": 128,
+    "w": 128
+  },
+  "iceandfire:textures/models/armor/armor_silver_metal_layer_1.png": {},
+  "iceandfire:textures/models/armor/armor_copper_metal_layer_1.png": {},
+  "iceandfire:textures/models/armor/armor_deathworm_red.png": {},
+  "iceandfire:textures/models/armor/armor_deathworm_yellow.png": {},
+  "iceandfire:textures/models/armor/armor_deathworm_white.png": {},
+  "iceandfire:textures/models/armor/armor_dragonsteel_fire.png": {},
+  "iceandfire:textures/models/armor/armor_dragonsteel_ice.png": {},
+  "iceandfire:textures/models/armor/armor_dragonsteel_lightning.png": {},
+  "iceandfire:textures/models/armor/armor_tide_blue.png": {},
+  "iceandfire:textures/models/armor/armor_tide_bronze.png": {},
+  "iceandfire:textures/models/armor/armor_tide_deepblue.png": {},
+  "iceandfire:textures/models/armor/armor_tide_green.png": {},
+  "iceandfire:textures/models/armor/armor_tide_guardian.png": {},
+  "iceandfire:textures/models/armor/armor_tide_purple.png": {},
+  "iceandfire:textures/models/armor/armor_tide_red.png": {},
+  "iceandfire:textures/models/armor/armor_tide_teal.png": {},
+  "iceandfire:textures/models/armor/armor_amythyst.png": {},
+  "iceandfire:textures/models/armor/armor_black.png": {},
+  "iceandfire:textures/models/armor/armor_blue.png": {},
+  "iceandfire:textures/models/armor/armor_bronze.png": {},
+  "iceandfire:textures/models/armor/armor_copper.png": {},
+  "iceandfire:textures/models/armor/armor_electric.png": {},
+  "iceandfire:textures/models/armor/armor_gray.png": {},
+  "iceandfire:textures/models/armor/armor_green.png": {},
+  "iceandfire:textures/models/armor/armor_red.png": {},
+  "iceandfire:textures/models/armor/armor_sapphire.png": {},
+  "iceandfire:textures/models/armor/armor_silver.png": {},
+  "iceandfire:textures/models/armor/armor_white.png": {},
+  "iceandfire:textures/models/armor/armor_troll_forest.png": {},
+  "iceandfire:textures/models/armor/armor_troll_frost.png": {},
+  "iceandfire:textures/models/armor/armor_troll_mountain.png": {}
 }

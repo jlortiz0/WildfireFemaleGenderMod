@@ -186,15 +186,33 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
-    runtimeOnly fg.deobf("curse.maven:alexs-mobs-426558:4159154")
-    runtimeOnly fg.deobf("curse.maven:citadel-331936:4556677")
-    implementation fg.deobf("curse.maven:origins-forge-474438:4695648")
-    // runtimeOnly fg.deobf("curse.maven:bucolic-origins-596305:4432684")
+    // Origins
     runtimeOnly fg.deobf("curse.maven:caelus-308989:3929284")
+    implementation fg.deobf("curse.maven:origins-forge-474438:4695648")
 
     implementation fg.deobf("local:apoli-forge:1.19.2-2.6.1.2")
     implementation fg.deobf("local:calio-forge:1.19.2-1.7.0.1")
     runtimeOnly fg.deobf("local:additionalentityattributes-forge:1.19-1.0.1+1.19")
+
+    // Armors
+    runtimeOnly fg.deobf("curse.maven:citadel-331936:4556677")
+    runtimeOnly fg.deobf("curse.maven:alexs-mobs-426558:4159154")
+
+    runtimeOnly fg.deobf("curse.maven:archaeology-api-950822:4996103")
+    runtimeOnly fg.deobf("curse.maven:curios-309927:5066842")
+    runtimeOnly fg.deobf("curse.maven:l_ender-s-cataclysm-551586:5070401")
+
+    runtimeOnly fg.deobf("curse.maven:lodestone-616457:4636991")
+    runtimeOnly fg.deobf("curse.maven:malum-484064:4952075")
+
+    runtimeOnly fg.deobf("curse.maven:obscure-api-638417:4522272")
+    runtimeOnly fg.deobf("curse.maven:ob-aquamirae-536254:4522264")
+
+    runtimeOnly fg.deobf("curse.maven:terrablender-563928:4618490")
+    runtimeOnly fg.deobf("curse.maven:pyromancer-471135:4717766")
+
+    runtimeOnly fg.deobf("curse.maven:orcz-581652:4331348")
+    runtimeOnly fg.deobf("curse.maven:ice-and-fire-dragons-264231:5037952")
 }
 
 mixin {
