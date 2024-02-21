@@ -24,7 +24,7 @@ public record UnderlayGenderArmor(float physicsResistance, int tW, int tH, int t
     private class UnderlayModelBox extends WildfireModelRenderer.ModelBox {
 
         public UnderlayModelBox(int tW, int tH, int texU, int texV, float x, float y, float z, int dx, int dy, int dz, float delta, boolean mirror) {
-            super(tW, tH, texU, texV, x, y, z, dx, dy, dz, delta, mirror, 6);
+            super(tW, tH, texU, texV, x, y, z, dx, dy, dz, delta, mirror, 7);
         }
 
         @Override
@@ -43,6 +43,9 @@ public record UnderlayGenderArmor(float physicsResistance, int tW, int tH, int t
             this.quads[5] = this.quads[3];
             this.quads[3] = new WildfireModelRenderer.TexturedQuad(underU, underV, underU + dx, underV + dy, tW, tH, mirror, Direction.UP,
                     vertex1, vertex2, vertex6, vertex5);
+            this.quads[6] = this.quads[4];
+            this.quads[4] = new WildfireModelRenderer.TexturedQuad(underU - 4, underV, underU - 4 + dx, underV + dy, tW, tH, mirror, Direction.NORTH,
+                    vertex, vertex7, vertex2, vertex1);
         }
     }
 }

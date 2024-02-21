@@ -68,20 +68,9 @@
   },
   "iceandfire:textures/models/armor/armor_silver_metal_layer_1.png": {},
   "iceandfire:textures/models/armor/armor_copper_metal_layer_1.png": {},
-  "iceandfire:textures/models/armor/armor_deathworm_red.png": {},
-  "iceandfire:textures/models/armor/armor_deathworm_yellow.png": {},
-  "iceandfire:textures/models/armor/armor_deathworm_white.png": {},
-  "iceandfire:textures/models/armor/armor_dragonsteel_fire.png": {},
-  "iceandfire:textures/models/armor/armor_dragonsteel_ice.png": {},
-  "iceandfire:textures/models/armor/armor_dragonsteel_lightning.png": {},
-  "iceandfire:textures/models/armor/armor_tide_blue.png": {},
-  "iceandfire:textures/models/armor/armor_tide_bronze.png": {},
-  "iceandfire:textures/models/armor/armor_tide_deepblue.png": {},
-  "iceandfire:textures/models/armor/armor_tide_green.png": {},
-  "iceandfire:textures/models/armor/armor_tide_guardian.png": {},
-  "iceandfire:textures/models/armor/armor_tide_purple.png": {},
-  "iceandfire:textures/models/armor/armor_tide_red.png": {},
-  "iceandfire:textures/models/armor/armor_tide_teal.png": {},
+  "iceandfire:textures/models/armor/armor_deathworm": {},
+  "iceandfire:textures/models/armor/armor_dragonsteel": {},
+  "iceandfire:textures/models/armor/armor_tide": {},
   "iceandfire:textures/models/armor/armor_amythyst.png": {},
   "iceandfire:textures/models/armor/armor_black.png": {},
   "iceandfire:textures/models/armor/armor_blue.png": {},
@@ -94,9 +83,7 @@
   "iceandfire:textures/models/armor/armor_sapphire.png": {},
   "iceandfire:textures/models/armor/armor_silver.png": {},
   "iceandfire:textures/models/armor/armor_white.png": {},
-  "iceandfire:textures/models/armor/armor_troll_forest.png": {},
-  "iceandfire:textures/models/armor/armor_troll_frost.png": {},
-  "iceandfire:textures/models/armor/armor_troll_mountain.png": {},
+  "iceandfire:textures/models/armor/armor_troll": {},
   "orcz:textures/entities/cammo_armour.png": {
     "u": 32,
     "v": 30,
@@ -107,5 +94,363 @@
   },
   "cataclysm:textures/armor/bloom_stone_pauldrons.png": {
     "binder": true
+  },
+  "witchmobility:textures/models/armor/witch_suit.png": {
+    "u": 12,
+    "v": 18,
+    "left": -20,
+    "underU": 4,
+    "underV": 4,
+    "overlay": true,
+    "olW": 3
+  },
+  "environmental:textures/models/armor/healer_pouch.png": {
+    "h": 32,
+    "w": 32,
+    "underU": 6,
+    "underV": 6,
+    "overlay": true,
+    "olW": 1.5
+  },
+  "ars_nouveau:textures/items/medium_armor/medium_armor.png": {
+    "u": 16,
+    "v": 0,
+    "underU": 30,
+    "underV": 30,
+    "h": 128,
+    "w": 128
+  },
+  "ars_nouveau:textures/items/medium_armor/medium_armor": {
+    "u": 16,
+    "v": 0,
+    "underU": 30,
+    "underV": 30,
+    "h": 128,
+    "w": 128
+  },
+  "ars_nouveau:textures/items/light_armor/light_armor": {
+    "u": 1,
+    "v": -3,
+    "underU": 1,
+    "underV": 13,
+    "left": 2,
+    "overlay": true,
+    "olW": 4.5
+  },
+  "ars_nouveau:textures/items/heavy_armor/heavy_armor": {
+    "u": 4,
+    "v": 33,
+    "underU": 45,
+    "underV": 3,
+    "overlay": true
+  },
+  "ars_elemental:textures/armor/medium_armor": {
+    "u": 16,
+    "v": 0,
+    "underU": 30,
+    "underV": 30,
+    "h": 128,
+    "w": 128
+  },
+  "hexerei:textures/models/armor/witch_armor_layer1.png": {
+    "u": 48,
+    "v": 18,
+    "h": 128,
+    "w": 128
+  },
+  "botania:textures/model/armor_elementium.png": {
+    "u": 7,
+    "v": 21,
+    "left": 5,
+    "underU": 7,
+    "underV": 28,
+    "h": 128
+  },
+  "botania:textures/model/armor_manasteel.png": {
+    "u": 7,
+    "v": 22,
+    "left": 5,
+    "underU": 22,
+    "underV": 25,
+    "h": 128
+  },
+  "botania:textures/model/armor_terrasteel.png": {
+    "u": 8,
+    "v": 22,
+    "left": 5,
+    "extend": 2,
+    "h": 128
+  },
+  "botania:textures/model/armor_manaweave.png": {
+    "u": 7,
+    "v": 24,
+    "left": 5,
+    "h": 128
+  },
+  "botania:textures/model/armor_manaweave_holiday.png": {
+    "u": 7,
+    "v": 24,
+    "left": 5,
+    "h": 128
+  },
+  "kawaiidishes:textures/models/armor/bunny_suit/bunny_suit": {
+    "u": 5,
+    "v": 17
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/black_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/blue_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/brown_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/cyan_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/gray_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/green_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/light_blue_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/light_gray_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/lime_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/magenta_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/orange_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/pink_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/purple_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/red_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/white_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/bunny_tailed/yellow_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/black_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/blue_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/brown_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/cyan_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/gray_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/green_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/light_blue_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/light_gray_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/lime_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/magenta_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/orange_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/pink_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/purple_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/red_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/white_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/cat_tailed/yellow_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/black_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/blue_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/brown_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/cyan_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/gray_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/green_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/light_blue_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/light_gray_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/lime_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/magenta_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/orange_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/pink_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/purple_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/red_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/white_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/devil_tailed/yellow_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/black_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/blue_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/brown_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/cyan_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/gray_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/green_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/light_blue_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/light_gray_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/lime_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/magenta_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/orange_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/pink_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/purple_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/red_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/white_maid": {
+    "u": 28,
+    "v": 26
+  },
+  "kawaiidishes:textures/models/armor/fox_tailed/yellow_maid": {
+    "u": 28,
+    "v": 26
   }
 }

@@ -61,6 +61,22 @@ public class WildfireHelper {
                 //Start by checking if it is a vanilla chestplate as we have custom configurations for those we check against
                 // the armor material instead of the item instance in case any mods define custom armor items using vanilla
                 // materials as then we can make a better guess at what we want the default implementation to be
+                IGenderArmor iga = GENDER_ARMOR_MAP.get(rl);
+                if (iga != null) {
+                    return iga;
+                }
+                int pLoc = rl.getPath().lastIndexOf('/');
+                int underscore = rl.getPath().indexOf('_', pLoc);
+                if (underscore != -1) {
+                    underscore = rl.getPath().indexOf('_', underscore + 1);
+                    if (underscore != -1) {
+                        ResourceLocation rl2 = new ResourceLocation(rl.getNamespace(), rl.getPath().substring(0, underscore));
+                        iga = GENDER_ARMOR_MAP.get(rl2);
+                        if (iga != null) {
+                            return iga;
+                        }
+                    }
+                }
                 ArmorMaterial material = armorItem.getMaterial();
                 if (material == ArmorMaterials.LEATHER) {
                     return SimpleGenderArmor.LEATHER;
@@ -75,7 +91,6 @@ public class WildfireHelper {
                 } else if (material == ArmorMaterials.NETHERITE) {
                     return SimpleGenderArmor.NETHERITE;
                 }
-                return GENDER_ARMOR_MAP.getOrDefault(rl, SimpleGenderArmor.FALLBACK);
                 //Otherwise just fallback to our default armor implementation
             }
             //If it is not an armor item default as if "nothing is being worn that covers the breast area"
@@ -111,7 +126,7 @@ public class WildfireHelper {
             } else if (overlay) {
                 GENDER_ARMOR_MAP.put(new ResourceLocation(key), new OverlayGenderArmor(physics, tW, tH, u, v, leftSub, olWidth, underU, underV));
             } else if (underU != -1) {
-                GENDER_ARMOR_MAP.put(new ResourceLocation(key), new UnderlayGenderArmor(physics, tW, tH, u, v, leftSub, (int) underU, underV));
+                GENDER_ARMOR_MAP.put(new ResourceLocation(key), new UnderlayGenderArmor(physics, tW, tH, u, v, leftSub, underU, underV));
             } else {
                 GENDER_ARMOR_MAP.put(new ResourceLocation(key), new MoveBoxGenderArmor(physics, tW, tH, u, v, leftSub));
             }

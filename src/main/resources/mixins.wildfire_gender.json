@@ -5,7 +5,8 @@
   "refmap": "mixins.wildfire_gender.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "EntityRendererMixin"
+    "EntityRendererMixin",
+    "ArsArmorRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
