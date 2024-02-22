@@ -74,7 +74,8 @@ public abstract class PacketGenderInfo {
             this.pronounColor[i] = buffer.readInt();
         }
         this.bust_size = buffer.readFloat();
-        this.hurtSounds = buffer.readUtf();
+        String hs = buffer.readUtf();
+        this.hurtSounds = hs.isEmpty() ? null : hs;
 
         //physics variables
         this.breast_physics = buffer.readBoolean();
@@ -98,7 +99,7 @@ public abstract class PacketGenderInfo {
             buffer.writeInt(f);
         }
         buffer.writeFloat(this.bust_size);
-        buffer.writeUtf(this.hurtSounds);
+        buffer.writeUtf(this.hurtSounds == null ? "" : this.hurtSounds);
         buffer.writeBoolean(this.breast_physics);
         buffer.writeBoolean(this.breast_physics_armor);
         buffer.writeBoolean(this.show_in_armor);
