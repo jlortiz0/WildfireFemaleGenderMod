@@ -195,37 +195,37 @@ dependencies {
     runtimeOnly fg.deobf("local:additionalentityattributes-forge:1.19-1.0.1+1.19")
 
     // Armors
-    runtimeOnly fg.deobf("curse.maven:citadel-331936:4556677")
-    runtimeOnly fg.deobf("curse.maven:alexs-mobs-426558:4159154")
-
-    runtimeOnly fg.deobf("curse.maven:archaeology-api-950822:4996103")
+//    runtimeOnly fg.deobf("curse.maven:citadel-331936:4556677")
+//    runtimeOnly fg.deobf("curse.maven:alexs-mobs-426558:4159154")
+//
+//    runtimeOnly fg.deobf("curse.maven:archaeology-api-950822:4996103")
     runtimeOnly fg.deobf("curse.maven:curios-309927:5066842")
-    runtimeOnly fg.deobf("curse.maven:l_ender-s-cataclysm-551586:5070401")
+//    runtimeOnly fg.deobf("curse.maven:l_ender-s-cataclysm-551586:5070401")
 
 //    runtimeOnly fg.deobf("curse.maven:lodestone-616457:4636991")
 //    runtimeOnly fg.deobf("curse.maven:malum-484064:4952075")
 
-    runtimeOnly fg.deobf("curse.maven:obscure-api-638417:4522272")
-    runtimeOnly fg.deobf("curse.maven:ob-aquamirae-536254:4522264")
-
-    runtimeOnly fg.deobf("curse.maven:terrablender-563928:4618490")
-    runtimeOnly fg.deobf("curse.maven:pyromancer-471135:4717766")
-
+//    runtimeOnly fg.deobf("curse.maven:obscure-api-638417:4522272")
+//    runtimeOnly fg.deobf("curse.maven:ob-aquamirae-536254:4522264")
+//
+//    runtimeOnly fg.deobf("curse.maven:terrablender-563928:4618490")
+//    runtimeOnly fg.deobf("curse.maven:pyromancer-471135:4717766")
+//
     implementation fg.deobf("curse.maven:geckolib-388172:4407241")
-    runtimeOnly fg.deobf("curse.maven:kawaii-dishes-694309:4644365")
-
-    runtimeOnly fg.deobf("curse.maven:blueprint-382216:4749000")
-    runtimeOnly fg.deobf("curse.maven:environmental-388992:4415514")
-
+//    runtimeOnly fg.deobf("curse.maven:kawaii-dishes-694309:4644365")
+//
+//    runtimeOnly fg.deobf("curse.maven:blueprint-382216:4749000")
+//    runtimeOnly fg.deobf("curse.maven:environmental-388992:4415514")
+//
     runtimeOnly fg.deobf("curse.maven:patchouli-306770:4031402")
     implementation fg.deobf("curse.maven:ars-nouveau-401955:5048131")
-    runtimeOnly fg.deobf("curse.maven:ars-elemental-561470:4864938")
-
-    runtimeOnly fg.deobf("curse.maven:orcz-581652:4331348")
-    runtimeOnly fg.deobf("curse.maven:ice-and-fire-dragons-264231:5037952")
-    runtimeOnly fg.deobf("curse.maven:botania-225643:4557912")
-    runtimeOnly fg.deobf("local:hexerei:0.3.3.1")
-    runtimeOnly fg.deobf("local:witchmobility:1.3.2-1.19.2")
+//    runtimeOnly fg.deobf("curse.maven:ars-elemental-561470:4864938")
+//
+//    runtimeOnly fg.deobf("curse.maven:orcz-581652:4331348")
+//    runtimeOnly fg.deobf("curse.maven:ice-and-fire-dragons-264231:5037952")
+//    runtimeOnly fg.deobf("curse.maven:botania-225643:4557912")
+//    runtimeOnly fg.deobf("local:hexerei:0.3.3.1")
+//    runtimeOnly fg.deobf("local:witchmobility:1.3.2-1.19.2")
 }
 
 mixin {

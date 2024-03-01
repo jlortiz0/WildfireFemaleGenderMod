@@ -20,6 +20,7 @@ package com.wildfire.main.networking;
 
 import com.wildfire.main.Breasts;
 import com.wildfire.main.GenderPlayer;
+import com.wildfire.main.HurtSound;
 import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.UUID;
@@ -41,7 +42,8 @@ public abstract class PacketGenderInfo {
     private final boolean uniboob;
     private final float cleavage;
 
-    private final String hurtSounds;
+    private final HurtSound hurtSounds;
+    private final boolean replaceHurtSounds;
 
     protected PacketGenderInfo(GenderPlayer plr) {
         this.uuid = plr.uuid;
@@ -49,6 +51,7 @@ public abstract class PacketGenderInfo {
         this.pronounColor = plr.getPronounColor();
         this.bust_size = plr.getBustSize();
         this.hurtSounds = plr.getHurtSounds();
+        this.replaceHurtSounds = plr.replaceHurtSounds();
 
         //physics variables
         this.breast_physics = plr.hasBreastPhysics();
@@ -74,8 +77,8 @@ public abstract class PacketGenderInfo {
             this.pronounColor[i] = buffer.readInt();
         }
         this.bust_size = buffer.readFloat();
-        String hs = buffer.readUtf();
-        this.hurtSounds = hs.isEmpty() ? null : hs;
+        this.hurtSounds = buffer.readEnum(HurtSound.class);
+        this.replaceHurtSounds = buffer.readBoolean();
 
         //physics variables
         this.breast_physics = buffer.readBoolean();
@@ -99,7 +102,9 @@ public abstract class PacketGenderInfo {
             buffer.writeInt(f);
         }
         buffer.writeFloat(this.bust_size);
-        buffer.writeUtf(this.hurtSounds == null ? "" : this.hurtSounds);
+        buffer.writeEnum(this.hurtSounds);
+        buffer.writeBoolean(this.replaceHurtSounds);
+
         buffer.writeBoolean(this.breast_physics);
         buffer.writeBoolean(this.breast_physics_armor);
         buffer.writeBoolean(this.show_in_armor);

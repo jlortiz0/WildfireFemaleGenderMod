@@ -24,7 +24,6 @@ import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfireSlider;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.WildfireGender;
-import com.wildfire.main.WildfireSounds;
 import com.wildfire.main.config.ClientConfiguration;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -58,7 +57,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         int x = this.width / 2;
         int y = this.height / 2;
 
-        yPos = y - 47;
+        yPos = y - 57;
         int xPos = x - 156 / 2 - 1;
 
         //Add 'Close' button at beginning
@@ -119,10 +118,19 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         }));
 
         this.addRenderableWidget(new WildfireButton(xPos, yPos + 100, 157, 20,
-              Component.translatable("wildfire_gender.char_settings.hurt_sounds", WildfireSounds.get(aPlr.getHurtSounds()).getName()), button -> {
+              Component.translatable("wildfire_gender.char_settings.hurt_sounds", aPlr.getHurtSounds().getName()), button -> {
             minecraft.setScreen(new WildfireHurtSoundListScreen(minecraft, aPlr.uuid, this));
-            button.setMessage(Component.translatable("wildfire_gender.char_settings.hurt_sounds", WildfireSounds.get(aPlr.getHurtSounds()).getName()));
+            button.setMessage(Component.translatable("wildfire_gender.char_settings.hurt_sounds", aPlr.getHurtSounds().getName()));
         }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, Component.translatable("wildfire_gender.tooltip.hurt_sounds"), mouseX, mouseY)));
+
+        this.addRenderableWidget(new WildfireButton(xPos, yPos + 120, 157, 20,
+                Component.translatable("wildfire_gender.char_settings.replace_hurt_sounds", aPlr.replaceHurtSounds() ? ENABLED : DISABLED), button -> {
+            boolean replaceHurtSounds = !aPlr.replaceHurtSounds();
+            if (aPlr.updateReplaceHurtSounds(replaceHurtSounds)) {
+                button.setMessage(Component.translatable("wildfire_gender.char_settings.replace_hurt_sounds", replaceHurtSounds ? ENABLED : DISABLED));
+                GenderPlayer.saveGenderInfo(aPlr);
+            }
+        }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, Component.translatable("wildfire_gender.tooltip.replace_hurt_sounds"), mouseX, mouseY)));
 
         this.BACKGROUND = new ResourceLocation(WildfireGender.MODID, "textures/gui/settings_bg.png");
 
@@ -141,8 +149,8 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
             RenderSystem.setShaderTexture(0, this.BACKGROUND);
         }
         int i = (this.width - 172) / 2;
-        int j = (this.height - 124) / 2;
-        blit(m, i, j, 0, 0, 172, 144);
+        int j = (this.height - 144) / 2;
+        blit(m, i, j, 0, 0, 172, 164);
 
         int x = this.width / 2;
         int y = this.height / 2;
@@ -156,7 +164,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         }
 
         if(bounceWarning) {
-            Screen.drawCenteredString(m, font, Component.translatable("wildfire_gender.tooltip.bounce_warning").withStyle(ChatFormatting.ITALIC), x, y+90, 0xFF6666);
+            Screen.drawCenteredString(m, font, Component.translatable("wildfire_gender.tooltip.bounce_warning").withStyle(ChatFormatting.ITALIC), x, y+100, 0xFF6666);
         }
     }
 

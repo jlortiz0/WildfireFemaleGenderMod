@@ -22,14 +22,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.wildfire.gui.screen.WildfireHurtSoundListScreen;
 import com.wildfire.main.HurtSound;
-import com.wildfire.main.WildfireSounds;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nonnull;
-import java.util.Iterator;
 
 public class WildfireHurtSoundList extends ObjectSelectionList<WildfireHurtSoundList.Entry>
 {
@@ -37,16 +35,15 @@ public class WildfireHurtSoundList extends ObjectSelectionList<WildfireHurtSound
 
     private final int listWidth;
 
-    private WildfireHurtSoundListScreen parent;
+    private final WildfireHurtSoundListScreen parent;
 
-    public WildfireHurtSoundList(WildfireHurtSoundListScreen parent, int listWidth, int top, int bottom, String cur)
+    public WildfireHurtSoundList(WildfireHurtSoundListScreen parent, int listWidth, int top, int bottom, HurtSound cur)
     {
         super(parent.getMinecraft(), parent.width-4, parent.height, top-6, bottom, 20);
         this.parent = parent;
         this.listWidth = listWidth;
-        this.cur = WildfireSounds.get(cur);
-        for (Iterator<HurtSound> it = WildfireSounds.iter(); it.hasNext(); ) {
-            HurtSound hs = it.next();
+        this.cur = cur;
+        for (HurtSound hs : HurtSound.values()) {
             addEntry(new Entry(hs));
         }
     }

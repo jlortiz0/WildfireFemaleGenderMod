@@ -3,24 +3,34 @@ package com.wildfire.main;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
-public class HurtSound {
+public enum HurtSound {
+    NOTHING("None", null),
+    FEMALE_HURT("Female", "female_hurt"),
+    FEMALE_HURT2("Terraria (F)", "female_hurt2", true),
+    FEMALE_HURT3("Femscout", "female_hurt3"),
+    FEMALE_HURT4("Femsniper", "female_hurt4"),
+    MALE_HURT1("Male", "male_hurt", true),
+    MALE_HURT2("Terraria (M)", "male_hurt2", true),
+    MALE_HURT3("Soldier", "male_hurt3"),
+    MALE_HURT4("Scout", "male_hurt4"),
+    INKLING("Inkling", "squid_hurt", true),
+    ROBOT("SWORDSMACHINE", "robo_hurt", true),
+    OOF("Roblox", "oof_hurt", true);
     private final String name;
-    private final ResourceLocation id;
     private final SoundEvent snd;
-    private final boolean fem;
+    private final boolean pitch;
 
-    public HurtSound(String name, ResourceLocation id, boolean fem) {
+    HurtSound(String name, String id, boolean pitch) {
         this.name = name;
-        this.fem = fem;
-        this.id = id;
+        this.pitch = pitch;
         if (id != null) {
-            this.snd = new SoundEvent(id);
+            this.snd = new SoundEvent(new ResourceLocation(WildfireGender.MODID, id));
         } else {
             this.snd = null;
         }
     }
 
-    public HurtSound(String name, ResourceLocation id) {
+    HurtSound(String name, String id) {
         this(name, id, false);
     }
 
@@ -32,11 +42,7 @@ public class HurtSound {
         return name;
     }
 
-    public ResourceLocation getId() {
-        return id;
-    }
-
-    public boolean isFem() {
-        return this.fem;
+    public boolean isPitch() {
+        return this.pitch;
     }
 }

@@ -200,18 +200,25 @@ public class WildfireEventHandler {
 		if (event.getSound() != null && playerHurtSounds.contains(event.getSound()) && event.getEntity() instanceof Player p && p.level.isClientSide) {
 			//Cancel as we handle all hurt sounds manually so that we can
 			// event.setCanceled(true);
-			SoundEvent soundEvent = null;
+			HurtSound soundEvent = null;
 			if (p.hurtTime == p.hurtDuration && p.hurtTime > 0) {
 				//Note: We check hurtTime == hurtDuration and hurtTime > 0 or otherwise when the server sends a hurt sound to the client
 				// and the client will check itself instead of the player who was damaged.
 				GenderPlayer plr = WildfireGender.getPlayerById(p.getUUID());
 				if (plr != null && plr.getHurtSounds() != null) {
 					//If the player who produced the hurt sound is a female sound replace it
-					soundEvent = WildfireSounds.get(plr.getHurtSounds()).getSnd();
+					soundEvent = plr.getHurtSounds();
+					if (plr.replaceHurtSounds())
+						event.setCanceled(true);
 				}
 			}
-			if (soundEvent != null)
-				p.level.playLocalSound(p.getX(), p.getY(), p.getZ(), soundEvent, event.getSource(), event.getNewVolume(), event.getNewPitch(), false);
+			if (soundEvent != null) {
+				float pitch = event.getNewPitch();
+				if (!soundEvent.isPitch()) {
+					pitch = (pitch - 1) * 0.125f + 1;
+				}
+				p.level.playSound(Minecraft.getInstance().player, p, soundEvent.getSnd(), event.getSource(), event.getNewVolume(), pitch);
+			}
 		}
 	}
 }

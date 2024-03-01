@@ -25,7 +25,6 @@ import com.wildfire.gui.WildfirePlayerList;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
-import com.wildfire.main.WildfireSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -141,7 +140,7 @@ public class WildfirePlayerListScreen extends Screen {
 				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);
 				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.breast_momentum", Math.round(HOVER_PLAYER.getFloppiness() * 100)), dialogX + 6, dialogY + 60, 0xBBBBBB);
 
-				HurtSound hs = WildfireSounds.get(HOVER_PLAYER.getHurtSounds());
+				HurtSound hs = HOVER_PLAYER.getHurtSounds();
 				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.female_sounds", Component.literal(hs.getName())), dialogX, dialogY + 80, 0xBBBBBB);
 				WardrobeBrowserScreen.drawEntityOnScreen(x - 110, y + 45, 45, (x - 300), (y - 26 - f2), pEntity);
 			}

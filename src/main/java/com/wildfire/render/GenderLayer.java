@@ -35,9 +35,7 @@ import com.wildfire.render.WildfireModelRenderer.BreastModelBox;
 import com.wildfire.render.WildfireModelRenderer.OverlayModelBox;
 import com.wildfire.render.WildfireModelRenderer.PositionTextureVertex;
 import io.github.edwinmindcraft.apoli.api.ApoliAPI;
-import io.github.edwinmindcraft.apoli.api.IDynamicFeatureConfiguration;
 import io.github.edwinmindcraft.apoli.api.power.configuration.ConfiguredPower;
-import io.github.edwinmindcraft.apoli.api.power.factory.PowerFactory;
 import io.github.edwinmindcraft.apoli.common.power.ModelColorPower;
 import io.github.edwinmindcraft.apoli.common.power.configuration.ColorConfiguration;
 import io.github.edwinmindcraft.origins.api.OriginsAPI;
@@ -149,7 +147,7 @@ public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 				return;
 			}
 			if (!armorStack.isEmpty()) {
-				if (!armorTexture.equals(lastArmor)) {
+				if (!Objects.equals(armorTexture, lastArmor)) {
 					lBoobArmor = genderArmor.getLeftModel();
 					rBoobArmor = genderArmor.getRightModel();
 					lastArmor = armorTexture;

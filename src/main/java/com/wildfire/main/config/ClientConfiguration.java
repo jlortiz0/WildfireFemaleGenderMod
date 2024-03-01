@@ -1,5 +1,7 @@
 package com.wildfire.main.config;
 
+import com.wildfire.main.HurtSound;
+
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -9,7 +11,8 @@ public class ClientConfiguration extends Configuration {
     public static final StringConfigKey PRONOUNS = new StringConfigKey("gender", "please ask");
     public static final ColorConfigKey PRONOUN_COLOR = new ColorConfigKey("gender_color", 0xFFFFFF);
     public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0, 0, 1.5F);
-    public static final StringConfigKey HURT_SOUNDS = new StringConfigKey("hurt_sounds", null);
+    public static final EnumConfigKey<HurtSound> HURT_SOUNDS = new EnumConfigKey<>("hurt_sounds", HurtSound.class);
+    public static final BooleanConfigKey REPLACE_HURT_SOUND = new BooleanConfigKey("replace_hurt_sound", false);
 
     public static final FloatConfigKey BREASTS_OFFSET_X = new FloatConfigKey("breasts_xOffset", 0.0F, -1, 1);
     public static final FloatConfigKey BREASTS_OFFSET_Y = new FloatConfigKey("breasts_yOffset", 0.0F, -1, 1);

@@ -35,7 +35,8 @@ public class GenderPlayer {
 	private int[] pronounColor = ClientConfiguration.PRONOUN_COLOR.getDefault();
     private float pBustSize = ClientConfiguration.BUST_SIZE.getDefault();
 
-	private String hurtSounds = ClientConfiguration.HURT_SOUNDS.getDefault();
+	private HurtSound hurtSounds = ClientConfiguration.HURT_SOUNDS.getDefault();
+	private boolean replaceHurtSound = ClientConfiguration.REPLACE_HURT_SOUND.getDefault();
 
 	//physics variables
 	private boolean breastPhysics = ClientConfiguration.BREAST_PHYSICS.getDefault();
@@ -145,16 +146,20 @@ public class GenderPlayer {
 		return updateValue(ClientConfiguration.BUST_SIZE, value, v -> this.pBustSize = v);
 	}
 
-	public String getHurtSounds() {
+	public HurtSound getHurtSounds() {
 		return hurtSounds;
 	}
 
-	public boolean updateHurtSounds(String value) {
+	public boolean updateHurtSounds(HurtSound value) {
 		return updateValue(ClientConfiguration.HURT_SOUNDS, value, v -> this.hurtSounds = v);
 	}
 
-	public boolean updateHurtSounds(HurtSound value) {
-		return updateHurtSounds(value.getId() == null ? null : value.getId().getPath());
+	public boolean replaceHurtSounds() {
+		return replaceHurtSound;
+	}
+
+	public boolean updateReplaceHurtSounds(boolean value) {
+		return updateValue(ClientConfiguration.REPLACE_HURT_SOUND, value, v -> this.replaceHurtSound = v);
 	}
 
 	public boolean hasBreastPhysics() {
