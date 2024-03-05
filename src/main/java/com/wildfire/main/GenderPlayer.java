@@ -52,6 +52,7 @@ public class GenderPlayer {
 	private final ClientConfiguration cfg;
 	private final BreastPhysics lBreastPhysics, rBreastPhysics;
 	private final Breasts breasts;
+	private boolean bilkable;
 
 	public GenderPlayer(UUID uuid) {
 		this(uuid, ClientConfiguration.PRONOUNS.getDefault());
@@ -81,6 +82,8 @@ public class GenderPlayer {
 		this.cfg.setDefault(ClientConfiguration.SHOW_IN_ARMOR);
 		this.cfg.setDefault(ClientConfiguration.BOUNCE_MULTIPLIER);
 		this.cfg.setDefault(ClientConfiguration.FLOPPY_MULTIPLIER);
+
+		this.cfg.setDefault(ClientConfiguration.BILKABLE);
 		this.cfg.finish();
 	}
 
@@ -206,6 +209,14 @@ public class GenderPlayer {
 		return updateValue(ClientConfiguration.FLOPPY_MULTIPLIER, value, v -> this.floppyMultiplier = v);
 	}
 
+	public boolean isBilkable() {
+		return bilkable;
+	}
+
+	public boolean updateBilkable(boolean value) {
+		return updateValue(ClientConfiguration.BILKABLE, value, v -> this.bilkable = v);
+	}
+
 	public SyncStatus getSyncStatus() {
 		return this.syncStatus;
 	}
@@ -217,6 +228,7 @@ public class GenderPlayer {
 		ClientConfiguration.PRONOUN_COLOR.save(obj, plr.getPronounColor());
 		ClientConfiguration.BUST_SIZE.save(obj, plr.getBustSize());
 		ClientConfiguration.HURT_SOUNDS.save(obj, plr.getHurtSounds());
+		ClientConfiguration.REPLACE_HURT_SOUND.save(obj, plr.replaceHurtSounds());
 
 		ClientConfiguration.BREAST_PHYSICS.save(obj, plr.hasBreastPhysics());
 		ClientConfiguration.BREAST_PHYSICS_ARMOR.save(obj, plr.hasArmorBreastPhysics());
@@ -230,6 +242,8 @@ public class GenderPlayer {
 		ClientConfiguration.BREASTS_OFFSET_Z.save(obj, breasts.getZOffset());
 		ClientConfiguration.BREASTS_UNIBOOB.save(obj, breasts.isUniboob());
 		ClientConfiguration.BREASTS_CLEAVAGE.save(obj, breasts.getCleavage());
+
+		ClientConfiguration.BILKABLE.save(obj, plr.isBilkable());
 		return obj;
 	}
 
@@ -239,6 +253,7 @@ public class GenderPlayer {
 		plr.updatePronounColor(ClientConfiguration.PRONOUN_COLOR.read(obj));
 		plr.updateBustSize(ClientConfiguration.BUST_SIZE.read(obj));
 		plr.updateHurtSounds(ClientConfiguration.HURT_SOUNDS.read(obj));
+		plr.updateReplaceHurtSounds(ClientConfiguration.REPLACE_HURT_SOUND.read(obj));
 
 		//physics
 		plr.updateBreastPhysics(ClientConfiguration.BREAST_PHYSICS.read(obj));
@@ -254,6 +269,7 @@ public class GenderPlayer {
 		breasts.updateUniboob(ClientConfiguration.BREASTS_UNIBOOB.read(obj));
 		breasts.updateCleavage(ClientConfiguration.BREASTS_CLEAVAGE.read(obj));
 
+		plr.updateBilkable(ClientConfiguration.BILKABLE.read(obj));
 		return plr;
 	}
 
@@ -268,6 +284,7 @@ public class GenderPlayer {
 			plr.updatePronounColor(config.get(ClientConfiguration.PRONOUN_COLOR));
 			plr.updateBustSize(config.get(ClientConfiguration.BUST_SIZE));
 			plr.updateHurtSounds(config.get(ClientConfiguration.HURT_SOUNDS));
+			plr.updateReplaceHurtSounds(config.get(ClientConfiguration.REPLACE_HURT_SOUND));
 
 			//physics
 			plr.updateBreastPhysics(config.get(ClientConfiguration.BREAST_PHYSICS));
@@ -282,6 +299,8 @@ public class GenderPlayer {
 			breasts.updateZOffset(config.get(ClientConfiguration.BREASTS_OFFSET_Z));
 			breasts.updateUniboob(config.get(ClientConfiguration.BREASTS_UNIBOOB));
 			breasts.updateCleavage(config.get(ClientConfiguration.BREASTS_CLEAVAGE));
+
+			plr.updateBilkable(config.get(ClientConfiguration.BILKABLE));
 			if (markForSync) {
 				plr.needsSync = true;
 			}
@@ -297,6 +316,7 @@ public class GenderPlayer {
 		config.set(ClientConfiguration.PRONOUN_COLOR, plr.getPronounColor());
 		config.set(ClientConfiguration.BUST_SIZE, plr.getBustSize());
 		config.set(ClientConfiguration.HURT_SOUNDS, plr.getHurtSounds());
+		config.set(ClientConfiguration.REPLACE_HURT_SOUND, plr.replaceHurtSounds());
 
 		//physics
 		config.set(ClientConfiguration.BREAST_PHYSICS, plr.hasBreastPhysics());
@@ -311,6 +331,7 @@ public class GenderPlayer {
 		config.set(ClientConfiguration.BREASTS_UNIBOOB, plr.getBreasts().isUniboob());
 		config.set(ClientConfiguration.BREASTS_CLEAVAGE, plr.getBreasts().getCleavage());
 
+		config.set(ClientConfiguration.BILKABLE, plr.isBilkable());
 		config.save();
 		plr.needsSync = true;
 	}

@@ -57,7 +57,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         int x = this.width / 2;
         int y = this.height / 2;
 
-        yPos = y - 57;
+        yPos = y - 67;
         int xPos = x - 156 / 2 - 1;
 
         //Add 'Close' button at beginning
@@ -132,6 +132,15 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
             }
         }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, Component.translatable("wildfire_gender.tooltip.replace_hurt_sounds"), mouseX, mouseY)));
 
+        this.addRenderableWidget(new WildfireButton(xPos, yPos + 140, 157, 20,
+                Component.translatable("wildfire_gender.char_settings.bilkable", aPlr.isBilkable() ? ENABLED : DISABLED), button -> {
+            boolean bilkable = !aPlr.isBilkable();
+            if (aPlr.updateBilkable(bilkable)) {
+                button.setMessage(Component.translatable("wildfire_gender.char_settings.bilkable", bilkable ? ENABLED : DISABLED));
+                GenderPlayer.saveGenderInfo(aPlr);
+            }
+        }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, Component.translatable("wildfire_gender.tooltip.bilkable"), mouseX, mouseY)));
+
         this.BACKGROUND = new ResourceLocation(WildfireGender.MODID, "textures/gui/settings_bg.png");
 
         super.init();
@@ -149,8 +158,8 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
             RenderSystem.setShaderTexture(0, this.BACKGROUND);
         }
         int i = (this.width - 172) / 2;
-        int j = (this.height - 144) / 2;
-        blit(m, i, j, 0, 0, 172, 164);
+        int j = (this.height - 164) / 2;
+        blit(m, i, j, 0, 0, 172, 184);
 
         int x = this.width / 2;
         int y = this.height / 2;

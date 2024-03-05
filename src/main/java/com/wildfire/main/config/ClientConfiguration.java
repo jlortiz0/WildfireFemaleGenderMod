@@ -26,6 +26,8 @@ public class ClientConfiguration extends Configuration {
     public static final FloatConfigKey BOUNCE_MULTIPLIER = new FloatConfigKey("bounce_multiplier", 0.34F, 0, 1);
     public static final FloatConfigKey FLOPPY_MULTIPLIER = new FloatConfigKey("floppy_multiplier", 0.95F, 0, 1);
 
+    public static final BooleanConfigKey BILKABLE = new BooleanConfigKey("canon_cock", false);
+
 
     public ClientConfiguration(String saveLoc, String cfgName) {
         super(saveLoc, cfgName);

@@ -11,6 +11,7 @@
 	"wildfire_gender.player_list.sync_status": "Sync Status",
 	"wildfire_gender.player_list.state.loading": "Loading Data...",
 	"wildfire_gender.player_list.state.synced": "Synced Player",
+	"wildfire_gender.player_list.bilkable": "Has a cock",
 
 	"wildfire_gender.wardrobe.title": "Customization Menu",
 	"wildfire_gender.wardrobe.slider.breast_size": "Breast Size: %s%%",
@@ -31,6 +32,8 @@
 	"wildfire_gender.tooltip.hurt_sounds": "Select Hurt Sounds",
 	"wildfire_gender.char_settings.replace_hurt_sounds": "Disable Hit Sound: %s",
 	"wildfire_gender.tooltip.replace_hurt_sounds": "Disable Minecraft Hit Sound",
+	"wildfire_gender.char_settings.bilkable": "Canon Cock: %s",
+	"wildfire_gender.tooltip.bilkable": "It won't show, but you can still have it",
 
 	"wildfire_gender.breast_customization.dual_physics": "Dual-Physics: %s",
 

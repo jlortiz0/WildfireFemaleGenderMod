@@ -142,6 +142,8 @@ public class WildfirePlayerListScreen extends Screen {
 
 				HurtSound hs = HOVER_PLAYER.getHurtSounds();
 				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.female_sounds", Component.literal(hs.getName())), dialogX, dialogY + 80, 0xBBBBBB);
+				if (HOVER_PLAYER.isBilkable())
+					this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.bilkable"), dialogX, dialogY + 90, 0xBBBBBB);
 				WardrobeBrowserScreen.drawEntityOnScreen(x - 110, y + 45, 45, (x - 300), (y - 26 - f2), pEntity);
 			}
 		}

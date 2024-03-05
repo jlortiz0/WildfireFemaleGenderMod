@@ -44,6 +44,7 @@ public abstract class PacketGenderInfo {
 
     private final HurtSound hurtSounds;
     private final boolean replaceHurtSounds;
+    private final boolean bilkable;
 
     protected PacketGenderInfo(GenderPlayer plr) {
         this.uuid = plr.uuid;
@@ -67,6 +68,8 @@ public abstract class PacketGenderInfo {
 
         this.uniboob = breasts.isUniboob();
         this.cleavage = breasts.getCleavage();
+
+        this.bilkable = plr.isBilkable();
     }
 
     protected PacketGenderInfo(FriendlyByteBuf buffer) {
@@ -92,6 +95,8 @@ public abstract class PacketGenderInfo {
         this.zOffset = buffer.readFloat();
         this.uniboob = buffer.readBoolean();
         this.cleavage = buffer.readFloat();
+
+        this.bilkable = buffer.readBoolean();
     }
 
     public void encode(FriendlyByteBuf buffer) {
@@ -116,6 +121,8 @@ public abstract class PacketGenderInfo {
         buffer.writeFloat(this.zOffset);
         buffer.writeBoolean(this.uniboob);
         buffer.writeFloat(this.cleavage);
+
+        buffer.writeBoolean(this.bilkable);
     }
 
     protected void updatePlayerFromPacket(GenderPlayer plr) {
@@ -123,6 +130,7 @@ public abstract class PacketGenderInfo {
         plr.updatePronounColor(pronounColor);
         plr.updateBustSize(bust_size);
         plr.updateHurtSounds(hurtSounds);
+        plr.updateReplaceHurtSounds(replaceHurtSounds);
 
         //physics
         plr.updateBreastPhysics(breast_physics);
@@ -138,5 +146,7 @@ public abstract class PacketGenderInfo {
         breasts.updateZOffset(zOffset);
         breasts.updateUniboob(uniboob);
         breasts.updateCleavage(cleavage);
+
+        plr.updateBilkable(bilkable);
     }
 }
