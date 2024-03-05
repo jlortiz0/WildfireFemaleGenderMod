@@ -452,5 +452,57 @@
   "kawaiidishes:textures/models/armor/fox_tailed/yellow_maid": {
     "u": 28,
     "v": 26
+  },
+  "kawaiidishes:textures/models/armor/black_bunny_tail.png": {
+    "u": 48,
+    "v": 44
+  },
+  "kawaiidishes:textures/models/armor/black_cat_tail.png": {
+    "u": 48,
+    "v": 44
+  },
+  "kawaiidishes:textures/models/armor/black_devil_tail.png": {
+    "u": 48,
+    "v": 44
+  },
+  "kawaiidishes:textures/models/armor/black_fox_tail.png": {
+    "u": 48,
+    "v": 44
+  },
+  "kawaiidishes:textures/models/armor/brown_fox_tail.png": {
+    "u": 48,
+    "v": 44
+  },
+  "kawaiidishes:textures/models/armor/caramel_bunny_tail.png": {
+    "u": 48,
+    "v": 44
+  },
+  "kawaiidishes:textures/models/armor/caramel_cat_tail.png": {
+    "u": 48,
+    "v": 44
+  },
+  "kawaiidishes:textures/models/armor/purple_devil_tail.png": {
+    "u": 48,
+    "v": 44
+  },
+  "kawaiidishes:textures/models/armor/red_devil_tail.png": {
+    "u": 48,
+    "v": 44
+  },
+  "kawaiidishes:textures/models/armor/red_fox_tail.png": {
+    "u": 48,
+    "v": 44
+  },
+  "kawaiidishes:textures/models/armor/white_bunny_tail.png": {
+    "u": 48,
+    "v": 44
+  },
+  "kawaiidishes:textures/models/armor/white_cat_tail.png": {
+    "u": 48,
+    "v": 44
+  },
+  "kawaiidishes:textures/models/armor/white_fox_tail.png": {
+    "u": 48,
+    "v": 44
   }
 }

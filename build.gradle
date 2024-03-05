@@ -212,7 +212,7 @@ dependencies {
 //    runtimeOnly fg.deobf("curse.maven:pyromancer-471135:4717766")
 //
     implementation fg.deobf("curse.maven:geckolib-388172:4407241")
-//    runtimeOnly fg.deobf("curse.maven:kawaii-dishes-694309:4644365")
+    runtimeOnly fg.deobf("curse.maven:kawaii-dishes-694309:4644365")
 //
 //    runtimeOnly fg.deobf("curse.maven:blueprint-382216:4749000")
 //    runtimeOnly fg.deobf("curse.maven:environmental-388992:4415514")
