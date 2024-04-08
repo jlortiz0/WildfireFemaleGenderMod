@@ -35,6 +35,7 @@ import com.wildfire.render.WildfireModelRenderer.BreastModelBox;
 import com.wildfire.render.WildfireModelRenderer.OverlayModelBox;
 import com.wildfire.render.WildfireModelRenderer.PositionTextureVertex;
 import io.github.edwinmindcraft.apoli.api.ApoliAPI;
+import io.github.edwinmindcraft.apoli.api.power.configuration.ConfiguredEntityCondition;
 import io.github.edwinmindcraft.apoli.api.power.configuration.ConfiguredPower;
 import io.github.edwinmindcraft.apoli.common.power.ModelColorPower;
 import io.github.edwinmindcraft.apoli.common.power.configuration.ColorConfiguration;
@@ -156,13 +157,23 @@ public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 
 			IOriginContainer.get(ent).ifPresent((iOriginContainer -> {
 				ResourceKey<Origin> oLoc = iOriginContainer.getOrigin(OriginsAPI.getActiveLayers().get(0));
-				if (!oLoc.equals(origin)) {
+				if (!oLoc.equals(origin) || oLoc.location().getPath().equals("calamitous_rogue")) {
 					origin = oLoc;
 					modelTint = new ColorConfiguration(1, 1, 1);
 					for (Holder<ConfiguredPower<?, ?>> power : ApoliAPI.getPowerContainer(ent).getPowers()) {
-						if (power.get().getFactory() instanceof ModelColorPower) {
-							modelTint = (ColorConfiguration) power.get().getConfiguration();
-							break;
+						ConfiguredPower<?, ?> power1 = power.get();
+						if (power1.getFactory() instanceof ModelColorPower) {
+							boolean meetsConds = true;
+							for (ConfiguredEntityCondition<?, ?> cond : power1.getData().conditions()) {
+								if (!cond.check(ent)) {
+									meetsConds = false;
+									break;
+								}
+							}
+							if (meetsConds) {
+								modelTint = (ColorConfiguration) power.get().getConfiguration();
+								break;
+							}
 						}
 					}
 				}
