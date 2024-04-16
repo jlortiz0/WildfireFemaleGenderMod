@@ -124,10 +124,10 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, Component.translatable("wildfire_gender.tooltip.hurt_sounds"), mouseX, mouseY)));
 
         this.addRenderableWidget(new WildfireButton(xPos, yPos + 120, 157, 20,
-                Component.translatable("wildfire_gender.char_settings.replace_hurt_sounds", aPlr.replaceHurtSounds() ? ENABLED : DISABLED), button -> {
+                Component.translatable("wildfire_gender.char_settings.replace_hurt_sounds", aPlr.replaceHurtSounds() ? DISABLED : ENABLED), button -> {
             boolean replaceHurtSounds = !aPlr.replaceHurtSounds();
             if (aPlr.updateReplaceHurtSounds(replaceHurtSounds)) {
-                button.setMessage(Component.translatable("wildfire_gender.char_settings.replace_hurt_sounds", replaceHurtSounds ? ENABLED : DISABLED));
+                button.setMessage(Component.translatable("wildfire_gender.char_settings.replace_hurt_sounds", replaceHurtSounds ? DISABLED : ENABLED));
                 GenderPlayer.saveGenderInfo(aPlr);
             }
         }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, Component.translatable("wildfire_gender.tooltip.replace_hurt_sounds"), mouseX, mouseY)));
