@@ -23,6 +23,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfireSlider;
 import com.wildfire.main.GenderPlayer;
+import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.config.ClientConfiguration;
 import net.minecraft.ChatFormatting;
@@ -119,7 +120,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
 
         this.addRenderableWidget(new WildfireButton(xPos, yPos + 100, 157, 20,
               Component.translatable("wildfire_gender.char_settings.hurt_sounds", aPlr.getHurtSounds().getName()), button -> {
-            minecraft.setScreen(new WildfireHurtSoundListScreen(minecraft, aPlr.uuid, this));
+            minecraft.setScreen(new WildfireSoundListScreen<>(minecraft, aPlr.uuid, this, HurtSound::values, GenderPlayer::getHurtSounds, GenderPlayer::updateHurtSounds));
             button.setMessage(Component.translatable("wildfire_gender.char_settings.hurt_sounds", aPlr.getHurtSounds().getName()));
         }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, Component.translatable("wildfire_gender.tooltip.hurt_sounds"), mouseX, mouseY)));
 

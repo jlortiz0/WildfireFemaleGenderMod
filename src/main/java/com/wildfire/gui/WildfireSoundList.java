@@ -20,30 +20,29 @@ package com.wildfire.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.wildfire.gui.screen.WildfireHurtSoundListScreen;
-import com.wildfire.main.HurtSound;
+import com.wildfire.api.IWildfireSound;
+import com.wildfire.gui.screen.WildfireSoundListScreen;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.network.chat.Component;
 
 import javax.annotation.Nonnull;
+import java.util.function.Supplier;
 
-public class WildfireHurtSoundList extends ObjectSelectionList<WildfireHurtSoundList.Entry>
+public class WildfireSoundList<T extends IWildfireSound> extends ObjectSelectionList<WildfireSoundList<T>.Entry>
 {
-    private HurtSound cur;
-
+    private T cur;
     private final int listWidth;
+    private final WildfireSoundListScreen<T> parent;
 
-    private final WildfireHurtSoundListScreen parent;
-
-    public WildfireHurtSoundList(WildfireHurtSoundListScreen parent, int listWidth, int top, int bottom, HurtSound cur)
+    public WildfireSoundList(WildfireSoundListScreen<T> parent, int listWidth, int top, int bottom, T cur, Supplier<T[]> values)
     {
         super(parent.getMinecraft(), parent.width-4, parent.height, top-6, bottom, 20);
         this.parent = parent;
         this.listWidth = listWidth;
         this.cur = cur;
-        for (HurtSound hs : HurtSound.values()) {
+        for (T hs : values.get()) {
             addEntry(new Entry(hs));
         }
     }
@@ -63,14 +62,14 @@ public class WildfireHurtSoundList extends ObjectSelectionList<WildfireHurtSound
     @Override
     protected void renderBackground(@Nonnull PoseStack mStack) {}
 
-    public class Entry extends ObjectSelectionList.Entry<WildfireHurtSoundList.Entry> {
+    public class Entry extends ObjectSelectionList.Entry<WildfireSoundList<T>.Entry> {
 
-        public final HurtSound nInfo;
+        public final T nInfo;
         private final WildfireButton btnOpenGUI;
 
-        private Entry(final HurtSound nInfo) {
+        private Entry(final T nInfo) {
             this.nInfo = nInfo;
-            btnOpenGUI = new WildfireButton(0, 0, 112, 20, Component.empty(), button -> parent.setHurtSound(nInfo));
+            btnOpenGUI = new WildfireButton(0, 0, 112, 20, Component.empty(), button -> parent.setSound(nInfo));
             btnOpenGUI.active = true;
         }
 

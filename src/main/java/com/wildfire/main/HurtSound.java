@@ -1,9 +1,10 @@
 package com.wildfire.main;
 
+import com.wildfire.api.IWildfireSound;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
-public enum HurtSound {
+public enum HurtSound implements IWildfireSound {
     NOTHING("None", null),
     FEMALE_HURT("Female", "female_hurt"),
     FEMALE_HURT2("Terraria (F)", "female_hurt2", true),

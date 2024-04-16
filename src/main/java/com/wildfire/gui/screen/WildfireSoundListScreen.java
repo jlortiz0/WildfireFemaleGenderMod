@@ -20,10 +20,10 @@ package com.wildfire.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.wildfire.api.IWildfireSound;
 import com.wildfire.gui.WildfireButton;
-import com.wildfire.gui.WildfireHurtSoundList;
+import com.wildfire.gui.WildfireSoundList;
 import com.wildfire.main.GenderPlayer;
-import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -33,22 +33,30 @@ import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 
-public class WildfireHurtSoundListScreen extends Screen {
+public class WildfireSoundListScreen<T extends IWildfireSound> extends Screen {
 
 	private ResourceLocation TXTR_BACKGROUND;
-
  	public static GenderPlayer aPlr;
-
-	WildfireHurtSoundList SOUND_LIST;
-	private Minecraft client;
+	WildfireSoundList<T> SOUND_LIST;
+	private final Minecraft client;
 	private final BaseWildfireScreen parent;
-	public WildfireHurtSoundListScreen(Minecraft mc, UUID plr, BaseWildfireScreen parent) {
+	private final Supplier<T[]> values;
+	private final Function<GenderPlayer, T> current;
+	private final BiFunction<GenderPlayer, T, Boolean> callback;
+
+	public WildfireSoundListScreen(Minecraft mc, UUID plr, BaseWildfireScreen parent, Supplier<T[]> values, Function<GenderPlayer, T> current, BiFunction<GenderPlayer, T, Boolean> callback) {
 		super(Component.translatable("wildfire_gender.tooltip.hurt_sounds"));
 		aPlr = WildfireGender.getPlayerById(plr);
 		client = mc;
 		this.parent = parent;
+		this.values = values;
+		this.current = current;
+		this.callback = callback;
 	}
 
 	@Override
@@ -56,15 +64,13 @@ public class WildfireHurtSoundListScreen extends Screen {
 
 	@Override
   	public void init() {
-	  	Minecraft mc = Minecraft.getInstance();
-
 	    int x = this.width / 2;
 	    int y = this.height / 2 - 20;
 		/*this.addButton(new SteinButton(this.width / 2 - 60, y + 75, 66, 15, new TranslationTextComponent("wildfire_gender.player_list.settings_button"), button -> {
 			mc.displayGuiScreen(new WildfireSettingsScreen(SteinPlayerListScreen.this));
 		}));*/
 
-	    SOUND_LIST = new WildfireHurtSoundList(this, 118, (y - 61), (y + 70), aPlr.getHurtSounds());
+	    SOUND_LIST = new WildfireSoundList<>(this, 118, (y - 61), (y + 70), current.apply(aPlr), values);
 		SOUND_LIST.setRenderBackground(false);
 		SOUND_LIST.setRenderTopAndBottom(false);
 	    this.addWidget(this.SOUND_LIST);
@@ -75,8 +81,8 @@ public class WildfireHurtSoundListScreen extends Screen {
 	    super.init();
   	}
 
-	public void setHurtSound(HurtSound sound) {
-		if (aPlr.updateHurtSounds(sound)) {
+	public void setSound(T sound) {
+		if (callback.apply(aPlr, sound)) {
 			if (sound.getSnd() != null) {
 				client.player.playSound(sound.getSnd(),1, 1);
 			}
