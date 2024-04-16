@@ -59,7 +59,7 @@ public class WildfirePlayerList extends ObjectSelectionList<WildfirePlayerList.E
     @Override
     protected int getScrollbarPosition()
     {
-        return parent.width / 2 + 53;
+        return parent.width / 2 + 55;
     }
 
     @Override

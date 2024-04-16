@@ -83,9 +83,9 @@ public class WildfirePlayerListScreen extends Screen {
 	    PLAYER_LIST = new WildfirePlayerList(this, 118, (y - 61), (y + 71));
 		PLAYER_LIST.setRenderBackground(false);
 		PLAYER_LIST.setRenderTopAndBottom(false);
-	    this.addRenderableWidget(this.PLAYER_LIST);
+	    this.addWidget(this.PLAYER_LIST);
 
-		this.addWidget(new WildfireButton(this.width / 2 + 53, y - 74, 9, 9, Component.translatable("wildfire_gender.label.exit"), button -> Minecraft.getInstance().setScreen(null)));
+		this.addRenderableWidget(new WildfireButton(this.width / 2 + 52, y - 74, 9, 9, Component.translatable("wildfire_gender.label.exit"), button -> Minecraft.getInstance().setScreen(null)));
 
 	    this.TXTR_BACKGROUND = new ResourceLocation(WildfireGender.MODID, "textures/gui/player_list.png");
 

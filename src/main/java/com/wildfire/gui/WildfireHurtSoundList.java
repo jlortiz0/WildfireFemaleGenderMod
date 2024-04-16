@@ -51,7 +51,7 @@ public class WildfireHurtSoundList extends ObjectSelectionList<WildfireHurtSound
     @Override
     protected int getScrollbarPosition()
     {
-        return parent.width / 2 + 53;
+        return parent.width / 2 + 55;
     }
 
     @Override

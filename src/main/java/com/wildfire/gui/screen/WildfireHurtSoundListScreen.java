@@ -64,12 +64,11 @@ public class WildfireHurtSoundListScreen extends Screen {
 			mc.displayGuiScreen(new WildfireSettingsScreen(SteinPlayerListScreen.this));
 		}));*/
 
-	    SOUND_LIST = new WildfireHurtSoundList(this, 118, (y - 61), (y + 71), aPlr.getHurtSounds());
+	    SOUND_LIST = new WildfireHurtSoundList(this, 118, (y - 61), (y + 70), aPlr.getHurtSounds());
 		SOUND_LIST.setRenderBackground(false);
 		SOUND_LIST.setRenderTopAndBottom(false);
-	    this.addRenderableWidget(this.SOUND_LIST);
-
-		this.addWidget(new WildfireButton(this.width / 2 + 53, y - 74, 9, 9, Component.translatable("wildfire_gender.label.exit"), button -> Minecraft.getInstance().setScreen(this.parent)));
+	    this.addWidget(this.SOUND_LIST);
+		this.addRenderableWidget(new WildfireButton(x + 52, y - 74, 9, 9, Component.translatable("wildfire_gender.label.exit"), button -> Minecraft.getInstance().setScreen(this.parent)));
 
 	    this.TXTR_BACKGROUND = new ResourceLocation(WildfireGender.MODID, "textures/gui/player_list.png");
 
@@ -106,8 +105,8 @@ public class WildfireHurtSoundListScreen extends Screen {
 
 		double scale = mc.getWindow().getGuiScale();
 		int left = x - 59;
-		int bottom = y - 32;
-		int width = 118;
+		int bottom = y - 31;
+		int width = 125;
 		int height = 134;
 		RenderSystem.enableScissor((int) (left * scale), (int) (bottom * scale),
 				(int) (width * scale), (int) (height * scale));
