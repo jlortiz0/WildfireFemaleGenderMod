@@ -83,5 +83,20 @@
 		"category": "player",
 		"subtitle": "wildfire_gender.die.other",
 		"sounds": [  "wildfire_gender:death/under_heart" ]
+	},
+	"fortnite": {
+		"category": "player",
+		"subtitle": "wildfire_gender.die.other",
+		"sounds": [  "wildfire_gender:death/fortnite" ]
+	},
+	"vortex": {
+		"category": "player",
+		"subtitle": "wildfire_gender.die.other",
+		"sounds": [  "wildfire_gender:death/vortex" ]
+	},
+	"snake": {
+		"category": "player",
+		"subtitle": "wildfire_gender.die.male",
+		"sounds": [  "wildfire_gender:death/snake" ]
 	}
 }

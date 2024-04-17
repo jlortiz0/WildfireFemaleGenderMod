@@ -4,6 +4,7 @@ import com.wildfire.api.IWildfireSound;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
+@SuppressWarnings("unused")
 public enum DeathSound implements IWildfireSound {
     NOTHING("None", null),
     TOUHOU("Pichuun", "th_death"),
@@ -12,7 +13,10 @@ public enum DeathSound implements IWildfireSound {
     OMINOUS("Snowy?", "delta_ominous"),
     BADEXPLODE("Explosion", "delta_explode"),
     UNDERTALE("Heart", "under_heart"),
-    OOF("Roblox", "oof_hurt");
+    OOF("Tommy", "oof_hurt"),
+    FORTNITE("Royale", "fortnite"),
+    VORTEX("iPod", "vortex"),
+    SNAKE("Solid", "snake");
     private final String name;
     private final SoundEvent snd;
 
@@ -33,7 +37,7 @@ public enum DeathSound implements IWildfireSound {
         return name;
     }
 
-    public boolean isPitch() {
-        return false;
+    public float getPitch() {
+        return 0;
     }
 }

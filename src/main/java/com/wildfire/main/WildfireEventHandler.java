@@ -203,6 +203,7 @@ public class WildfireEventHandler {
 			//Cancel as we handle all hurt sounds manually so that we can
 			// event.setCanceled(true);
 			IWildfireSound soundEvent = null;
+			boolean setLoc = false;
 			if (p.hurtTime == p.hurtDuration && p.hurtTime > 0) {
 				//Note: We check hurtTime == hurtDuration and hurtTime > 0 or otherwise when the server sends a hurt sound to the client
 				// and the client will check itself instead of the player who was damaged.
@@ -210,6 +211,7 @@ public class WildfireEventHandler {
 				if (plr != null) {
 					if (event.getSound() == SoundEvents.PLAYER_DEATH && plr.getDeathSound() != DeathSound.NOTHING) {
 						soundEvent = plr.getDeathSound();
+						setLoc = true;
 						if (plr.replaceHurtSounds())
 							event.setCanceled(true);
 					} else if (plr.getHurtSounds() != HurtSound.NOTHING) {
@@ -222,10 +224,11 @@ public class WildfireEventHandler {
 			}
 			if (soundEvent != null) {
 				float pitch = event.getNewPitch();
-				if (!soundEvent.isPitch()) {
-					pitch = (pitch - 1) * 0.125f + 1;
-				}
-				p.level.playSound(Minecraft.getInstance().player, p, soundEvent.getSnd(), event.getSource(), event.getNewVolume(), pitch);
+				pitch = (pitch - 1) * soundEvent.getPitch() + 1;
+				if (setLoc)
+					p.level.playSound(Minecraft.getInstance().player, p.blockPosition(), soundEvent.getSnd(), event.getSource(), event.getNewVolume(), pitch);
+				else
+					p.level.playSound(Minecraft.getInstance().player, p, soundEvent.getSnd(), event.getSource(), event.getNewVolume(), pitch);
 			}
 		}
 	}
