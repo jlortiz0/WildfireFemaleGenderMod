@@ -15,8 +15,7 @@ public enum HurtSound implements IWildfireSound {
     MALE_HURT3("Soldier", "male_hurt3"),
     MALE_HURT4("Scout", "male_hurt4"),
     INKLING("Inkling", "squid_hurt", true),
-    ROBOT("SWORDSMACHINE", "robo_hurt", true),
-    OOF("Roblox", "oof_hurt", true);
+    ROBOT("SWORDSMACHINE", "robo_hurt", true);
     private final String name;
     private final SoundEvent snd;
     private final boolean pitch;

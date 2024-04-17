@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package com.wildfire.main.networking;
 
 import com.wildfire.main.Breasts;
+import com.wildfire.main.DeathSound;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.HurtSound;
 import net.minecraft.network.FriendlyByteBuf;
@@ -43,6 +44,7 @@ public abstract class PacketGenderInfo {
     private final float cleavage;
 
     private final HurtSound hurtSounds;
+    private final DeathSound deathSound;
     private final boolean replaceHurtSounds;
     private final boolean bilkable;
 
@@ -52,6 +54,7 @@ public abstract class PacketGenderInfo {
         this.pronounColor = plr.getPronounColor();
         this.bust_size = plr.getBustSize();
         this.hurtSounds = plr.getHurtSounds();
+        this.deathSound = plr.getDeathSound();
         this.replaceHurtSounds = plr.replaceHurtSounds();
 
         //physics variables
@@ -81,6 +84,7 @@ public abstract class PacketGenderInfo {
         }
         this.bust_size = buffer.readFloat();
         this.hurtSounds = buffer.readEnum(HurtSound.class);
+        this.deathSound = buffer.readEnum(DeathSound.class);
         this.replaceHurtSounds = buffer.readBoolean();
 
         //physics variables
@@ -108,6 +112,7 @@ public abstract class PacketGenderInfo {
         }
         buffer.writeFloat(this.bust_size);
         buffer.writeEnum(this.hurtSounds);
+        buffer.writeEnum(this.deathSound);
         buffer.writeBoolean(this.replaceHurtSounds);
 
         buffer.writeBoolean(this.breast_physics);
@@ -130,6 +135,7 @@ public abstract class PacketGenderInfo {
         plr.updatePronounColor(pronounColor);
         plr.updateBustSize(bust_size);
         plr.updateHurtSounds(hurtSounds);
+        plr.updateDeathSound(deathSound);
         plr.updateReplaceHurtSounds(replaceHurtSounds);
 
         //physics

@@ -53,5 +53,35 @@
 		"category": "player",
 		"subtitle": "wildfire_gender.hurt.other",
 		"sounds": [ "wildfire_gender:squid_damage1", "wildfire_gender:squid_damage2" ]
+	},
+	"th_death": {
+		"category": "player",
+		"subtitle": "wildfire_gender.die.other",
+		"sounds": [  "wildfire_gender:death/th_death" ]
+	},
+	"ingr_death": {
+		"category": "player",
+		"subtitle": "wildfire_gender.die.other",
+		"sounds": [  "wildfire_gender:death/ingr_death" ]
+	},
+	"darwin_kill": {
+		"category": "player",
+		"subtitle": "wildfire_gender.die.other",
+		"sounds": [  "wildfire_gender:death/darwin_kill" ]
+	},
+	"delta_explode": {
+		"category": "player",
+		"subtitle": "wildfire_gender.die.other",
+		"sounds": [  "wildfire_gender:death/delta_explode" ]
+	},
+	"delta_ominous": {
+		"category": "player",
+		"subtitle": "wildfire_gender.die.other",
+		"sounds": [  "wildfire_gender:death/delta_ominous" ]
+	},
+	"under_heart": {
+		"category": "player",
+		"subtitle": "wildfire_gender.die.other",
+		"sounds": [  "wildfire_gender:death/under_heart" ]
 	}
 }

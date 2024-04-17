@@ -5,6 +5,9 @@
 	"wildfire_gender.hurt.female": "Player hurt",
 	"wildfire_gender.hurt.male": "Player hurt",
 	"wildfire_gender.hurt.other": "Player hurt",
+	"wildfire_gender.die.male": "Player death",
+	"wildfire_gender.die.female": "Player death",
+	"wildfire_gender.die.other": "Player death",
 
 	"wildfire_gender.player_list.title": "Gender Mod",
 	"wildfire_gender.player_list.settings_button": "Settings",
@@ -29,6 +32,7 @@
 	"wildfire_gender.tooltip.hide_in_armor": "Show Breasts When Wearing Armor",
 	"wildfire_gender.char_settings.hurt_sounds": "Hurt Sounds: %s",
 	"wildfire_gender.tooltip.hurt_sounds": "Select Hurt Sounds",
+	"wildfire_gender.char_settings.death_sound": "Death Sound: %s",
 	"wildfire_gender.char_settings.replace_hurt_sounds": "Hit Sound",
 	"wildfire_gender.tooltip.replace_hurt_sounds": "Enable Minecraft Hit Sound",
 	"wildfire_gender.char_settings.bilkable": "Cock",

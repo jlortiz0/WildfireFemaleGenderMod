@@ -21,6 +21,7 @@ package com.wildfire.main;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.wildfire.api.IGenderArmor;
+import com.wildfire.api.IWildfireSound;
 import com.wildfire.gui.screen.WildfirePlayerListScreen;
 import com.wildfire.main.networking.PacketSendGenderInfo;
 import com.wildfire.render.GenderLayer;
@@ -192,7 +193,8 @@ public class WildfireEventHandler {
 		SoundEvents.PLAYER_HURT_DROWN,
 		SoundEvents.PLAYER_HURT_FREEZE,
 		SoundEvents.PLAYER_HURT_ON_FIRE,
-		SoundEvents.PLAYER_HURT_SWEET_BERRY_BUSH
+		SoundEvents.PLAYER_HURT_SWEET_BERRY_BUSH,
+		SoundEvents.PLAYER_DEATH
 	);
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
@@ -200,16 +202,22 @@ public class WildfireEventHandler {
 		if (event.getSound() != null && playerHurtSounds.contains(event.getSound()) && event.getEntity() instanceof Player p && p.level.isClientSide) {
 			//Cancel as we handle all hurt sounds manually so that we can
 			// event.setCanceled(true);
-			HurtSound soundEvent = null;
+			IWildfireSound soundEvent = null;
 			if (p.hurtTime == p.hurtDuration && p.hurtTime > 0) {
 				//Note: We check hurtTime == hurtDuration and hurtTime > 0 or otherwise when the server sends a hurt sound to the client
 				// and the client will check itself instead of the player who was damaged.
 				GenderPlayer plr = WildfireGender.getPlayerById(p.getUUID());
-				if (plr != null && plr.getHurtSounds() != null) {
-					//If the player who produced the hurt sound is a female sound replace it
-					soundEvent = plr.getHurtSounds();
-					if (plr.replaceHurtSounds())
-						event.setCanceled(true);
+				if (plr != null) {
+					if (event.getSound() == SoundEvents.PLAYER_DEATH && plr.getDeathSound() != DeathSound.NOTHING) {
+						soundEvent = plr.getDeathSound();
+						if (plr.replaceHurtSounds())
+							event.setCanceled(true);
+					} else if (plr.getHurtSounds() != HurtSound.NOTHING) {
+						//If the player who produced the hurt sound is a female sound replace it
+						soundEvent = plr.getHurtSounds();
+						if (plr.replaceHurtSounds())
+							event.setCanceled(true);
+					}
 				}
 			}
 			if (soundEvent != null) {

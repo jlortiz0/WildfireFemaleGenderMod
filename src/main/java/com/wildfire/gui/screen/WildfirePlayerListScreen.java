@@ -22,6 +22,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfirePlayerList;
+import com.wildfire.main.DeathSound;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
@@ -142,8 +143,10 @@ public class WildfirePlayerListScreen extends Screen {
 
 				HurtSound hs = HOVER_PLAYER.getHurtSounds();
 				this.font.drawShadow(m, Component.translatable("wildfire_gender.char_settings.hurt_sounds", Component.literal(hs.getName())), dialogX, dialogY + 80, 0xBBBBBB);
+				DeathSound ds = HOVER_PLAYER.getDeathSound();
+				this.font.drawShadow(m, Component.translatable("wildfire_gender.char_settings.death_sound", Component.literal(ds.getName())), dialogX, dialogY + 90, 0xBBBBBB);
 				if (HOVER_PLAYER.isBilkable())
-					this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.bilkable"), dialogX, dialogY + 90, 0xBBBBBB);
+					this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.bilkable"), dialogX, dialogY + 100, 0xBBBBBB);
 				WardrobeBrowserScreen.drawEntityOnScreen(x - 110, y + 45, 45, (x - 300), (y - 26 - f2), pEntity);
 			}
 		}

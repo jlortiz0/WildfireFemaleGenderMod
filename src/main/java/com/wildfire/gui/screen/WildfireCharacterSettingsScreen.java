@@ -133,6 +133,12 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
             hitSoundButton.active = aPlr.getHurtSounds() != HurtSound.NOTHING;
         }));
 
+        this.addRenderableWidget(new WildfireButton(lxPos, yPos + 104, 119, 19,
+                Component.translatable("wildfire_gender.char_settings.death_sound", aPlr.getDeathSound().getName()), button -> {
+            minecraft.setScreen(new WildfireSoundListScreen<>(minecraft, aPlr.uuid, this, GenderPlayer::getDeathSound, GenderPlayer::updateDeathSound));
+            button.setMessage(Component.translatable("wildfire_gender.char_settings.death_sound", aPlr.getDeathSound().getName()));
+        }));
+
         this.addRenderableWidget(new WildfireToggleButton(rxPos, yPos + 104, 119, 19,
                 Component.translatable("wildfire_gender.char_settings.bilkable"), button -> {
             boolean bilkable = !aPlr.isBilkable();

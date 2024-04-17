@@ -37,6 +37,7 @@ public class GenderPlayer {
 
 	private HurtSound hurtSounds = ClientConfiguration.HURT_SOUNDS.getDefault();
 	private boolean replaceHurtSound = ClientConfiguration.REPLACE_HURT_SOUND.getDefault();
+	private DeathSound deathSound = ClientConfiguration.DEATH_SOUND.getDefault();
 
 	//physics variables
 	private boolean breastPhysics = ClientConfiguration.BREAST_PHYSICS.getDefault();
@@ -71,6 +72,7 @@ public class GenderPlayer {
 		this.cfg.setDefault(ClientConfiguration.BUST_SIZE);
 		this.cfg.setDefault(ClientConfiguration.HURT_SOUNDS);
 		this.cfg.setDefault(ClientConfiguration.REPLACE_HURT_SOUND);
+		this.cfg.setDefault(ClientConfiguration.DEATH_SOUND);
 
 		this.cfg.setDefault(ClientConfiguration.BREASTS_OFFSET_X);
 		this.cfg.setDefault(ClientConfiguration.BREASTS_OFFSET_Y);
@@ -158,6 +160,14 @@ public class GenderPlayer {
 		return updateValue(ClientConfiguration.HURT_SOUNDS, value, v -> this.hurtSounds = v);
 	}
 
+	public DeathSound getDeathSound() {
+		return deathSound;
+	}
+
+	public boolean updateDeathSound(DeathSound value) {
+		return updateValue(ClientConfiguration.DEATH_SOUND, value, v -> this.deathSound = v);
+	}
+
 	public boolean replaceHurtSounds() {
 		return replaceHurtSound;
 	}
@@ -230,6 +240,7 @@ public class GenderPlayer {
 		ClientConfiguration.BUST_SIZE.save(obj, plr.getBustSize());
 		ClientConfiguration.HURT_SOUNDS.save(obj, plr.getHurtSounds());
 		ClientConfiguration.REPLACE_HURT_SOUND.save(obj, plr.replaceHurtSounds());
+		ClientConfiguration.DEATH_SOUND.save(obj, plr.getDeathSound());
 
 		ClientConfiguration.BREAST_PHYSICS.save(obj, plr.hasBreastPhysics());
 		ClientConfiguration.BREAST_PHYSICS_ARMOR.save(obj, plr.hasArmorBreastPhysics());
@@ -255,6 +266,7 @@ public class GenderPlayer {
 		plr.updateBustSize(ClientConfiguration.BUST_SIZE.read(obj));
 		plr.updateHurtSounds(ClientConfiguration.HURT_SOUNDS.read(obj));
 		plr.updateReplaceHurtSounds(ClientConfiguration.REPLACE_HURT_SOUND.read(obj));
+		plr.updateDeathSound(ClientConfiguration.DEATH_SOUND.read(obj));
 
 		//physics
 		plr.updateBreastPhysics(ClientConfiguration.BREAST_PHYSICS.read(obj));
@@ -286,6 +298,7 @@ public class GenderPlayer {
 			plr.updateBustSize(config.get(ClientConfiguration.BUST_SIZE));
 			plr.updateHurtSounds(config.get(ClientConfiguration.HURT_SOUNDS));
 			plr.updateReplaceHurtSounds(config.get(ClientConfiguration.REPLACE_HURT_SOUND));
+			plr.updateDeathSound(config.get(ClientConfiguration.DEATH_SOUND));
 
 			//physics
 			plr.updateBreastPhysics(config.get(ClientConfiguration.BREAST_PHYSICS));
@@ -318,6 +331,7 @@ public class GenderPlayer {
 		config.set(ClientConfiguration.BUST_SIZE, plr.getBustSize());
 		config.set(ClientConfiguration.HURT_SOUNDS, plr.getHurtSounds());
 		config.set(ClientConfiguration.REPLACE_HURT_SOUND, plr.replaceHurtSounds());
+		config.set(ClientConfiguration.DEATH_SOUND, plr.getDeathSound());
 
 		//physics
 		config.set(ClientConfiguration.BREAST_PHYSICS, plr.hasBreastPhysics());
