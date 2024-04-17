@@ -63,8 +63,16 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         int lxPos = rxPos - 240 / 2 - 1;
 
         //Add 'Close' button at beginning
-        this.addRenderableWidget(new WildfireButton(rxPos + 110, yPos - 12, 9, 9, Component.translatable("wildfire_gender.label.exit"),
+        this.addRenderableWidget(new WildfireButton(rxPos + 112, yPos - 12, 9, 9, Component.translatable("wildfire_gender.label.exit"),
                 button -> Minecraft.getInstance().setScreen(parent)));
+
+        this.addRenderableWidget(new WildfireToggleButton(lxPos, yPos, 119, 20,
+                Component.translatable("wildfire_gender.char_settings.physics"), button -> {
+            boolean enablePhysics = !aPlr.hasBreastPhysics();
+            if (aPlr.updateBreastPhysics(enablePhysics)) {
+                GenderPlayer.saveGenderInfo(aPlr);
+            }
+        }, aPlr::hasBreastPhysics));
 
         final WildfireButton armorButton, hitSoundButton;
         this.addRenderableWidget(armorButton = new WildfireToggleButton(rxPos, yPos, 119, 20,
@@ -75,14 +83,6 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
             }
         }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, Component.translatable("wildfire_gender.tooltip.armor_physics"), mouseX, mouseY), aPlr::hasArmorBreastPhysics));
         armorButton.active = aPlr.showBreastsInArmor();
-
-        this.addRenderableWidget(new WildfireToggleButton(lxPos, yPos, 119, 20,
-              Component.translatable("wildfire_gender.char_settings.physics"), button -> {
-            boolean enablePhysics = !aPlr.hasBreastPhysics();
-            if (aPlr.updateBreastPhysics(enablePhysics)) {
-                GenderPlayer.saveGenderInfo(aPlr);
-            }
-        }, (button, matrices, mouseX, mouseY) -> this.renderTooltip(matrices, Component.translatable("wildfire_gender.tooltip.breast_physics"), mouseX, mouseY), aPlr::hasBreastPhysics));
 
         this.addRenderableWidget(new WildfireToggleButton(lxPos, yPos + 21, 119, 19,
               Component.translatable("wildfire_gender.char_settings.hide_in_armor"), button -> {
@@ -128,10 +128,10 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
 
         this.addRenderableWidget(new WildfireButton(lxPos, yPos + 83, 119, 20,
               Component.translatable("wildfire_gender.char_settings.hurt_sounds", aPlr.getHurtSounds().getName()), button -> {
-            minecraft.setScreen(new WildfireSoundListScreen<>(minecraft, aPlr.uuid, this, HurtSound::values, GenderPlayer::getHurtSounds, GenderPlayer::updateHurtSounds));
+            minecraft.setScreen(new WildfireSoundListScreen<>(minecraft, aPlr.uuid, this, GenderPlayer::getHurtSounds, GenderPlayer::updateHurtSounds));
             button.setMessage(Component.translatable("wildfire_gender.char_settings.hurt_sounds", aPlr.getHurtSounds().getName()));
             hitSoundButton.active = aPlr.getHurtSounds() != HurtSound.NOTHING;
-        }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, Component.translatable("wildfire_gender.tooltip.hurt_sounds"), mouseX, mouseY)));
+        }));
 
         this.addRenderableWidget(new WildfireToggleButton(rxPos, yPos + 104, 119, 19,
                 Component.translatable("wildfire_gender.char_settings.bilkable"), button -> {

@@ -19,6 +19,10 @@ public class WildfireToggleButton extends WildfireButton {
         this.state = state;
     }
 
+    public WildfireToggleButton(int x, int y, int w, int h, Component text, OnPress onPress, Supplier<Boolean> state) {
+        this(x, y, w, h, text, onPress, NO_TOOLTIP, state);
+    }
+
     public void renderButton(@Nonnull PoseStack m, int mouseX, int mouseY, float partialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
         Font font = minecraft.font;

@@ -35,8 +35,6 @@ import javax.annotation.Nonnull;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
-
 
 public class WildfireSoundListScreen<T extends IWildfireSound> extends Screen {
 
@@ -45,16 +43,14 @@ public class WildfireSoundListScreen<T extends IWildfireSound> extends Screen {
 	WildfireSoundList<T> SOUND_LIST;
 	private final Minecraft client;
 	private final BaseWildfireScreen parent;
-	private final Supplier<T[]> values;
 	private final Function<GenderPlayer, T> current;
 	private final BiFunction<GenderPlayer, T, Boolean> callback;
 
-	public WildfireSoundListScreen(Minecraft mc, UUID plr, BaseWildfireScreen parent, Supplier<T[]> values, Function<GenderPlayer, T> current, BiFunction<GenderPlayer, T, Boolean> callback) {
+	public WildfireSoundListScreen(Minecraft mc, UUID plr, BaseWildfireScreen parent, Function<GenderPlayer, T> current, BiFunction<GenderPlayer, T, Boolean> callback) {
 		super(Component.translatable("wildfire_gender.tooltip.hurt_sounds"));
 		aPlr = WildfireGender.getPlayerById(plr);
 		client = mc;
 		this.parent = parent;
-		this.values = values;
 		this.current = current;
 		this.callback = callback;
 	}
@@ -70,7 +66,7 @@ public class WildfireSoundListScreen<T extends IWildfireSound> extends Screen {
 			mc.displayGuiScreen(new WildfireSettingsScreen(SteinPlayerListScreen.this));
 		}));*/
 
-	    SOUND_LIST = new WildfireSoundList<>(this, 118, (y - 61), (y + 70), current.apply(aPlr), values);
+	    SOUND_LIST = new WildfireSoundList<>(this, 118, (y - 61), (y + 70), current.apply(aPlr));
 		SOUND_LIST.setRenderBackground(false);
 		SOUND_LIST.setRenderTopAndBottom(false);
 	    this.addWidget(this.SOUND_LIST);

@@ -36,14 +36,14 @@ public class WildfireSoundList<T extends IWildfireSound> extends ObjectSelection
     private final int listWidth;
     private final WildfireSoundListScreen<T> parent;
 
-    public WildfireSoundList(WildfireSoundListScreen<T> parent, int listWidth, int top, int bottom, T cur, Supplier<T[]> values)
+    public WildfireSoundList(WildfireSoundListScreen<T> parent, int listWidth, int top, int bottom, T cur)
     {
         super(parent.getMinecraft(), parent.width-4, parent.height, top-6, bottom, 20);
         this.parent = parent;
         this.listWidth = listWidth;
         this.cur = cur;
-        for (T hs : values.get()) {
-            addEntry(new Entry(hs));
+        for (IWildfireSound hs : cur.getClass().getEnumConstants()) {
+            addEntry(new Entry((T) hs));
         }
     }
 

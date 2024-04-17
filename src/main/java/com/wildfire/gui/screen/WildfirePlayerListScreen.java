@@ -136,12 +136,12 @@ public class WildfirePlayerListScreen extends Screen {
 
 				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.gender", HOVER_PLAYER.getPronouns()), dialogX, dialogY + 10, HOVER_PLAYER.getPronounColorOnTick(pEntity.tickCount));
 				this.font.drawShadow(m, Component.translatable("wildfire_gender.wardrobe.slider.breast_size", Math.round(HOVER_PLAYER.getBustSize() * 100)), dialogX, dialogY + 20, 0xBBBBBB);
-				this.font.drawShadow(m, Component.translatable("wildfire_gender.char_settings.physics", Component.translatable(HOVER_PLAYER.hasBreastPhysics() ? "wildfire_gender.label.enabled" : "wildfire_gender.label.disabled")), dialogX, dialogY + 40, 0xBBBBBB);
+				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.physics", Component.translatable(HOVER_PLAYER.hasBreastPhysics() ? "wildfire_gender.label.enabled" : "wildfire_gender.label.disabled")), dialogX, dialogY + 40, 0xBBBBBB);
 				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);
 				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.breast_momentum", Math.round(HOVER_PLAYER.getFloppiness() * 100)), dialogX + 6, dialogY + 60, 0xBBBBBB);
 
 				HurtSound hs = HOVER_PLAYER.getHurtSounds();
-				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.female_sounds", Component.literal(hs.getName())), dialogX, dialogY + 80, 0xBBBBBB);
+				this.font.drawShadow(m, Component.translatable("wildfire_gender.char_settings.hurt_sounds", Component.literal(hs.getName())), dialogX, dialogY + 80, 0xBBBBBB);
 				if (HOVER_PLAYER.isBilkable())
 					this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.bilkable"), dialogX, dialogY + 90, 0xBBBBBB);
 				WardrobeBrowserScreen.drawEntityOnScreen(x - 110, y + 45, 45, (x - 300), (y - 26 - f2), pEntity);

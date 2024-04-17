@@ -70,6 +70,7 @@ public class GenderPlayer {
 		this.cfg.setDefault(ClientConfiguration.PRONOUN_COLOR);
 		this.cfg.setDefault(ClientConfiguration.BUST_SIZE);
 		this.cfg.setDefault(ClientConfiguration.HURT_SOUNDS);
+		this.cfg.setDefault(ClientConfiguration.REPLACE_HURT_SOUND);
 
 		this.cfg.setDefault(ClientConfiguration.BREASTS_OFFSET_X);
 		this.cfg.setDefault(ClientConfiguration.BREASTS_OFFSET_Y);
