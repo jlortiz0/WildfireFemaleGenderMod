@@ -96,11 +96,11 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         this.addRenderableWidget(this.bounceSlider = new WildfireSlider(lxPos, yPos + 40, 240, 22, ClientConfiguration.BOUNCE_MULTIPLIER, aPlr.getBounceMultiplierRaw(), value -> {
         }, value -> {
             float bounceText = 3 * value;
-            float v = Math.round(bounceText * 10) / 10f;
-            bounceWarning = v > 1;
+            float v = Math.round(bounceText * 100) / 100f;
+            bounceWarning = v > 1.05;
             if (v == 3) {
                 return Component.translatable("wildfire_gender.slider.max_bounce");
-            } else if (Math.round(bounceText * 100) / 100f == 0) {
+            } else if (v == 0) {
                 return Component.translatable("wildfire_gender.slider.min_bounce");
             }
             return Component.translatable("wildfire_gender.slider.bounce", v);
