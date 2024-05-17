@@ -43,7 +43,6 @@ import java.util.UUID;
 public class WardrobeBrowserScreen extends BaseWildfireScreen {
 
 	private ResourceLocation BACKGROUND;
-	public static float modelRotation = 0.5F;
 
 	public WardrobeBrowserScreen(Screen parent, UUID uuid) {
 		super(Component.translatable("wildfire_gender.wardrobe.title"), parent, uuid);
@@ -67,9 +66,7 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		this.addRenderableWidget(new WildfireButton(this.width / 2 + 111, j - 63, 9, 9, Component.translatable("wildfire_gender.label.exit"),
 			button -> Minecraft.getInstance().setScreen(parent)));
 
-	    modelRotation = 0.6F;
-
-	    this.BACKGROUND = new ResourceLocation(WildfireGender.MODID, "textures/gui/wardrobe_bg.png");
+		this.BACKGROUND = new ResourceLocation(WildfireGender.MODID, "textures/gui/wardrobe_bg.png");
 
 	    super.init();
   	}
@@ -100,8 +97,6 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 	    int y = this.height / 2;
 
 	    this.font.draw(m, title, x - 42, y - 62, 4473924);
-
-	    modelRotation = 0.6f;
 
 		try {
 			RenderSystem.setShaderColor(1f, 1.0F, 1.0F, 1.0F);

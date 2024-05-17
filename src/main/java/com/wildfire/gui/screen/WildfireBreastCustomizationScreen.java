@@ -88,7 +88,6 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
         Minecraft minecraft = Minecraft.getInstance();
         GenderPlayer plr = getPlayer();
         super.renderBackground(m);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         if(plr == null) return;
 

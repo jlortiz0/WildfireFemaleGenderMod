@@ -75,7 +75,8 @@ import java.util.*;
 public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
 
 	private BreastModelBox lBreast, rBreast;
-	private OverlayModelBox lBreastWear, rBreastWear;
+	private static final OverlayModelBox lBreastWear = new OverlayModelBox(true,64, 64, 17, 34, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
+	private static final OverlayModelBox rBreastWear = new OverlayModelBox(false,64, 64, 21, 34, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 	private WildfireModelRenderer.ModelBox lBoobArmor, rBoobArmor;
 
 	private float preBreastSize = 0f;
@@ -88,8 +89,6 @@ public class GenderLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<A
 
 		lBreast = new BreastModelBox(64, 64, 16, 17, -4F, 0.0F, 0F, 4, 5, 4, 0.0F, false);
 		rBreast = new BreastModelBox(64, 64, 20, 17, 0, 0.0F, 0F, 4, 5, 4, 0.0F, false);
-		lBreastWear = new OverlayModelBox(true,64, 64, 17, 34, -4F, 0.0F, 0F, 4, 5, 3, 0.0F, false);
-		rBreastWear = new OverlayModelBox(false,64, 64, 21, 34, 0, 0.0F, 0F, 4, 5, 3, 0.0F, false);
 	}
 
 	private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = new HashMap<>();
