@@ -23,6 +23,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfireColorButton;
 import com.wildfire.main.GenderPlayer;
+import com.wildfire.render.ColorFontRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -39,7 +40,7 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 	private final GenderPlayer aPlr;
 
 	public WildfirePronounScreen(Screen parent, UUID plr) {
-		super(Component.translatable("wildfire_gender.player_list.female_sounds"), parent, plr);
+		super(Component.translatable("wildfire_gender.label.gender"), parent, plr);
 		aPlr = getPlayer();
 	}
 
@@ -138,18 +139,17 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 	@Override
 	public void render(PoseStack m, int f1, int f2, float f3) {
 		super.renderBackground(m);
-		Minecraft mc = Minecraft.getInstance();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 		int x = (this.width / 2);
 		int y = (this.height / 2);
 
-		textFieldWidget.setTextColor(aPlr.getPronounColorOnTick(mc.player.tickCount));
 		this.textFieldWidget.render(m, f1, f2, f3);
 		fill(m, x - 161, y, x + 162, y + 48, 0x55000000);
 		super.render(m, f1, f2, f3);
 
-		drawCenteredString(m, this.font, Component.translatable("wildfire_gender.label.gender"), this.width / 2, 20, 0xFFFFFF);
+		String msg = Component.translatable("wildfire_gender.label.gender").getString();
+		ColorFontRenderer.drawWithColors(this.font, m, msg, (this.width - this.font.width(msg)) / 2, 20, aPlr.getPronounColor());
 	}
 	
 	public void drawFlagTooltip(PoseStack m, String text) {

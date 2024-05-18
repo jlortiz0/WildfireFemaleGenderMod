@@ -23,7 +23,6 @@ import com.wildfire.main.config.ClientConfiguration;
 import com.wildfire.main.config.ConfigKey;
 import com.wildfire.physics.BreastPhysics;
 
-import java.awt.*;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -120,28 +119,6 @@ public class GenderPlayer {
 		return updateValue(ClientConfiguration.PRONOUN_COLOR, value, v -> {
 			this.pronounColor = v;
 		});
-	}
-
-	private static final int ticksPerColor = 13;
-
-	public int getPronounColorOnTick(int tick) {
-		if (pronounColor.length == 1) {
-			return pronounColor[0];
-		}
-		int ind = (tick / ticksPerColor) % pronounColor.length;
-		float per = (float) (tick % ticksPerColor) / ticksPerColor;
-		float invPer = 1 - per;
-		Color color1 = new Color(pronounColor[ind]);
-		Color color2;
-		if (ind + 1 == pronounColor.length) {
-			color2 = new Color(pronounColor[0]);
-		} else {
-			color2 = new Color(pronounColor[ind + 1]);
-		}
-		Color output = new Color((color1.getRed() * invPer + color2.getRed() * per) / 255,
-				(color1.getGreen() * invPer + color2.getGreen() * per) / 255, (color1.getBlue() * invPer + color2.getBlue() * per) / 255);
-
-		return output.getRGB();
 	}
 
 	public float getBustSize() {

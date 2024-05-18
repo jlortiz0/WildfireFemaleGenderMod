@@ -3,6 +3,7 @@ package com.wildfire.render.mixin;
 import com.mojang.math.Matrix4f;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.WildfireGender;
+import com.wildfire.render.ColorFontRenderer;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,13 +22,7 @@ public abstract class EntityRendererMixin {
         GenderPlayer aPlr = WildfireGender.getPlayerById(e.getUUID());
         if (aPlr == null) return font.drawInBatch(name, xOff, yOff, color, shadow, m, buffer, italic, alpha, light);
         int[] colors = aPlr.getPronounColor();
-        if (colors.length == 1) font.drawInBatch(name, xOff, yOff, colors[0], shadow, m, buffer, italic, alpha, light);
-        String nameS = name.getString();
-        float segSize = ((float) nameS.length()) / colors.length;
-        for (int i = 0; i < colors.length; i++) {
-            String subst = nameS.substring((int) (i * segSize), (int) ((i + 1) * segSize));
-            xOff = font.drawInBatch(subst, xOff, yOff, colors[i], shadow, m, buffer, italic, alpha, light);
-        }
-        return (int) xOff;
+        if (colors.length == 1) return font.drawInBatch(name, xOff, yOff, colors[0], shadow, m, buffer, italic, alpha, light);
+        return ColorFontRenderer.renderWithColors(font, name.getString(), xOff, yOff, colors, m, buffer, light);
     }
 }

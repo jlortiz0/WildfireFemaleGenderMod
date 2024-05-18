@@ -26,6 +26,7 @@ import com.wildfire.main.DeathSound;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
+import com.wildfire.render.ColorFontRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -135,7 +136,7 @@ public class WildfirePlayerListScreen extends Screen {
 			if(pEntity != null) {
 				this.font.drawShadow(m, pEntity.getDisplayName().copy().withStyle(ChatFormatting.UNDERLINE), dialogX, dialogY - 2, 0xFFFFFF);
 
-				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.gender", HOVER_PLAYER.getPronouns()), dialogX, dialogY + 10, HOVER_PLAYER.getPronounColorOnTick(pEntity.tickCount));
+				ColorFontRenderer.drawWithColors(this.font, m, Component.translatable("wildfire_gender.player_list.gender", HOVER_PLAYER.getPronouns()).getString(), dialogX, dialogY + 10, HOVER_PLAYER.getPronounColor());
 				this.font.drawShadow(m, Component.translatable("wildfire_gender.wardrobe.slider.breast_size", Math.round(HOVER_PLAYER.getBustSize() * 100)), dialogX, dialogY + 20, 0xBBBBBB);
 				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.physics", Component.translatable(HOVER_PLAYER.hasBreastPhysics() ? "wildfire_gender.label.enabled" : "wildfire_gender.label.disabled")), dialogX, dialogY + 40, 0xBBBBBB);
 				this.font.drawShadow(m, Component.translatable("wildfire_gender.player_list.bounce_multiplier", HOVER_PLAYER.getBounceMultiplier()), dialogX + 6, dialogY + 50, 0xBBBBBB);
