@@ -31,8 +31,10 @@ public class ColorFontRenderer {
             acc += charw;
             BakedGlyph glyph = fs.getGlyph(s.charAt(i));
 
-            if (c < colors.length - 1 && acc > segSize) {
-                drawGlyph(glyph, xPos, yPos, $$18, m, colors[c], colors[c + 1], 1 - ((acc - segSize) / charw), light);
+            if (c < colors.length - 1 && acc >= segSize) {
+                float temp = charw - glyph.right + glyph.left;
+                temp = ((acc - segSize - temp) / (glyph.right - glyph.left));
+                drawGlyph(glyph, xPos, yPos, $$18, m, colors[c], colors[c + 1], 1 - temp, light);
                 c++;
                 acc -= segSize;
             } else {
@@ -59,6 +61,7 @@ public class ColorFontRenderer {
             buffer.vertex(m, $$11, $$16, 0.0F).color(r, g, b, 1).uv(glyph.u0, glyph.v1).uv2(light).endVertex();
             buffer.vertex(m, $$12, $$16, 0.0F).color(r, g, b, 1).uv(glyph.u1, glyph.v1).uv2(light).endVertex();
             buffer.vertex(m, $$12, $$15, 0.0F).color(r, g, b, 1).uv(glyph.u1, glyph.v0).uv2(light).endVertex();
+            return;
         }
 
         float ud = (glyph.u1 - glyph.u0) * (slice - 0.1f);
