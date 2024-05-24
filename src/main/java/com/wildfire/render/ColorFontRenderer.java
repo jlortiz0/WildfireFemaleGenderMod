@@ -46,6 +46,9 @@ public class ColorFontRenderer {
     }
     
     private static void drawGlyph(BakedGlyph glyph, float xOff, float yOff, VertexConsumer buffer, Matrix4f m, int color1, int color2, float slice, int light) {
+        if (slice < 0.2f) color1 = color2;
+        if (slice < 0.2f || slice > 0.7f) slice = 0;
+
         float $$11 = xOff + glyph.left;
         float $$12 = xOff + glyph.right;
         float $$13 = glyph.up - 3.0F;
@@ -72,12 +75,10 @@ public class ColorFontRenderer {
         float g2 = (float)(color2 >> 8 & 255) / 255.0F;
         float b2 = (float)(color2 & 255) / 255.0F;
 
-        if (slice > 0.1f) {
-            buffer.vertex(m, $$11, $$15, 0.0F).color(r, g, b, 1).uv(glyph.u0, glyph.v0).uv2(light).endVertex();
-            buffer.vertex(m, $$11, $$16, 0.0F).color(r, g, b, 1).uv(glyph.u0, glyph.v1).uv2(light).endVertex();
-            buffer.vertex(m, $$11 + ld, $$16, 0.0F).color(r, g, b, 1).uv(glyph.u0 + ud, glyph.v1).uv2(light).endVertex();
-            buffer.vertex(m, $$11 + ld, $$15, 0.0F).color(r, g, b, 1).uv(glyph.u0 + ud, glyph.v0).uv2(light).endVertex();
-        }
+        buffer.vertex(m, $$11, $$15, 0.0F).color(r, g, b, 1).uv(glyph.u0, glyph.v0).uv2(light).endVertex();
+        buffer.vertex(m, $$11, $$16, 0.0F).color(r, g, b, 1).uv(glyph.u0, glyph.v1).uv2(light).endVertex();
+        buffer.vertex(m, $$11 + ld, $$16, 0.0F).color(r, g, b, 1).uv(glyph.u0 + ud, glyph.v1).uv2(light).endVertex();
+        buffer.vertex(m, $$11 + ld, $$15, 0.0F).color(r, g, b, 1).uv(glyph.u0 + ud, glyph.v0).uv2(light).endVertex();
 
         buffer.vertex(m, Math.max($$11 + ld, $$11), $$15, 0.0F).color(r, g, b, 1).uv(Math.max(glyph.u0 + ud, glyph.u0), glyph.v0).uv2(light).endVertex();
         buffer.vertex(m, Math.max($$11 + ld, $$11), $$16, 0.0F).color(r, g, b, 1).uv(Math.max(glyph.u0 + ud, glyph.u0), glyph.v1).uv2(light).endVertex();
@@ -86,11 +87,9 @@ public class ColorFontRenderer {
         buffer.vertex(m, Math.min($$11 + ld, $$12), $$16, 0.0F).color(r2, g2, b2, 1).uv(Math.min(glyph.u0 + ud, glyph.u1), glyph.v1).uv2(light).endVertex();
         buffer.vertex(m, Math.min($$11 + ld, $$12), $$15, 0.0F).color(r2, g2, b2, 1).uv(Math.min(glyph.u0 + ud, glyph.u1), glyph.v0).uv2(light).endVertex();
 
-        if (slice < 0.9f) {
-            buffer.vertex(m, $$11 + ld, $$15, 0.0F).color(r2, g2, b2, 1).uv(glyph.u0 + ud, glyph.v0).uv2(light).endVertex();
-            buffer.vertex(m, $$11 + ld, $$16, 0.0F).color(r2, g2, b2, 1).uv(glyph.u0 + ud, glyph.v1).uv2(light).endVertex();
-            buffer.vertex(m, $$12, $$16, 0.0F).color(r2, g2, b2, 1).uv(glyph.u1, glyph.v1).uv2(light).endVertex();
-            buffer.vertex(m, $$12, $$15, 0.0F).color(r2, g2, b2, 1).uv(glyph.u1, glyph.v0).uv2(light).endVertex();
-        }
+        buffer.vertex(m, $$11 + ld, $$15, 0.0F).color(r2, g2, b2, 1).uv(glyph.u0 + ud, glyph.v0).uv2(light).endVertex();
+        buffer.vertex(m, $$11 + ld, $$16, 0.0F).color(r2, g2, b2, 1).uv(glyph.u0 + ud, glyph.v1).uv2(light).endVertex();
+        buffer.vertex(m, $$12, $$16, 0.0F).color(r2, g2, b2, 1).uv(glyph.u1, glyph.v1).uv2(light).endVertex();
+        buffer.vertex(m, $$12, $$15, 0.0F).color(r2, g2, b2, 1).uv(glyph.u1, glyph.v0).uv2(light).endVertex();
     }
 }
