@@ -103,6 +103,7 @@ sourceSets {
 		resources {
 			exclude "assets/arclight/textures/models/armor/*.xcf"
 			exclude "assets/arclight/*"
+			exclude "assets/wildfire_gender/sounds/death/*"
 		}
 	}
 }

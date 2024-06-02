@@ -5,10 +5,13 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public class WildfireColorButton extends WildfireButton {
     private final int[] colors;
     public WildfireColorButton(int x, int y, int w, PressAction onPress, int... colors) {
-        this(x, y, w, onPress, null, colors);
+        this(x, y, w, onPress, NO_TOOLTIP, colors);
     }
 
     public WildfireColorButton(int x, int y, int w, PressAction onPress, ButtonWidget.TooltipSupplier tooltip, int... colors) {

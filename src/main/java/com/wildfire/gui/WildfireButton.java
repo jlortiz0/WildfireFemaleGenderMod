@@ -25,6 +25,9 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public class WildfireButton extends ButtonWidget {
    public static final ButtonWidget.TooltipSupplier NO_TOOLTIP = (button, matrixStack, mouseX, mouseY) -> {};
 
