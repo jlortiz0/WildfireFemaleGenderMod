@@ -18,7 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.main.networking;
 
-import com.wildfire.main.*;
+import com.wildfire.main.Breasts;
+import com.wildfire.main.Bulge;
+import com.wildfire.main.Buns;
+import com.wildfire.main.GenderPlayer;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 

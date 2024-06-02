@@ -21,17 +21,14 @@ package com.wildfire.gui;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.wildfire.gui.screen.WildfirePlayerListScreen;
 import com.wildfire.gui.screen.WardrobeBrowserScreen;
-import com.wildfire.main.WildfireGender;
+import com.wildfire.gui.screen.WildfirePlayerListScreen;
 import com.wildfire.main.GenderPlayer;
-
+import com.wildfire.main.WildfireGender;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -40,9 +37,7 @@ import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.GameMode;
@@ -94,7 +89,7 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
     }
 
     @Override
-    protected void renderBackground(DrawContext ctx) {}
+    protected void renderBackground(MatrixStack ctx) {}
 
     @Override
     public void appendNarrations(NarrationMessageBuilder builder) {
@@ -126,7 +121,7 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
         }
 
         @Override
-        public void render(DrawContext ctx, int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean p_194999_5_, float partialTicks) {
+        public void render(MatrixStack m, int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean p_194999_5_, float partialTicks) {
             TextRenderer font = MinecraftClient.getInstance().textRenderer;
 
             PlayerEntity playerentity = MinecraftClient.getInstance().world.getPlayerByUuid(nInfo.getProfile().getId());
@@ -135,21 +130,21 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
             RenderSystem.setShaderTexture(0, nInfo.getSkinTexture());
             int i3 = 8 + (flag1 ? 8 : 0);
             int j3 = 8 * (flag1 ? -1 : 1);
-            ctx.drawTexture(nInfo.getSkinTexture(), left+2, top+2, 16, 16, 8.0F, (float)i3, 8, j3, 64, 64);
+            drawTexture(m, left+2, top+2, 16, 16, 8.0F, (float)i3, 8, j3, 64, 64);
             if (playerentity != null && playerentity.isPartVisible(PlayerModelPart.HAT)) {
                 int k3 = 8 + (flag1 ? 8 : 0);
                 int l3 = 8 * (flag1 ? -1 : 1);
-                ctx.drawTexture(nInfo.getSkinTexture(), left+1, top+1, 18, 18, 40.0F, (float)k3, 8, l3, 64, 64);
+                drawTexture(m, left+1, top+1, 18, 18, 40.0F, (float)k3, 8, l3, 64, 64);
             }
 
-            ctx.drawText(font, name, left + 23, top + 2, 0xFFFFFF, false);
+            font.draw(m, name, left + 23, top + 2, 0xFFFFFF);
             if(aPlr != null) {
                 btnOpenGUI.active = !aPlr.lockSettings;
 
-                ctx.drawText(font, aPlr.getPronouns(), left + 23, top + 11, aPlr.getPronounColorOnTick(playerentity.age), false);
+                font.draw(m, aPlr.getPronouns(), left + 23, top + 11, aPlr.getPronounColorOnTick(playerentity.age));
                 if (aPlr.getSyncStatus() != GenderPlayer.SyncStatus.UNKNOWN && !playerentity.isMainPlayer()) {
                     RenderSystem.setShaderTexture(0, aPlr.getSyncStatus() == GenderPlayer.SyncStatus.SYNCED ? TXTR_SYNC : TXTR_CACHED);
-                    ctx.drawTexture(aPlr.getSyncStatus() == GenderPlayer.SyncStatus.SYNCED ? TXTR_SYNC : TXTR_CACHED, left + 98, top + 11, 12, 8, 0, 0, 12, 8, 12, 8);
+                    drawTexture(m, left + 98, top + 11, 12, 8, 0, 0, 12, 8, 12, 8);
                     if (mouseX > left + 98 - 2 && mouseY > top + 11 - 2 && mouseX < left + 98 + 12 + 2 && mouseY < top + 20) {
                         parent.setTooltip(Text.translatable(aPlr.getSyncStatus() == GenderPlayer.SyncStatus.SYNCED ? "wildfire_gender.player_list.state.synced" : "wildfire_gender.player_list.state.cached"));
                     }
@@ -157,13 +152,13 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
                 }
             } else {
                 btnOpenGUI.active = false;
-                ctx.drawText(font, Text.translatable("wildfire_gender.label.too_far").formatted(Formatting.RED), left + 23, top + 11, 0xFFFFFF, false);
+                font.draw(m, Text.translatable("wildfire_gender.label.too_far").formatted(Formatting.RED), left + 23, top + 11, 0xFFFFFF);
             }
-            this.btnOpenGUI.setX(left);
-            this.btnOpenGUI.setY(top);
-            this.btnOpenGUI.render(ctx, mouseX, mouseY, partialTicks);
+            this.btnOpenGUI.x = left;
+            this.btnOpenGUI.y = top;
+            this.btnOpenGUI.render(m, mouseX, mouseY, partialTicks);
 
-            if(this.btnOpenGUI.isSelected()) {
+            if(this.btnOpenGUI.isHovered()) {
                 WildfirePlayerListScreen.HOVER_PLAYER = aPlr;
             }
         }

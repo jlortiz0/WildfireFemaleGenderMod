@@ -19,13 +19,12 @@ package com.wildfire.main;
 import com.wildfire.api.IHurtSound;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 
 public class WildfireGenderClient implements ClientModInitializer {
-    public static final SimpleRegistry<IHurtSound> hurtSounds = FabricRegistryBuilder.createSimple(IHurtSound.class, new Identifier(WildfireGender.MODID, "hurt_sound_registry")).buildAndRegister();
+    public static final Registry<IHurtSound> hurtSounds = FabricRegistryBuilder.createSimple(IHurtSound.class, new Identifier(WildfireGender.MODID, "hurt_sound_registry")).buildAndRegister();
 
     @Override
     public void onInitializeClient() {

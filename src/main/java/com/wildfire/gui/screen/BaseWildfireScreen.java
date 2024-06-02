@@ -20,10 +20,10 @@ package com.wildfire.gui.screen;
 
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.WildfireGender;
-import java.util.UUID;
-
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
+
+import java.util.UUID;
 
 public abstract class BaseWildfireScreen extends Screen {
 

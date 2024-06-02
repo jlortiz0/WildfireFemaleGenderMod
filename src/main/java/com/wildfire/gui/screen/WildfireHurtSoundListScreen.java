@@ -25,13 +25,11 @@ import com.wildfire.gui.WildfireHurtSoundList;
 import com.wildfire.main.GenderPlayer;
 import com.wildfire.main.WildfireGender;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
 
 import java.util.UUID;
@@ -73,23 +71,23 @@ public class WildfireHurtSoundListScreen extends BaseWildfireScreen {
     }
 
 	@Override
-	public void render(DrawContext ctx, int f1, int f2, float f3) {
-		super.renderBackground(ctx);
+	public void render(MatrixStack m, int f1, int f2, float f3) {
+		super.renderBackground(m);
 		MinecraftClient mc = MinecraftClient.getInstance();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		if(this.TXTR_BACKGROUND != null) {
-			RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem.setShaderTexture(0, this.TXTR_BACKGROUND);
 		}
 		int i = (this.width - 132) / 2;
 		int j = (this.height - 156) / 2 - 20;
-		ctx.drawTexture(TXTR_BACKGROUND, i, j, 0, 0, 192, 174);
+		drawTexture(m, i, j, 0, 0, 192, 174);
 
 		int x = (this.width / 2);
 		int y = (this.height / 2) - 20;
 
-		super.render(ctx, f1, f2, f3);
+		super.render(m, f1, f2, f3);
 
         double scale = mc.getWindow().getScaleFactor();
         int left = x - 59;
@@ -99,9 +97,9 @@ public class WildfireHurtSoundListScreen extends BaseWildfireScreen {
         RenderSystem.enableScissor((int)(left  * scale), (int) (bottom * scale),
 				(int)(width * scale), (int) (height * scale));
 
-		SOUND_LIST.render(ctx, f1, f2, f3);
+		SOUND_LIST.render(m, f1, f2, f3);
 		RenderSystem.disableScissor();
 
-		ctx.drawText(this.textRenderer, Text.translatable("wildfire_gender.hurt_sound_list.title"), x - 60, y - 73, 4473924, false);
+		this.textRenderer.draw(m, Text.translatable("wildfire_gender.hurt_sound_list.title"), x - 60, y - 73, 4473924);
 	}
 }

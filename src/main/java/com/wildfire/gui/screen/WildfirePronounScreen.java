@@ -23,16 +23,12 @@ import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfireColorButton;
 import com.wildfire.main.GenderPlayer;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 
 import java.util.UUID;
 
@@ -55,7 +51,6 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 
 		textFieldWidget = new TextFieldWidget(this.textRenderer, this.width / 2 - 100, y, 200, 20, Text.translatable("wildfire_gender.pronoun_list.title"));
 		textFieldWidget.setMaxLength(16);
-		textFieldWidget.setFocused(true);
 		textFieldWidget.setText(aPlr.getPronouns());
 		this.addSelectableChild(this.textFieldWidget);
 		this.setInitialFocus(this.textFieldWidget);
@@ -76,59 +71,59 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 		}
 		// Trans
 		this.addDrawableChild(new WildfireColorButton(x - 160, y + 53, 22, this::setColor,
-				() -> Text.literal( "Transgender"),
+				(a, b, c, d) -> Text.literal( "Transgender"),
 				0x6ac2e4, 0xeb92ea, 0xffffff, 0xeb92ea, 0x6ac2e4));
 		// NB
 		this.addDrawableChild(new WildfireColorButton(x - 137, y + 53, 22, this::setColor,
-				() -> Text.literal( "Non-binary"),
+				(a, b, c, d) -> Text.literal( "Non-binary"),
 				0xebf367, 0xffffff, 0x7210bc, 0x333233));
 		// Agender
 		this.addDrawableChild(new WildfireColorButton(x - 114, y + 53, 22, this::setColor,
-				() -> Text.literal( "Agender"),
+				(a, b, c, d) -> Text.literal( "Agender"),
 				0x222222, 0xbcc4c7, 0xffffff, 0xb7f684, 0xffffff, 0xbcc4c7, 0x222222));
 		// Genderqueer
 		this.addDrawableChild(new WildfireColorButton(x - 91, y + 53, 22, this::setColor,
-				() -> Text.literal( "Genderqueer"),
+				(a, b, c, d) -> Text.literal( "Genderqueer"),
 				0xca78ef, 0xffffff, 0x2db418));
 		// Genderfluid
 		this.addDrawableChild(new WildfireColorButton(x - 68, y + 53, 22, this::setColor,
-				() -> Text.literal( "Genderfluid"),
+				(a, b, c, d) -> Text.literal( "Genderfluid"),
 				0xfbacf9, 0xffffff, 0x9c2bd0, 0x333233, 0x2f4dd8));
 		// Demiboy
 		this.addDrawableChild(new WildfireColorButton(x - 45, y + 53, 22, this::setColor,
-				() -> Text.literal( "Demiboy"),
+				(a, b, c, d) -> Text.literal( "Demiboy"),
 				0x7f7f7f, 0x9a9fa1, 0xa9ffff, 0xffffff, 0xa9ffff, 0x9a9fa1, 0x7f7f7f));
 		// Demigirl
 		this.addDrawableChild(new WildfireColorButton(x - 22, y + 53, 22, this::setColor,
-				() -> Text.literal( "Demigirl"),
+				(a, b, c, d) -> Text.literal( "Demigirl"),
 				0x7f7f7f, 0x9a9fa1, 0xfcb1ff, 0xffffff, 0xfcb1ff, 0x9a9fa1, 0x7f7f7f));
 		// Bigender
 		this.addDrawableChild(new WildfireColorButton(x + 1, y + 53, 22, this::setColor,
-				() -> Text.literal( "Bigender"),
+				(a, b, c, d) -> Text.literal( "Bigender"),
 				0xc479a2, 0xeda5cd, 0xd6c7e8, 0xffffff, 0xd6c7e8, 0x9ac7e8, 0x6d82d1));
 		// Intersex
 		this.addDrawableChild(new WildfireColorButton(x + 24, y + 53, 22, this::setColor,
-				() -> Text.literal( "Intersex"),
+				(a, b, c, d) -> Text.literal( "Intersex"),
 				0xd8abcf, 0xffffff, 0xa0cdee, 0xf0b7d6, 0xffffff, 0xd8abcf));
 		// Pride
 		this.addDrawableChild(new WildfireColorButton(x + 47, y + 53, 22, this::setColor,
-				() -> Text.literal( "Pride"),
+				(a, b, c, d) -> Text.literal( "Pride"),
 				0xe40303, 0xff8c00, 0xffed00, 0x008026, 0x24408e, 0x732982));
 		// Genderfae
 		this.addDrawableChild(new WildfireColorButton(x + 70, y + 53, 22, this::setColor,
-				() -> Text.literal( "Genderfae"),
+				(a, b, c, d) -> Text.literal( "Genderfae"),
 				0x97c3a5, 0xc3deae, 0xf9facd, 0xffffff, 0xfca2c4, 0xdb8ae4, 0xa97edd));
 		// Genderfaun
 		this.addDrawableChild(new WildfireColorButton(x + 93, y + 53, 22, this::setColor,
-				() -> Text.literal( "Genderfaun"),
+				(a, b, c, d) -> Text.literal( "Genderfaun"),
 				0xfcc689, 0xfff09d, 0xfbf9cc, 0xffffff, 0x8edfd8, 0x8dabdc, 0x9781eb));
 		// Genderflux
 		this.addDrawableChild(new WildfireColorButton(x + 116, y + 53, 22, this::setColor,
-				() -> Text.literal( "Genderflux"),
+				(a, b, c, d) -> Text.literal( "Genderflux"),
 				0xf57694, 0xf2a3b9, 0xcfcfcf, 0x7be1f5, 0x3ecdfa, 0xfff48c));
 		// Pangender
 		this.addDrawableChild(new WildfireColorButton(x + 139, y + 53, 22, this::setColor,
-				() -> Text.literal("Pangender"),
+				(a, b, c, d) -> Text.literal("Pangender"),
 				0xfff798, 0xffddcd, 0xffebfb, 0xffffff, 0xffebfb, 0xffddcd, 0xfff798));
 
 		super.init();
@@ -143,8 +138,8 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 	}
 
 	@Override
-	public void render(DrawContext ctx, int f1, int f2, float f3) {
-		super.renderBackground(ctx);
+	public void render(MatrixStack m, int f1, int f2, float f3) {
+		super.renderBackground(m);
 		MinecraftClient mc = MinecraftClient.getInstance();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -152,10 +147,10 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
 		int y = (this.height / 2);
 
 		textFieldWidget.setEditableColor(aPlr.getPronounColorOnTick(mc.player.age));
-		this.textFieldWidget.render(ctx, f1, f2, f3);
-		ctx.fill(x - 161, y, x + 162, y + 48, 0x55000000);
-		super.render(ctx, f1, f2, f3);
+		this.textFieldWidget.render(m, f1, f2, f3);
+		fill(m, x - 161, y, x + 162, y + 48, 0x55000000);
+		super.render(m, f1, f2, f3);
 
-		ctx.drawText(this.textRenderer, Text.translatable("wildfire_gender.pronouns_list.title"), x - 40, 20, 16777215, false);
+		this.textRenderer.draw(m, Text.translatable("wildfire_gender.pronouns_list.title"), x - 40, 20, 16777215);
 	}
 }

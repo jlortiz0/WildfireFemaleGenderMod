@@ -18,15 +18,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.wildfire.gui.screen;
 
-import com.wildfire.gui.WildfirePronounButton;
-import com.wildfire.main.WildfireGender;
-import java.util.UUID;
-
-import com.wildfire.gui.WildfireButton;
-import com.wildfire.main.GenderPlayer;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.wildfire.gui.WildfireButton;
+import com.wildfire.gui.WildfirePronounButton;
+import com.wildfire.main.GenderPlayer;
+import com.wildfire.main.WildfireGender;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.DiffuseLighting;
@@ -37,12 +34,13 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
-import org.joml.Vector3f;
-import org.joml.Quaternionf;
+import net.minecraft.util.math.Quaternion;
+import net.minecraft.util.math.Vec3f;
+
+import java.util.UUID;
 
 public class WardrobeBrowserScreen extends BaseWildfireScreen {
 
@@ -96,18 +94,19 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 	}
 
 	@Override
-	public void render(DrawContext ctx, int f1, int f2, float f3) {
+	public void render(MatrixStack m, int f1, int f2, float f3) {
 		MinecraftClient minecraft = MinecraftClient.getInstance();
 		GenderPlayer plr = getPlayer();
-		super.renderBackground(ctx);
+		super.renderBackground(m);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-		RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShaderTexture(0, BACKGROUND);
 
 		int i = (this.width - 248) / 2;
 		int j = (this.height - 134) / 2;
-		ctx.drawTexture(BACKGROUND, i, j, 0, 0, 248, 156);
+		drawTexture(m, i, j, 0, 0, 248, 156);
 
 		if(plr == null) return;
 
@@ -115,7 +114,7 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		int x = this.width / 2;
 		int y = this.height / 2;
 
-		ctx.drawText(textRenderer, title, x - 42, y - 62, 4473924, false);
+		this.textRenderer.draw(m, title, x - 42, y - 62, 4473924);
 
 		try {
 			RenderSystem.setShaderColor(1f, 1.0F, 1.0F, 1.0F);
@@ -132,7 +131,7 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 			//error, fallback
 			minecraft.setScreen(new WildfirePlayerListScreen(minecraft));
 		}
-		super.render(ctx, f1, f2, f3);
+		super.render(m, f1, f2, f3);
 	}
 
 	public static void drawEntityOnScreen(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity) {
@@ -150,9 +149,9 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		MatrixStack matrixStack2 = new MatrixStack();
 		matrixStack2.translate(0.0D, 0.0D, 800.0D);
 		matrixStack2.scale((float)size, (float)size, (float)size);
-		Quaternionf quaternion = new Quaternionf().rotateZ((float) Math.PI);
-		Quaternionf quaternion2 = (new Quaternionf()).rotateX(g * (float) Math.PI / 9);
-		quaternion.mul(quaternion2);
+		Quaternion quaternion = Vec3f.POSITIVE_Z.getDegreesQuaternion(180.0F);
+		Quaternion quaternion2 = Vec3f.POSITIVE_X.getDegreesQuaternion(g * 20.0F);
+		quaternion.hamiltonProduct(quaternion2);
 		matrixStack2.multiply(quaternion);
 		float h = entity.bodyYaw;
 		float i = entity.getYaw();

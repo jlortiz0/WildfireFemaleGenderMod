@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package com.wildfire.render;
 
 import net.minecraft.util.math.Direction;
-import org.joml.Vector3f;
+import net.minecraft.util.math.Vec3f;
 
 public class WildfireModelRenderer {
 
@@ -326,7 +326,7 @@ public class WildfireModelRenderer {
 
    public static class TexturedQuad {
       public final WildfireModelRenderer.PositionTextureVertex[] vertexPositions;
-      public final Vector3f normal;
+      public final Vec3f normal;
 
       public TexturedQuad(float u1, float v1, float u2, float v2, float texWidth, float texHeight, boolean mirrorIn, Direction directionIn, PositionTextureVertex... positionsIn) {
 		 if (positionsIn.length != 4) {
@@ -351,7 +351,7 @@ public class WildfireModelRenderer {
 
          this.normal = directionIn.getUnitVector();
          if (mirrorIn) {
-            this.normal.mul(-1.0f, 1.0f, 1.0f);
+            this.normal.multiplyComponentwise(-1.0f, 1.0f, 1.0f);
          }
 
       }

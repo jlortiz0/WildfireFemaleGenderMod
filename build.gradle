@@ -79,7 +79,7 @@ dependencies {
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.2.2"
 	modImplementation("curse.maven:trinkets-341284:4573009")
 	// modRuntimeOnly("curse.maven:transparent-cosmetics-451965:3721687")
-	modRuntimeOnly("curse.maven:cosmetic-armor-fabric-436659:4646421")
+	// modRuntimeOnly("curse.maven:cosmetic-armor-fabric-436659:4646421")
 	modCompileOnly "curse.maven:origins-391943:4609386"
 	// modCompileOnly("curse.maven:show-me-your-skin-622010:4787990")
 	modCompileOnly ("com.github.apace100:apoli:2.10.3")
