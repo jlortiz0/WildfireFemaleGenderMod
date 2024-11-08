@@ -25,19 +25,22 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
+import java.util.function.Supplier;
 
 @ParametersAreNonnullByDefault
 public class WildfireButton extends ButtonWidget {
-   public static final ButtonWidget.TooltipSupplier NO_TOOLTIP = (button, matrixStack, mouseX, mouseY) -> {};
-
    public boolean transparent = false;
+   protected final Supplier<Text> tooltip;
 
-   public WildfireButton(int x, int y, int w, int h, Text text, ButtonWidget.PressAction onPress, ButtonWidget.TooltipSupplier onTooltip) {
-      super(x, y, w, h, text, onPress, onTooltip);
+   public WildfireButton(int x, int y, int w, int h, Text text, ButtonWidget.PressAction onPress, @Nullable Supplier<Text> onTooltip) {
+      super(x, y, w, h, text, onPress, DEFAULT_NARRATION_SUPPLIER);
+      this.tooltip = onTooltip;
    }
    public WildfireButton(int x, int y, int w, int h, Text text, ButtonWidget.PressAction onPress) {
-      this(x, y, w, h, text, onPress, NO_TOOLTIP);
+      this(x, y, w, h, text, onPress, null);
    }
 
    @Override
@@ -47,13 +50,13 @@ public class WildfireButton extends ButtonWidget {
       int clr = 0x444444 + (84 << 24);
       if(this.isHovered()) clr = 0x666666 + (84 << 24);
       if(!this.active)  clr = 0x222222 + (84 << 24);
-      if(!transparent) fill(m, x, y, x + getWidth(), y + height, clr);
+      if(!transparent) fill(m, getX(), getY(), getX() + getWidth(), getY() + height, clr);
 
-      font.draw(m, this.getMessage(), x + (this.width / 2) - (font.getWidth(this.getMessage()) / 2) + 1, y + (int) Math.ceil((float) height / 2f) - font.fontHeight / 2, active ? 0xFFFFFF : 0x666666);
+      font.draw(m, this.getMessage(), getX() + (this.width / 2) - (font.getWidth(this.getMessage()) / 2) + 1, getY() + (int) Math.ceil((float) height / 2f) - font.fontHeight / 2, active ? 0xFFFFFF : 0x666666);
       RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-      if(this.isHovered()) {
-         renderTooltip(m, mouseX, mouseY);
+      if (this.tooltip != null && this.isHovered()) {
+         MinecraftClient.getInstance().currentScreen.setTooltip(List.of(this.tooltip.get().asOrderedText()), this.getTooltipPositioner(), this.isFocused());
       }
    }
 

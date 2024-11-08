@@ -100,8 +100,8 @@ public class WildfireHurtSoundList extends EntryListWidget<WildfireHurtSoundList
                 btnOpenGUI.active = false;
                 font.draw(m, Text.translatable("wildfire_gender.label.too_far").formatted(Formatting.RED), left + 23, top + 11, 0xFFFFFF);
             }
-            this.btnOpenGUI.x = left;
-            this.btnOpenGUI.y = top;
+            this.btnOpenGUI.setX(left);
+            this.btnOpenGUI.setY(top);
             this.btnOpenGUI.render(m, mouseX, mouseY, partialTicks);
             RenderSystem.setShaderTexture(0, ClickableWidget.WIDGETS_TEXTURE);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

@@ -71,7 +71,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
                 button.setMessage(Text.translatable("wildfire_gender.char_settings.physics", enablePhysics ? ENABLED : DISABLED));
                 GenderPlayer.saveGenderInfo(aPlr);
             }
-        }, (a, b, c, d) -> Text.translatable("wildfire_gender.tooltip.breast_physics")));
+        }, () -> Text.translatable("wildfire_gender.tooltip.breast_physics")));
 
         this.addDrawableChild(new WildfireButton(xPos, yPos + 20, 157, 20,
               Text.translatable("wildfire_gender.char_settings.armor_physics", aPlr.hasArmorBreastPhysics() ? ENABLED : DISABLED), button -> {
@@ -80,7 +80,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
                 button.setMessage(Text.translatable("wildfire_gender.char_settings.armor_physics", enablePhysicsArmor ? ENABLED : DISABLED));
                 GenderPlayer.saveGenderInfo(aPlr);
             }
-        }, (a, b, c, d) -> Text.translatable("wildfire_gender.tooltip.armor_physics")));
+        }, () -> Text.translatable("wildfire_gender.tooltip.armor_physics")));
 
         this.addDrawableChild(new WildfireButton(xPos, yPos + 40, 157, 20,
               Text.translatable("wildfire_gender.char_settings.hide_in_armor", aPlr.showBreastsInArmor() ? DISABLED : ENABLED), button -> {
@@ -89,7 +89,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
                 button.setMessage(Text.translatable("wildfire_gender.char_settings.hide_in_armor", enableShowInArmor ? DISABLED : ENABLED));
                 GenderPlayer.saveGenderInfo(aPlr);
             }
-        }, (a, b, c, d) -> Text.translatable("wildfire_gender.tooltip.hide_in_armor")));
+        }, () -> Text.translatable("wildfire_gender.tooltip.hide_in_armor")));
 
         this.addDrawableChild(this.bounceSlider = new WildfireSlider(xPos, yPos + 60, 158, 22, Configuration.BOUNCE_MULTIPLIER, aPlr.getBounceMultiplierRaw(), value -> {
         }, value -> {
@@ -121,7 +121,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         }
         this.addDrawableChild(new WildfireButton(xPos, yPos + 100, 157, 20,
                 Text.translatable("wildfire_gender.player_list.female_sounds", hs.getName()),
-                button -> MinecraftClient.getInstance().setScreen(new WildfireHurtSoundListScreen(this, playerUUID)), (a, b, c, d) -> Text.translatable("wildfire_gender.tooltip.hurt_sounds")));
+                button -> MinecraftClient.getInstance().setScreen(new WildfireHurtSoundListScreen(this, playerUUID)), () -> Text.translatable("wildfire_gender.tooltip.hurt_sounds")));
 
         this.BACKGROUND = new Identifier(WildfireGender.MODID, "textures/gui/settings_bg.png");
 
@@ -135,7 +135,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if(this.BACKGROUND != null) {
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShaderTexture(0, this.BACKGROUND);
         }

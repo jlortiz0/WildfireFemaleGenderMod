@@ -23,9 +23,9 @@ public class WildfirePronounButton extends WildfireButton {
         int clr = 0x444444 + (84 << 24);
         if(this.isHovered()) clr = 0x666666 + (84 << 24);
         if(!this.active)  clr = 0x222222 + (84 << 24);
-        if(!transparent) fill(m, x, y, x + getWidth(), y + height, clr);
+        if(!transparent) fill(m, getX(), getY(), getX() + getWidth(), getY() + height, clr);
 
-        font.draw(m, this.getMessage(), x + (this.width / 2) - (font.getWidth(this.getMessage()) / 2) + 1, y + (int) Math.ceil((float) height / 2f) - font.fontHeight / 2, this.getColor.apply(minecraft.player.age));
+        font.draw(m, this.getMessage(), getX() + (this.width / 2) - (font.getWidth(this.getMessage()) / 2) + 1, getY() + (int) Math.ceil((float) height / 2f) - font.fontHeight / 2, this.getColor.apply(minecraft.player.age));
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
     }
 }

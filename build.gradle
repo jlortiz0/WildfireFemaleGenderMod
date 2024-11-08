@@ -75,12 +75,12 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.2.2"
-	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.2.2"
-	modImplementation("curse.maven:trinkets-341284:4573009")
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:5.1.0"
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:5.1.0"
+	modImplementation "curse.maven:trinkets-341284:4167221"
 	// modRuntimeOnly("curse.maven:transparent-cosmetics-451965:3721687")
 	// modRuntimeOnly("curse.maven:cosmetic-armor-fabric-436659:4646421")
-	modCompileOnly "curse.maven:origins-391943:4609386"
+	modCompileOnly "curse.maven:origins-391943:4360289"
 	// modCompileOnly("curse.maven:show-me-your-skin-622010:4787990")
 	modCompileOnly ("com.github.apace100:apoli:2.10.3")
 }

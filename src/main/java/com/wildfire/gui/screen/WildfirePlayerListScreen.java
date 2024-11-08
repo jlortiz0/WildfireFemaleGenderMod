@@ -98,7 +98,7 @@ public class WildfirePlayerListScreen extends Screen {
 		MinecraftClient mc = MinecraftClient.getInstance();
 	    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 	    if(this.TXTR_BACKGROUND != null) {
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
+			RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem.setShaderTexture(0, this.TXTR_BACKGROUND);
 		}
@@ -153,7 +153,7 @@ public class WildfirePlayerListScreen extends Screen {
 		if(Calendar.getInstance().get(Calendar.MONTH) == Calendar.OCTOBER) {
 			fill(m, x - 159, y + 106, x + 159, y + 136, 0x55000000);
 			this.textRenderer.draw(m, Formatting.ITALIC + "Hey, it's Breast Cancer Awareness Month!", this.width / 2 - 148, y + 117, 0xFFFFFF);
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
+			RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem.setShaderTexture(0, TXTR_RIBBON);
 			drawTexture(m,x + 130, y + 109, 26, 26, 0, 0, 20, 20, 20, 20);

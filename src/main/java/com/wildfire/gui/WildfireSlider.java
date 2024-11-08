@@ -108,18 +108,18 @@ public class WildfireSlider extends ClickableWidget {
 	public void render(MatrixStack m, int mouseX, int mouseY, float delta) {
 		if (this.visible) {
 			RenderSystem.disableDepthTest();
-			this.hovered = mouseX >= x && mouseY >= y && mouseX < x + this.width && mouseY < y + this.height;
+			this.hovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + this.width && mouseY < getY() + this.height;
 
-			int xP = x +4;
-			fill(m, xP-2, y+1, x + this.width - 1, y + this.height-1, 0x222222 + (128 << 24));
-			int xPos =  x + 4 + (int) (this.value * (float)(this.width - 6));
-			fill(m, x+3, y+2, xPos-1, y + this.height - 2, 0x222266 + (180 << 24));
+			int xP = getX()+4;
+			fill(m, xP-2, getY()+1, getX() + this.width - 1, getY() + this.height-1, 0x222222 + (128 << 24));
+			int xPos =  getX() + 4 + (int) (this.value * (float)(this.width - 6));
+			fill(m, getX()+3, getY()+2, xPos-1, getY() + this.height - 2, 0x222266 + (180 << 24));
 
-			int xPos2 = x + 2 + (int) (this.value * (float)(this.width - 4));
-			fill(m, xPos2-2, y + 1, xPos2, y + this.height-1, 0xFFFFFF + (120 << 24));
+			int xPos2 = getX() + 2 + (int) (this.value * (float)(this.width - 4));
+			fill(m, xPos2-2, getY() + 1, xPos2, getY() + this.height-1, 0xFFFFFF + (120 << 24));
 			RenderSystem.enableDepthTest();
 			TextRenderer font = MinecraftClient.getInstance().textRenderer;
-			drawCenteredText(m, font, getMessage(), x + this.width / 2, y + (this.height - 8) / 2, this.hovered || changed ? 0xFFFF55 : 0xFFFFFF);
+			drawCenteredText(m, font, getMessage(), getX() + this.width / 2, getY() + (this.height - 8) / 2, this.hovered || changed ? 0xFFFF55 : 0xFFFFFF);
 		}
 	}
 
@@ -149,7 +149,7 @@ public class WildfireSlider extends ClickableWidget {
 	}
 
 	private void setValueFromMouse(double mouseX) {
-		this.value = ((mouseX - (double)(x + 4)) / (double)(this.width - 8));
+		this.value = ((mouseX - (double)(getX() + 4)) / (double)(this.width - 8));
 		if (this.value < 0.0F) {
 			this.value = 0.0F;
 		}
@@ -162,7 +162,7 @@ public class WildfireSlider extends ClickableWidget {
 	}
 
 	@Override
-	public void appendNarrations(NarrationMessageBuilder builder) {
+	public void appendClickableNarrations(NarrationMessageBuilder builder) {
 
 	}
 }

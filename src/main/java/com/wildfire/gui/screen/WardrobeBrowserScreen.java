@@ -37,8 +37,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Quaternionf;
 
 import java.util.UUID;
 
@@ -100,7 +99,7 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		super.renderBackground(m);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.setShaderTexture(0, BACKGROUND);
 
@@ -149,9 +148,9 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		MatrixStack matrixStack2 = new MatrixStack();
 		matrixStack2.translate(0.0D, 0.0D, 800.0D);
 		matrixStack2.scale((float)size, (float)size, (float)size);
-		Quaternion quaternion = Vec3f.POSITIVE_Z.getDegreesQuaternion(180.0F);
-		Quaternion quaternion2 = Vec3f.POSITIVE_X.getDegreesQuaternion(g * 20.0F);
-		quaternion.hamiltonProduct(quaternion2);
+		Quaternionf quaternion = new Quaternionf().rotateZ((float) Math.PI);
+		Quaternionf quaternion2 = (new Quaternionf()).rotateX(g * (float) Math.PI / 9);
+		quaternion.mul(quaternion2);
 		matrixStack2.multiply(quaternion);
 		float h = entity.bodyYaw;
 		float i = entity.getYaw();

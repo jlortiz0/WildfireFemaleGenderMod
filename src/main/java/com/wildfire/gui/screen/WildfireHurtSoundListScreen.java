@@ -76,7 +76,7 @@ public class WildfireHurtSoundListScreen extends BaseWildfireScreen {
 		MinecraftClient mc = MinecraftClient.getInstance();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		if(this.TXTR_BACKGROUND != null) {
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
+			RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem.setShaderTexture(0, this.TXTR_BACKGROUND);
 		}
