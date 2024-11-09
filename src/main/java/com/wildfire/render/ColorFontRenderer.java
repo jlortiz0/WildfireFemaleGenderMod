@@ -32,22 +32,22 @@ public class ColorFontRenderer {
             BakedGlyph glyph = fs.getGlyph(s.charAt(i));
 
             if (c < colors.length - 1 && acc >= segSize) {
-                float temp = charw - glyph.right + glyph.left;
-                temp = ((acc - segSize - temp) / (glyph.right - glyph.left));
-                drawGlyph(glyph, xPos, yPos, $$18, m, colors[c], colors[c + 1], 1 - temp, light);
+                float temp = (acc - segSize) / charw;
+                drawGlyph(glyph, xPos, yPos, $$18, m, colors[c], colors[c + 1], 1 - temp, light, charw);
                 c++;
                 acc -= segSize;
             } else {
-                drawGlyph(glyph, xPos, yPos, $$18, m, colors[c], colors[c], 0, light);
+                drawGlyph(glyph, xPos, yPos, $$18, m, colors[c], colors[c], 0, light, charw);
             }
-            xPos += fs.getGlyphInfo(s.charAt(i), false).getAdvance();
+            xPos += charw;
         }
         return (int) xPos;
     }
     
-    private static void drawGlyph(BakedGlyph glyph, float xOff, float yOff, VertexConsumer buffer, Matrix4f m, int color1, int color2, float slice, int light) {
-        if (slice < 0.2f) color1 = color2;
-        if (slice < 0.2f || slice > 0.7f) slice = 0;
+    private static void drawGlyph(BakedGlyph glyph, float xOff, float yOff, VertexConsumer buffer, Matrix4f m, int color1, int color2, float slice, int light, float advance) {
+        float spaceSz = 1 / advance;
+        if (slice < 0.3f) color1 = color2;
+        if (slice < 0.3f || slice + spaceSz > 0.7f) slice = 0;
 
         float $$11 = xOff + glyph.left;
         float $$12 = xOff + glyph.right;
@@ -67,10 +67,11 @@ public class ColorFontRenderer {
             return;
         }
 
-        float ud = (glyph.u1 - glyph.u0) * (slice - 0.1f);
-        float ud2 = (glyph.u1 - glyph.u0) * 0.2f;
-        float ld = (glyph.right - glyph.left) * (slice - 0.1f);
-        float ld2 = (glyph.right - glyph.left) * 0.2f;
+        float widScale = advance / (glyph.right - glyph.left);
+        float ud = (glyph.u1 - glyph.u0) * (slice - 0.1f) * widScale;
+        float ud2 = (glyph.u1 - glyph.u0) * 0.2f * widScale;
+        float ld = advance * (slice - 0.1f);
+        float ld2 = advance * 0.2f;
         float r2 = (float)(color2 >> 16 & 255) / 255.0F;
         float g2 = (float)(color2 >> 8 & 255) / 255.0F;
         float b2 = (float)(color2 & 255) / 255.0F;
