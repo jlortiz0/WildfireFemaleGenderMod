@@ -40,8 +40,6 @@ import java.util.UUID;
 public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
 
     private WildfireSlider breastSlider, xOffsetBoobSlider, yOffsetBoobSlider, zOffsetBoobSlider, cleavageSlider;
-    private WildfireButton btnDualPhysics, btnCustomization;
-    private int currentTab = 0; // 0 = customization, 1 = presets
 
     public WildfireBreastCustomizationScreen(Screen parent, UUID uuid) {
         super(Text.translatable("wildfire_gender.appearance_settings.title"), parent, uuid);
@@ -75,7 +73,7 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
         this.addDrawableChild(this.cleavageSlider = new WildfireSlider(this.width / 2 + 30, j + 36, 158, 20, Configuration.BREASTS_CLEAVAGE, breasts.getCleavage(),
               breasts::updateCleavage, value -> Text.translatable("wildfire_gender.wardrobe.slider.rotation", Math.round((Math.round(value * 100f) / 100f) * 100)), onSave));
 
-        this.addDrawableChild(this.btnDualPhysics =new WildfireButton(this.width / 2 + 30, j + 57, 158, 20,
+        this.addDrawableChild(new WildfireButton(this.width / 2 + 30, j + 57, 158, 20,
                 Text.translatable("wildfire_gender.breast_customization.dual_physics", Text.translatable(breasts.isUniboob() ? "wildfire_gender.label.no" : "wildfire_gender.label.yes")), button -> {
             boolean isUniboob = !breasts.isUniboob();
             if (breasts.updateUniboob(isUniboob)) {
@@ -84,20 +82,7 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
             }
         }));
 
-        this.currentTab = 0;
-
         super.init();
-    }
-
-    private void updatePresetTab() {
-        PlayerConfig plr = getPlayer();
-        if(plr == null) return;
-        breastSlider.visible = currentTab == 0;
-        xOffsetBoobSlider.visible = currentTab == 0;
-        yOffsetBoobSlider.visible = currentTab == 0;
-        zOffsetBoobSlider.visible = currentTab == 0;
-        cleavageSlider.visible = currentTab == 0;
-        btnDualPhysics.visible = currentTab == 0;
     }
 
     @Override
@@ -123,12 +108,7 @@ public class WildfireBreastCustomizationScreen extends BaseWildfireScreen {
     @Override
     public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
         if(client == null || client.player == null || client.world == null) return;
-
-        updatePresetTab();
         super.render(ctx, mouseX, mouseY, delta);
-
-        int x = this.width / 2;
-        int y = this.height / 2;
     }
 
     @Override

@@ -36,7 +36,7 @@ public class WildfireColorButton extends WildfireButton {
 
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-        if (this.isSelected() && this.color.name != null) {
+        if (this.isHovered() && this.color.name != null) {
             this.tooltipCallback.accept(ctx, this.color.name);
         }
     }

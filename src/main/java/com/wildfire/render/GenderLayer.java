@@ -111,9 +111,7 @@ public class GenderLayer<T extends LivingEntity, M extends BipedEntityModel<T>> 
 			if(!setupRender(ent, entityConfig, partialTicks)) return;
 			int overlay = LivingEntityRenderer.getOverlay(ent, 0);
 
-			renderSides(ent, getContextModel(), matrixStack, side -> {
-				renderBreast(ent, matrixStack, vertexConsumerProvider, light, overlay, side);
-			});
+			renderSides(ent, getContextModel(), matrixStack, side -> renderBreast(ent, matrixStack, vertexConsumerProvider, light, overlay, side));
 		} catch(Exception e) {
 			WildfireGender.LOGGER.error("Failed to render breast layer", e);
 		}

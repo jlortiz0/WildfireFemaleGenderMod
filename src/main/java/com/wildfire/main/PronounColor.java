@@ -1,13 +1,7 @@
 package com.wildfire.main;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.function.ValueLists;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.IntFunction;
 
 public enum PronounColor {
     WHITE(Formatting.WHITE),
@@ -53,6 +47,6 @@ public enum PronounColor {
         this.colors = colors;
     }
 
-    public static final IntFunction<PronounColor> BY_ID = ValueLists.createIdToValueFunction(PronounColor::ordinal, values(), ValueLists.OutOfBoundsHandling.ZERO);
-    public static final PacketCodec<ByteBuf, PronounColor> CODEC = PacketCodecs.indexed(BY_ID, PronounColor::ordinal);
+    // public static final IntFunction<PronounColor> BY_ID = ValueLists.createIdToValueFunction(PronounColor::ordinal, values(), ValueLists.OutOfBoundsHandling.ZERO);
+    // public static final PacketCodec<ByteBuf, PronounColor> CODEC = PacketCodecs.indexed(BY_ID, PronounColor::ordinal);
 }

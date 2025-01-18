@@ -78,12 +78,12 @@ public class ColorFontRenderer {
         buffer.vertex(m, $$11 + ld, $$16, 0.0F).color(r, g, b, 1).texture(glyph.minU + ud, glyph.maxV).light(light);
         buffer.vertex(m, $$11 + ld, $$15, 0.0F).color(r, g, b, 1).texture(glyph.minU + ud, glyph.minV).light(light);
 
-        buffer.vertex(m, Math.max($$11 + ld, $$11), $$15, 0.0F).color(r, g, b, 1).texture(Math.max(glyph.minU + ud, glyph.minU), glyph.minV).light(light);
-        buffer.vertex(m, Math.max($$11 + ld, $$11), $$16, 0.0F).color(r, g, b, 1).texture(Math.max(glyph.minU + ud, glyph.minU), glyph.maxV).light(light);
+        buffer.vertex(m, Math.max($$11 + ld, $$11), $$15, 0.0F).color(r, g, b, 1).texture(glyph.minU + ud, glyph.minV).light(light);
+        buffer.vertex(m, Math.max($$11 + ld, $$11), $$16, 0.0F).color(r, g, b, 1).texture(glyph.minU + ud, glyph.maxV).light(light);
         ud += ud2;
         ld += ld2;
-        buffer.vertex(m, Math.min($$11 + ld, $$12), $$16, 0.0F).color(r2, g2, b2, 1).texture(Math.min(glyph.minU + ud, glyph.maxU), glyph.maxV).light(light);
-        buffer.vertex(m, Math.min($$11 + ld, $$12), $$15, 0.0F).color(r2, g2, b2, 1).texture(Math.min(glyph.minU + ud, glyph.maxU), glyph.minV).light(light);
+        buffer.vertex(m, Math.min($$11 + ld, $$12), $$16, 0.0F).color(r2, g2, b2, 1).texture(glyph.minU + ud, glyph.maxV).light(light);
+        buffer.vertex(m, Math.min($$11 + ld, $$12), $$15, 0.0F).color(r2, g2, b2, 1).texture(glyph.minU + ud, glyph.minV).light(light);
 
         buffer.vertex(m, $$11 + ld, $$15, 0.0F).color(r2, g2, b2, 1).texture(glyph.minU + ud, glyph.minV).light(light);
         buffer.vertex(m, $$11 + ld, $$16, 0.0F).color(r2, g2, b2, 1).texture(glyph.minU + ud, glyph.maxV).light(light);

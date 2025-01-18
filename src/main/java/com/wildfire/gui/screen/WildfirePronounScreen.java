@@ -80,7 +80,7 @@ public class WildfirePronounScreen extends BaseWildfireScreen {
         super.render(ctx, f1, f2, f3);
 
         String msg = Text.translatable("wildfire_gender.label.pronouns").getString();
-        ColorFontRenderer.drawWithColors(this.textRenderer, ctx, msg, (this.width - this.textRenderer.getWidth(msg)) / 2, 20, aPlr.getPronounColor().colors);
+        ColorFontRenderer.drawWithColors(this.textRenderer, ctx, msg, x - this.textRenderer.getWidth(msg) / 2, 20, aPlr.getPronounColor().colors);
     }
 
     public void drawFlagTooltip(DrawContext ctx, String text) {

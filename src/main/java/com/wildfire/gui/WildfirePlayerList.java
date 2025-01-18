@@ -30,7 +30,7 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
     protected void drawHeaderAndFooterSeparators(DrawContext context) {
     }
 
-    public WildfirePlayerList(WildfirePlayerListScreen parent, MinecraftClient client, int listWidth, int top, int bottom) {
+    public WildfirePlayerList(WildfirePlayerListScreen parent, MinecraftClient client, int listWidth, int top) {
         super(client, parent.width-4, parent.height, top-6, 20);
         this.parent = parent;
         this.listWidth = listWidth;
@@ -61,17 +61,6 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
     @Override
     protected void drawMenuListBackground(DrawContext ctx) {}
 
-    public boolean isLoadingPlayers() {
-        boolean loadingPlayers = false;
-        for (Entry child : this.children()) {
-            PlayerConfig aPlr = WildfireGender.getPlayerById(child.nInfo.getProfile().getId());
-            if (aPlr == null) {
-                loadingPlayers = true;
-            }
-        }
-        return loadingPlayers;
-    }
-
     @Override
     protected void appendClickableNarrations(NarrationMessageBuilder builder) {
 
@@ -98,10 +87,6 @@ public class WildfirePlayerList extends EntryListWidget<WildfirePlayerList.Entry
             if(aPlr != null) {
                 btnOpenGUI.active = aPlr.syncStatus != PlayerConfig.SyncStatus.SYNCED;
             }
-        }
-
-        public PlayerListEntry getNetworkInfo() {
-            return nInfo;
         }
 
         @Override

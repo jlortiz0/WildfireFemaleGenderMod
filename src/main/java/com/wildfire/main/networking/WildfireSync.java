@@ -46,17 +46,13 @@ public final class WildfireSync {
 		PayloadTypeRegistry.playC2S().register(ServerboundSyncPacket.ID, ServerboundSyncPacket.CODEC);
 		PayloadTypeRegistry.playS2C().register(ServerboundSyncPacket.ID, ServerboundSyncPacket.CODEC);
 
-		ServerPlayConnectionEvents.INIT.register((handler, server) -> {
-			ServerPlayNetworking.registerReceiver(handler, ServerboundSyncPacket.ID, ServerboundSyncPacket::handle);
-		});
+		ServerPlayConnectionEvents.INIT.register((handler, server) -> ServerPlayNetworking.registerReceiver(handler, ServerboundSyncPacket.ID, ServerboundSyncPacket::handle));
 	}
 
 	@ApiStatus.Internal
 	@Environment(EnvType.CLIENT)
 	public static void registerClient() {
-		ClientPlayConnectionEvents.INIT.register((handler, client) -> {
-			ClientPlayNetworking.registerReceiver(ClientboundSyncPacket.ID, ClientboundSyncPacket::handle);
-		});
+		ClientPlayConnectionEvents.INIT.register((handler, client) -> ClientPlayNetworking.registerReceiver(ClientboundSyncPacket.ID, ClientboundSyncPacket::handle));
 	}
 
 	/**

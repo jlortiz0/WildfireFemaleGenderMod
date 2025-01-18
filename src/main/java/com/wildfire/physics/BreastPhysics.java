@@ -38,11 +38,20 @@ import net.minecraft.util.math.Vec3d;
 public class BreastPhysics {
 
 	//X-Axis
-	private float bounceVelX = 0, targetBounceX = 0, velocityX = 0, positionX, prePositionX;
+	private float bounceVelX = 0;
+    private float velocityX = 0;
+    private float positionX;
+    private float prePositionX;
 	//Y-Axis
-	private float bounceVel = 0, targetBounceY = 0, velocity = 0, positionY, prePositionY;
+	private float bounceVel = 0;
+    private float velocity = 0;
+    private float positionY;
+    private float prePositionY;
 	//Rotation
-	private float bounceRotVel = 0, targetRotVel = 0, rotVelocity = 0, wfg_bounceRotation, wfg_preBounceRotation;
+	private float bounceRotVel = 0;
+    private float rotVelocity = 0;
+    private float wfg_bounceRotation;
+    private float wfg_preBounceRotation;
 
 	private float breastSize = 0, preBreastSize = 0;
 
@@ -195,24 +204,23 @@ public class BreastPhysics {
 		}
 		lastVerticalMoveVelocity = vertVelocity;
 
-		this.targetBounceY = (float) motion.y * bounceIntensity;
-		this.targetBounceY += breastWeight;
-		float horizVel = (float) Math.sqrt(Math.pow(motion.x, 2) + Math.pow(motion.z, 2)) * (bounceIntensity);
+        float targetBounceY = (float) motion.y * bounceIntensity;
+		targetBounceY += breastWeight;
 
-		this.targetRotVel = calcRotation(entity, bounceIntensity);
-		this.targetRotVel += (float) motion.y * bounceIntensity * randomB;
+        float targetRotVel = calcRotation(entity, bounceIntensity);
+		targetRotVel += (float) motion.y * bounceIntensity * randomB;
 
 		float f2 = (float) entity.getVelocity().lengthSquared() / 0.2F;
 		f2 = f2 * f2 * f2;
 		if(f2 < 1.0F) f2 = 1.0F;
-		this.targetBounceY += MathHelper.cos(entity.limbAnimator.getPos() * 0.6662F + (float)Math.PI) * 0.5F * entity.limbAnimator.getSpeed() * 0.5F / f2;
+		targetBounceY += MathHelper.cos(entity.limbAnimator.getPos() * 0.6662F + (float)Math.PI) * 0.5F * entity.limbAnimator.getSpeed() * 0.5F / f2;
 
 		EntityPose pose = entity.getPose();
 		if(pose != lastPose) {
 			if(pose == EntityPose.CROUCHING || lastPose == EntityPose.CROUCHING) {
-				this.targetBounceY += bounceIntensity;
+				targetBounceY += bounceIntensity;
 			} else if(pose == EntityPose.SLEEPING || lastPose == EntityPose.SLEEPING) {
-				this.targetBounceY = bounceIntensity;
+				targetBounceY = bounceIntensity;
 			}
 			lastPose = pose;
 		}
@@ -226,31 +234,31 @@ public class BreastPhysics {
 				float rotationL = (float) MathHelper.clampedLerp(-(float)Math.PI / 3F, -0.2617994F, (double) ((MathHelper.sin(-rowTime2) + 1.0F) / 2.0F));
 				float rotationR = (float) MathHelper.clampedLerp(-(float)Math.PI / 4F, (float)Math.PI / 4F, (double) ((MathHelper.sin(-rowTime + 1.0F) + 1.0F) / 2.0F));
 				if(rotationL < -1 || rotationR < -0.6f) {
-					this.targetBounceY = bounceIntensity / 3.25f;
+					targetBounceY = bounceIntensity / 3.25f;
 				}
 			} else if(entity.getVehicle() instanceof MinecartEntity cart) {
 				float speed = (float) cart.getVelocity().lengthSquared();
 				if(Math.random() * speed < 0.5f && speed > 0.2f) {
-					this.targetBounceY = (Math.random() > 0.5 ? -bounceIntensity : bounceIntensity) / 6f;
-					this.targetBounceY += breastWeight;
+					targetBounceY = (Math.random() > 0.5 ? -bounceIntensity : bounceIntensity) / 6f;
+					targetBounceY += breastWeight;
 				}
 			} else if(entity.getVehicle() instanceof HorseEntity horse) {
 				float movement = (float) horse.getVelocity().lengthSquared();
 				if(horse.age % clampMovement(movement) == 5 && movement > 0.05f) {
-					this.targetBounceY = bounceIntensity / 4f;
-					this.targetBounceY += breastWeight;
+					targetBounceY = bounceIntensity / 4f;
+					targetBounceY += breastWeight;
 				}
 			} else if(entity.getVehicle() instanceof PigEntity pig) {
 				float movement = (float) pig.getVelocity().lengthSquared();
 				if(pig.age % clampMovement(movement) == 5 && movement > 0.002f) {
-					this.targetBounceY = (bounceIntensity * MathHelper.clamp(movement * 75, 0.1f, 1f)) / 4f;
-					this.targetBounceY += breastWeight;
+					targetBounceY = (bounceIntensity * MathHelper.clamp(movement * 75, 0.1f, 1f)) / 4f;
+					targetBounceY += breastWeight;
 				}
 			} else if(entity.getVehicle() instanceof StriderEntity strider) {
 				double heightOffset = (double)strider.getHeight() - 0.19
 						+ (double)(0.12F * MathHelper.cos(strider.limbAnimator.getPos() * 1.5f)
 						* 2F * Math.min(0.25F, strider.limbAnimator.getSpeed()));
-				this.targetBounceY += ((float) (heightOffset * 3f) - 4.5f) * bounceIntensity;
+				targetBounceY += ((float) (heightOffset * 3f) - 4.5f) * bounceIntensity;
 			}
 		}
 
@@ -272,7 +280,7 @@ public class BreastPhysics {
 			int everyNthTick = MathHelper.clamp(swingDuration - 1, 1, 5);
 			if(entity.handSwinging && entity.age % everyNthTick == 0) {
 				float hasteMult = MathHelper.clamp(everyNthTick / 5f, 0.4f, 1f);
-				this.targetBounceY += (Math.random() > 0.5 ? -0.25f : 0.25f) * amplifier * bounceIntensity * hasteMult;
+				targetBounceY += (Math.random() > 0.5 ? -0.25f : 0.25f) * amplifier * bounceIntensity * hasteMult;
 			}
 
 			int swingTickDelta = entity.handSwingTicks - lastSwingTick;
@@ -285,12 +293,12 @@ public class BreastPhysics {
 				// Note that we don't check if the player's arm is currently swinging here to account for cases like
 				// haste being used to reset a player's swing; one notable example of this is Wynncraft's spell casting,
 				// which applies haste to the player when a spell is successfully cast.
-				this.targetRotVel += (swingingArm == Arm.RIGHT ? -2.5f : 2.5f) * Math.abs(swingProgress) * bounceIntensity;
+				targetRotVel += (swingingArm == Arm.RIGHT ? -2.5f : 2.5f) * Math.abs(swingProgress) * bounceIntensity;
 			} else if(entity.handSwinging && swingDuration > 1) {
 				// Otherwise if the swing animation isn't interrupted, attempt to rotate slightly counter to the
 				// direction that the body is currently moving
 				Arm swingingToward = swingProgress > 0f ? swingingArm.getOpposite() : swingingArm;
-				this.targetRotVel += (swingingToward == Arm.RIGHT ? -0.2f : 0.2f) * amplifier * bounceIntensity;
+				targetRotVel += (swingingToward == Arm.RIGHT ? -0.2f : 0.2f) * amplifier * bounceIntensity;
 			}
 			lastSwingTick = entity.handSwingTicks;
 		}
@@ -324,14 +332,15 @@ public class BreastPhysics {
 		targetBounceY = MathHelper.clamp(targetBounceY, -1.5f, 2.5f);
 		targetRotVel = MathHelper.clamp(targetRotVel, -25f, 25f);
 
-		this.velocity = MathHelper.lerp(bounceAmount, this.velocity, (this.targetBounceY - this.bounceVel) * delta);
+		this.velocity = MathHelper.lerp(bounceAmount, this.velocity, (targetBounceY - this.bounceVel) * delta);
 		this.bounceVel += this.velocity * percent * 1.1625f;
 
 		//X
-		this.velocityX = MathHelper.lerp(bounceAmount, this.velocityX, (this.targetBounceX - this.bounceVelX) * delta);
+        float targetBounceX = 0;
+        this.velocityX = MathHelper.lerp(bounceAmount, this.velocityX, (targetBounceX - this.bounceVelX) * delta);
 		this.bounceVelX += this.velocityX * percent;
 
-		this.rotVelocity = MathHelper.lerp(bounceAmount, this.rotVelocity, (this.targetRotVel - this.bounceRotVel) * delta);
+		this.rotVelocity = MathHelper.lerp(bounceAmount, this.rotVelocity, (targetRotVel - this.bounceRotVel) * delta);
 		this.bounceRotVel += this.rotVelocity * percent;
 
 		this.wfg_bounceRotation = this.bounceRotVel;

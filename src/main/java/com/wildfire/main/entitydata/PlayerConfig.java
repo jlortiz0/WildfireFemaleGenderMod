@@ -18,7 +18,6 @@
 
 package com.wildfire.main.entitydata;
 
-import com.google.gson.JsonObject;
 import com.wildfire.main.PronounColor;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.config.ConfigKey;
@@ -140,29 +139,6 @@ public class PlayerConfig extends EntityConfig {
 
 	public SyncStatus getSyncStatus() {
 		return this.syncStatus;
-	}
-
-	public static JsonObject toJsonObject(PlayerConfig plr) {
-		JsonObject obj = new JsonObject();
-		Configuration.USERNAME.save(obj, plr.uuid);
-		Configuration.PRONOUNS.save(obj, plr.getPronouns());
-        Configuration.PRONOUN_COLOR.save(obj, plr.getPronounColor());
-		Configuration.BUST_SIZE.save(obj, plr.getBustSize());
-		Configuration.HURT_SOUNDS.save(obj, plr.hasHurtSounds());
-
-		Configuration.BREAST_PHYSICS.save(obj, plr.hasBreastPhysics());
-		Configuration.SHOW_IN_ARMOR.save(obj, plr.showBreastsInArmor());
-		Configuration.ARMOR_PHYSICS_OVERRIDE.save(obj, plr.getArmorPhysicsOverride());
-		Configuration.BOUNCE_MULTIPLIER.save(obj, plr.getBounceMultiplier());
-		Configuration.FLOPPY_MULTIPLIER.save(obj, plr.getFloppiness());
-
-		Breasts breasts = plr.getBreasts();
-		Configuration.BREASTS_OFFSET_X.save(obj, breasts.getXOffset());
-		Configuration.BREASTS_OFFSET_Y.save(obj, breasts.getYOffset());
-		Configuration.BREASTS_OFFSET_Z.save(obj, breasts.getZOffset());
-		Configuration.BREASTS_UNIBOOB.save(obj, breasts.isUniboob());
-		Configuration.BREASTS_CLEAVAGE.save(obj, breasts.getCleavage());
-		return obj;
 	}
 
 	public static PlayerConfig loadCachedPlayer(UUID uuid, boolean markForSync) {

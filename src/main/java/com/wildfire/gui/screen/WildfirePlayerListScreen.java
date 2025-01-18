@@ -50,10 +50,10 @@ public class WildfirePlayerListScreen extends Screen {
 			mc.displayGuiScreen(new WildfireSettingsScreen(SteinPlayerListScreen.this));
 		}));*/
 
-        PLAYER_LIST = new WildfirePlayerList(this, client, 118, (y - 61), (y + 71));
+        PLAYER_LIST = new WildfirePlayerList(this, client, 118, (y - 61));
         this.addSelectableChild(this.PLAYER_LIST);
 
-        this.addDrawableChild(new WildfireButton(this.width / 2 + 52, y - 74, 9, 9, Text.literal("X"), button -> client.setScreen(null)));
+        this.addDrawableChild(new WildfireButton(x + 52, y - 74, 9, 9, Text.literal("X"), button -> client.setScreen(null)));
 
         super.init();
     }
