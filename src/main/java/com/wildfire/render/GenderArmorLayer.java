@@ -91,7 +91,8 @@ public class GenderArmorLayer<T extends LivingEntity, M extends BipedEntityModel
 		//noinspection UnstableApiUsage
 		if(ArmorRendererRegistryImpl.get(chestplate.getItem()) != null) return;
 		// The Cobblemon Fennekin chestplate doesn't have a proper texture but is also not using the armor renderer. Disable it manually.
-		if (chestplate.getItem().getTranslationKey().startsWith("item.cobblemonarmors.fennekin")) return;
+		if (chestplate.getRegistryEntry().getIdAsString().startsWith("cobblemonarmors:fen")) return;
+		boolean isTheMagmaGruntArmor = chestplate.getRegistryEntry().getIdAsString().startsWith("cobblemonarmors:team_m");
 
 		try {
 			entityConfig = EntityConfig.getEntity(ent);
@@ -105,6 +106,8 @@ public class GenderArmorLayer<T extends LivingEntity, M extends BipedEntityModel
 			final boolean glint = chestplate.hasGlint();
 
 			renderSides(ent, getContextModel(), matrixStack, side -> {
+				// HACK to prevent Magma Grunt armor from splitting at the seams with ~75%+ breast size
+				if (isTheMagmaGruntArmor) matrixStack.scale(1, 1, 1.5f);
 				material.value().layers().forEach(layer -> {
 					int layerColor = layer.isDyeable() ? color : -1;
 					renderBreastArmor(layer.getTexture(false), matrixStack, vertexConsumerProvider, light, side, layerColor, glint);
