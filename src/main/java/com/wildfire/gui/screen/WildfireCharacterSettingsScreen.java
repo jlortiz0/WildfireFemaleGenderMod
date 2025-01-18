@@ -19,14 +19,10 @@
 package com.wildfire.gui.screen;
 
 import com.wildfire.gui.GuiUtils;
+import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfireSlider;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.config.Configuration;
-
-import java.util.Objects;
-import java.util.UUID;
-
-import com.wildfire.gui.WildfireButton;
 import com.wildfire.main.entitydata.PlayerConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -38,6 +34,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+
+import java.util.Objects;
+import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
@@ -89,9 +88,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
                 button.setMessage(Text.translatable("wildfire_gender.char_settings.override_armor_physics", aPlr.getArmorPhysicsOverride() ? ENABLED : DISABLED));
                 PlayerConfig.saveGenderInfo(aPlr);
             }
-        }, Tooltip.of(Text.translatable("wildfire_gender.tooltip.override_armor_physics.line1")
-                .append("\n\n")
-                .append(Text.translatable("wildfire_gender.tooltip.override_armor_physics.line2")))
+        }, Tooltip.of(Text.translatable("wildfire_gender.tooltip.override_armor_physics"))
         ));
 
         this.addDrawableChild(this.bounceSlider = new WildfireSlider(xPos, yPos + 60, 158, 20, Configuration.BOUNCE_MULTIPLIER, aPlr.getBounceMultiplier(), value -> {

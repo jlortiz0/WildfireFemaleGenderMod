@@ -19,6 +19,7 @@
 package com.wildfire.mixins;
 
 import com.wildfire.main.WildfireGender;
+import com.wildfire.main.WildfireSounds;
 import com.wildfire.main.entitydata.PlayerConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -50,7 +51,7 @@ public abstract class LivingEntityMixin {
 			PlayerConfig genderPlayer = WildfireGender.getPlayerById(player.getUuid());
 			if(genderPlayer == null || !genderPlayer.hasHurtSounds()) return;
 
-			SoundEvent hurtSound = genderPlayer.getGender().getHurtSound();
+			SoundEvent hurtSound = WildfireSounds.FEMALE_HURT;
 			if(hurtSound != null) {
 				float pitch = (player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.2F + 1.0F;
 				player.playSound(hurtSound, 1f, pitch);

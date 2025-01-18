@@ -19,10 +19,10 @@
 package com.wildfire.main.entitydata;
 
 import com.google.gson.JsonObject;
+import com.wildfire.main.PronounColor;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.config.ConfigKey;
 import com.wildfire.main.config.Configuration;
-import com.wildfire.main.Gender;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,21 +41,15 @@ public class PlayerConfig extends EntityConfig {
 	protected boolean hurtSounds = Configuration.HURT_SOUNDS.getDefault();
 	protected boolean armorPhysOverride = Configuration.ARMOR_PHYSICS_OVERRIDE.getDefault();
 	protected boolean showBreastsInArmor = Configuration.SHOW_IN_ARMOR.getDefault();
-
-	/**
-	 * @deprecated Use {@link #updateGender(Gender)} instead
-	 */
-	@Deprecated
-	public PlayerConfig(UUID uuid, Gender gender) {
-		this(uuid);
-		updateGender(gender);
-	}
+	protected String pronouns = Configuration.PRONOUNS.getDefault();
+	protected PronounColor pronounColor = Configuration.PRONOUN_COLOR.getDefault();
 
 	public PlayerConfig(UUID uuid) {
 		super(uuid);
 		this.cfg = new Configuration(this.uuid.toString());
 		this.cfg.set(Configuration.USERNAME, this.uuid);
-		this.cfg.setDefault(Configuration.GENDER);
+		this.cfg.setDefault(Configuration.PRONOUNS);
+		this.cfg.setDefault(Configuration.PRONOUN_COLOR);
 		this.cfg.setDefault(Configuration.BUST_SIZE);
 		this.cfg.setDefault(Configuration.HURT_SOUNDS);
 
@@ -88,8 +82,20 @@ public class PlayerConfig extends EntityConfig {
 		return false;
 	}
 
-	public boolean updateGender(Gender value) {
-		return updateValue(Configuration.GENDER, value, v -> this.gender = v);
+	public String getPronouns() {
+		return this.pronouns;
+	}
+
+	public boolean updatePronouns(String value) {
+		return updateValue(Configuration.PRONOUNS, value, v -> this.pronouns = v);
+	}
+
+	public PronounColor getPronounColor() {
+		return this.pronounColor;
+	}
+
+	public boolean updatePronounColor(PronounColor value) {
+		return updateValue(Configuration.PRONOUN_COLOR, value, v -> this.pronounColor = v);
 	}
 
 	public boolean updateBustSize(float value) {
@@ -139,7 +145,8 @@ public class PlayerConfig extends EntityConfig {
 	public static JsonObject toJsonObject(PlayerConfig plr) {
 		JsonObject obj = new JsonObject();
 		Configuration.USERNAME.save(obj, plr.uuid);
-		Configuration.GENDER.save(obj, plr.getGender());
+		Configuration.PRONOUNS.save(obj, plr.getPronouns());
+        Configuration.PRONOUN_COLOR.save(obj, plr.getPronounColor());
 		Configuration.BUST_SIZE.save(obj, plr.getBustSize());
 		Configuration.HURT_SOUNDS.save(obj, plr.hasHurtSounds());
 
@@ -164,7 +171,8 @@ public class PlayerConfig extends EntityConfig {
 			plr.syncStatus = SyncStatus.CACHED;
 			Configuration config = plr.getConfig();
 			config.load();
-			plr.updateGender(config.get(Configuration.GENDER));
+			plr.updatePronouns(config.get(Configuration.PRONOUNS));
+            plr.updatePronounColor(config.get(Configuration.PRONOUN_COLOR));
 			plr.updateBustSize(config.get(Configuration.BUST_SIZE));
 			plr.updateHurtSounds(config.get(Configuration.HURT_SOUNDS));
 
@@ -192,7 +200,8 @@ public class PlayerConfig extends EntityConfig {
 	public static void saveGenderInfo(PlayerConfig plr) {
 		Configuration config = plr.getConfig();
 		config.set(Configuration.USERNAME, plr.uuid);
-		config.set(Configuration.GENDER, plr.getGender());
+		config.set(Configuration.PRONOUNS, plr.getPronouns());
+		config.set(Configuration.PRONOUN_COLOR, plr.getPronounColor());
 		config.set(Configuration.BUST_SIZE, plr.getBustSize());
 		config.set(Configuration.HURT_SOUNDS, plr.hasHurtSounds());
 

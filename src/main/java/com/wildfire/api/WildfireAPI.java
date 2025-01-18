@@ -18,11 +18,10 @@
 
 package com.wildfire.api;
 
+import com.wildfire.main.WildfireGender;
 import com.wildfire.main.WildfireGenderClient;
 import com.wildfire.main.config.Configuration;
 import com.wildfire.main.entitydata.PlayerConfig;
-import com.wildfire.main.WildfireGender;
-import com.wildfire.main.Gender;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -63,15 +62,15 @@ public class WildfireAPI {
     }
 
     /**
-     * Get the player's {@link Gender}
+     * Get the player's pronouns
      *
      * @param  uuid  the uuid of the target {@link PlayerEntity}.
-     * @see    Gender
+     * @see    String
      */
-    public static @NotNull Gender getPlayerGender(UUID uuid) {
+    public static @NotNull String getPlayerPronouns(UUID uuid) {
         PlayerConfig cfg = WildfireGender.getPlayerById(uuid);
-        if(cfg == null) return Configuration.GENDER.getDefault();
-        return cfg.getGender();
+        if(cfg == null) return Configuration.PRONOUNS.getDefault();
+        return cfg.getPronouns();
     }
 
     /**

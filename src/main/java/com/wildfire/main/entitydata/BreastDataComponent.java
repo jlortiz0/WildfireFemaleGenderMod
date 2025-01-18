@@ -22,7 +22,7 @@ import org.joml.Vector3f;
  */
 public record BreastDataComponent(float breastSize, float cleavage, Vector3f offsets, boolean jacket, @Nullable NbtComponent nbtComponent) {
 	public static @Nullable BreastDataComponent fromPlayer(@NotNull PlayerEntity player, @NotNull PlayerConfig config) {
-		if(!config.getGender().canHaveBreasts() || !config.showBreastsInArmor()) {
+		if(!config.showBreastsInArmor()) {
 			return null;
 		}
 

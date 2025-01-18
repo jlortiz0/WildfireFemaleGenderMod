@@ -18,6 +18,8 @@
 
 package com.wildfire.main.config;
 
+import com.wildfire.main.PronounColor;
+
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -26,9 +28,10 @@ public class Configuration extends AbstractConfiguration {
 	private static final String CONFIG_DIR = "WildfireGender";
 
 	public static final UUIDConfigKey USERNAME = new UUIDConfigKey("username", UUID.nameUUIDFromBytes("UNKNOWN".getBytes(StandardCharsets.UTF_8)));
-	public static final GenderConfigKey GENDER = new GenderConfigKey("gender");
-	public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0.6F, 0, 0.8f);
-	public static final BooleanConfigKey HURT_SOUNDS = new BooleanConfigKey("hurt_sounds", true);
+	public static final StringConfigKey PRONOUNS = new StringConfigKey("pronouns", "please ask");
+	public static final EnumConfigKey<PronounColor> PRONOUN_COLOR = new EnumConfigKey<>("pronoun_color", PronounColor.WHITE);
+	public static final FloatConfigKey BUST_SIZE = new FloatConfigKey("bust_size", 0, 0, 1.5F);
+	public static final BooleanConfigKey HURT_SOUNDS = new BooleanConfigKey("hurt_sounds", false);
 
 	public static final FloatConfigKey BREASTS_OFFSET_X = new FloatConfigKey("breasts_xOffset", 0.0F, -1, 1);
 	public static final FloatConfigKey BREASTS_OFFSET_Y = new FloatConfigKey("breasts_yOffset", 0.0F, -1, 1);

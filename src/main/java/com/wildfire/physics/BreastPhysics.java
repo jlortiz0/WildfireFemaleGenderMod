@@ -19,8 +19,8 @@
 package com.wildfire.physics;
 
 import com.wildfire.api.IGenderArmor;
-import com.wildfire.main.entitydata.EntityConfig;
 import com.wildfire.main.WildfireHelper;
+import com.wildfire.main.entitydata.EntityConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
@@ -52,7 +52,7 @@ public class BreastPhysics {
 
 	private final EntityConfig entityConfig;
 	private int randomB = 1;
-	private boolean alreadyFalling = false;
+	private double lastVerticalMoveVelocity;
 
 	public BreastPhysics(EntityConfig entityConfig) {
 		this.entityConfig = entityConfig;
@@ -106,17 +106,13 @@ public class BreastPhysics {
 	public void update(LivingEntity entity, IGenderArmor armor) {
 		// always suppress the full physics calculations on armor stands
 		if(entity instanceof ArmorStandEntity) {
-			if(entityConfig.getGender().canHaveBreasts()) {
-				this.breastSize = entityConfig.getBustSize();
-				if(!entityConfig.getArmorPhysicsOverride()) {
-					float tightness = MathHelper.clamp(armor.tightness(), 0, 1);
-					this.breastSize *= 1 - 0.15F * tightness;
-				}
-				this.preBreastSize = this.breastSize;
-			} else {
-				this.breastSize = 0f;
-			}
-			return;
+            this.breastSize = entityConfig.getBustSize();
+            if(!entityConfig.getArmorPhysicsOverride()) {
+                float tightness = MathHelper.clamp(armor.tightness(), 0, 1);
+                this.breastSize *= 1 - 0.15F * tightness;
+            }
+            this.preBreastSize = this.breastSize;
+            return;
 		}
 
 		this.prePositionY = this.positionY;
@@ -170,14 +166,10 @@ public class BreastPhysics {
 		float breastWeight = entityConfig.getBustSize() * 1.25f;
 		float targetBreastSize = entityConfig.getBustSize();
 
-		if (!entityConfig.getGender().canHaveBreasts()) {
-			targetBreastSize = 0;
-		} else {
-			float tightness = MathHelper.clamp(armor.tightness(), 0, 1);
-			if(entityConfig.getArmorPhysicsOverride()) tightness = 0; //override resistance
-			//Scale breast size by how tight the armor is, clamping at a max adjustment of shrinking by 0.15
-			targetBreastSize *= 1 - 0.15F * tightness;
-		}
+        float tightness = MathHelper.clamp(armor.tightness(), 0, 1);
+        if(entityConfig.getArmorPhysicsOverride()) tightness = 0; //override resistance
+        //Scale breast size by how tight the armor is, clamping at a max adjustment of shrinking by 0.15
+        targetBreastSize *= 1 - 0.15F * tightness;
 
 		breastSize += (breastSize < targetBreastSize) ? Math.abs(breastSize - targetBreastSize) / 2f : -Math.abs(breastSize - targetBreastSize) / 2f;
 
@@ -194,12 +186,14 @@ public class BreastPhysics {
 		if(!entityConfig.getBreasts().isUniboob()) {
 			bounceIntensity = bounceIntensity * WildfireHelper.randFloat(0.5f, 1.5f);
 		}
-		if(entity.fallDistance > 0 && !alreadyFalling) {
-			randomB = entity.getWorld().random.nextBoolean() ? -1 : 1;
-			alreadyFalling = true;
-		}
-		if(entity.fallDistance == 0) alreadyFalling = false;
 
+		double vertVelocity = entity.getVelocity().y;
+		// Randomize which side the breast will angle toward when the player jumps/has upward velocity applied to them,
+		// or stops falling
+		if((lastVerticalMoveVelocity <= 0 && vertVelocity > 0) || (lastVerticalMoveVelocity < 0 && vertVelocity == 0)) {
+			randomB = entity.getWorld().random.nextBoolean() ? -1 : 1;
+		}
+		lastVerticalMoveVelocity = vertVelocity;
 
 		this.targetBounceY = (float) motion.y * bounceIntensity;
 		this.targetBounceY += breastWeight;

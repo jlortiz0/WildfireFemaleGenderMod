@@ -22,7 +22,6 @@ import com.wildfire.api.IGenderArmor;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.WildfireHelper;
 import com.wildfire.main.config.Configuration;
-import com.wildfire.main.Gender;
 import com.wildfire.physics.BreastPhysics;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -36,8 +35,8 @@ import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -53,7 +52,6 @@ public class EntityConfig {
 	public static final Map<UUID, EntityConfig> ENTITY_CACHE = new ConcurrentHashMap<>();
 
 	public final UUID uuid;
-	protected Gender gender = Configuration.GENDER.getDefault();
 	protected float pBustSize = Configuration.BUST_SIZE.getDefault();
 	protected boolean breastPhysics = Configuration.BREAST_PHYSICS.getDefault();
 	protected float bounceMultiplier = Configuration.BOUNCE_MULTIPLIER.getDefault();
@@ -86,7 +84,6 @@ public class EntityConfig {
 		NbtComponent component = chestplate.get(DataComponentTypes.CUSTOM_DATA);
 		if(chestplate.isEmpty() || component == null) {
 			this.fromComponent = null;
-			this.gender = Gender.MALE;
 			return;
 		} else if(fromComponent != null && Objects.equals(component, fromComponent.nbtComponent())) {
 			// nothing's changed since the last time we checked, so there's no need to read from the
@@ -96,13 +93,11 @@ public class EntityConfig {
 
 		fromComponent = BreastDataComponent.fromComponent(component);
 		if(fromComponent == null) {
-			this.gender = Gender.MALE;
 			return;
 		}
 
 		breastPhysics = false;
 		pBustSize = fromComponent.breastSize();
-		gender = pBustSize >= 0.02f ? Gender.FEMALE : Gender.MALE;
 		breasts.updateCleavage(fromComponent.cleavage());
 		breasts.updateOffsets(fromComponent.offsets());
 		this.jacketLayer = fromComponent.jacket();
@@ -111,6 +106,9 @@ public class EntityConfig {
 	/**
 	 * Get the configuration for a given entity
 	 *
+	 * @apiNote Configuration settings for {@link PlayerConfig}s may not be immediately available upon being
+	 *          returned.
+	 *
 	 * @return The relevant {@link EntityConfig}, or {@link PlayerConfig} if given a {@link PlayerEntity player}
 	 */
 	public static @Nullable EntityConfig getEntity(@NotNull LivingEntity entity) {
@@ -118,10 +116,6 @@ public class EntityConfig {
 			return WildfireGender.getPlayerById(entity.getUuid());
 		}
 		return ENTITY_CACHE.computeIfAbsent(entity.getUuid(), EntityConfig::new);
-	}
-
-	public @NotNull Gender getGender() {
-		return gender;
 	}
 
 	public @NotNull Breasts getBreasts() {
@@ -173,10 +167,5 @@ public class EntityConfig {
 
 		getLeftBreastPhysics().update(entity, armor);
 		getRightBreastPhysics().update(entity, armor);
-	}
-
-	@Override
-	public String toString() {
-		return "%s(uuid=%s, gender=%s)".formatted(getClass().getCanonicalName(), uuid, gender);
 	}
 }

@@ -18,9 +18,9 @@
 
 package com.wildfire.main.networking;
 
+import com.wildfire.main.PronounColor;
 import com.wildfire.main.entitydata.Breasts;
 import com.wildfire.main.entitydata.PlayerConfig;
-import com.wildfire.main.Gender;
 import net.minecraft.network.PacketByteBuf;
 import org.joml.Vector3f;
 
@@ -28,7 +28,8 @@ import java.util.UUID;
 
 abstract class AbstractSyncPacket {
     protected final UUID uuid;
-    private final Gender gender;
+    private final String pronouns;
+    private final PronounColor pronounColor;
     private final float bustSize;
 
     //physics variables
@@ -45,7 +46,8 @@ abstract class AbstractSyncPacket {
 
     protected AbstractSyncPacket(PlayerConfig plr) {
         this.uuid = plr.uuid;
-        this.gender = plr.getGender();
+        this.pronouns = plr.getPronouns();
+        this.pronounColor = plr.getPronounColor();
         this.bustSize = plr.getBustSize();
         this.hurtSounds = plr.hasHurtSounds();
 
@@ -63,7 +65,8 @@ abstract class AbstractSyncPacket {
 
     protected AbstractSyncPacket(PacketByteBuf buffer) {
         this.uuid = buffer.readUuid();
-        this.gender = buffer.readEnumConstant(Gender.class);
+        this.pronouns = buffer.readString(16);
+        this.pronounColor = buffer.readEnumConstant(PronounColor.class);
         this.bustSize = buffer.readFloat();
         this.hurtSounds = buffer.readBoolean();
 
@@ -80,7 +83,8 @@ abstract class AbstractSyncPacket {
 
     protected void encode(PacketByteBuf buffer) {
         buffer.writeUuid(this.uuid);
-        buffer.writeEnumConstant(this.gender);
+        buffer.writeString(this.pronouns, 16);
+        buffer.writeEnumConstant(this.pronounColor);
         buffer.writeFloat(this.bustSize);
         buffer.writeBoolean(this.hurtSounds);
         buffer.writeBoolean(this.breastPhysics);
@@ -94,7 +98,8 @@ abstract class AbstractSyncPacket {
     }
 
     protected void updatePlayerFromPacket(PlayerConfig plr) {
-        plr.updateGender(gender);
+        plr.updatePronouns(pronouns);
+        plr.updatePronounColor(pronounColor);
         plr.updateBustSize(bustSize);
         plr.updateHurtSounds(hurtSounds);
 

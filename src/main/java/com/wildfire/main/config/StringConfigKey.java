@@ -43,4 +43,9 @@ public class StringConfigKey extends ConfigKey<String> {
     public void save(JsonObject object, String value) {
         object.addProperty(key, value);
     }
+
+    @Override
+    public boolean validate(String value) {
+        return value != null || defaultValue == null;
+    }
 }

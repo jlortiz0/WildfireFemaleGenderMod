@@ -18,10 +18,6 @@
 
 package com.wildfire.main;
 
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.mojang.logging.LogUtils;
 import com.wildfire.main.entitydata.PlayerConfig;
 import com.wildfire.main.networking.WildfireSync;
@@ -29,6 +25,10 @@ import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class WildfireGender implements ModInitializer {
 	public static final String MODID = "wildfire_gender";

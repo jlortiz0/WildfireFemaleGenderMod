@@ -3,7 +3,7 @@
   "id": "wildfire_gender",
   "version": "${version}+${minecraft_version}",
   "name": "Wildfire's Female Gender Mod",
-  "description": "Allows players to choose what gender they want to be.",
+  "description": "Allows players to choose their pronouns and rock some serious honkers.",
   "authors": [
     "WildfireRomeo"
   ],
@@ -15,12 +15,13 @@
     "IzzyBizzy45",
     "Kichura",
     "Powerless001",
-    "pupnewfster"
+    "pupnewfster",
+    "jlortiz0"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/female-gender-fabric",
-    "sources": "https://github.com/WildfireRomeo/WildfireFemaleGenderMod/tree/master",
-    "issues": "https://github.com/WildfireRomeo/WildfireFemaleGenderMod/issues"
+    "sources": "https://github.com/jlortiz0/WildfireFemaleGenderMod/tree/fabric-1.21.1",
+    "issues": "https://github.com/jlortiz0/WildfireFemaleGenderMod/issues"
   },
   "license": "LGPL-3.0",
   "icon": "assets/wildfire_gender/icon.png",

@@ -18,7 +18,7 @@
 
 package com.wildfire.main;
 
-import com.wildfire.gui.screen.WardrobeBrowserScreen;
+import com.wildfire.gui.screen.WildfirePlayerListScreen;
 import com.wildfire.main.entitydata.EntityConfig;
 import com.wildfire.main.entitydata.PlayerConfig;
 import com.wildfire.main.networking.ServerboundSyncPacket;
@@ -79,7 +79,7 @@ public final class WildfireEventHandler {
 	}
 
 	/**
-	 * Register all events applicable the server-side for both a dedicated server and singleplayer
+	 * Register all events applicable to the server-side for both a dedicated server and singleplayer
 	 */
 	public static void registerCommonEvents() {
 		EntityTrackingEvents.START_TRACKING.register(WildfireEventHandler::onBeginTracking);
@@ -153,7 +153,7 @@ public final class WildfireEventHandler {
 		}
 
 		if(CONFIG_KEYBIND.wasPressed() && client.currentScreen == null) {
-			client.setScreen(new WardrobeBrowserScreen(null, client.player.getUuid()));
+			client.setScreen(new WildfirePlayerListScreen(client));
 		}
 	}
 

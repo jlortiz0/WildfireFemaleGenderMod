@@ -4,3 +4,13 @@ accessible method net/minecraft/client/render/entity/LivingEntityRenderer getRen
 accessible field net/minecraft/client/render/entity/model/AnimalModel invertedChildBodyScale F
 accessible field net/minecraft/client/render/entity/model/AnimalModel childBodyYOffset F
 accessible method net/minecraft/entity/LivingEntity getHandSwingDuration ()I
+
+accessible field net/minecraft/client/font/GlyphRenderer minX F
+accessible field net/minecraft/client/font/GlyphRenderer maxX F
+accessible field net/minecraft/client/font/GlyphRenderer minY F
+accessible field net/minecraft/client/font/GlyphRenderer maxY F
+accessible field net/minecraft/client/font/GlyphRenderer minU F
+accessible field net/minecraft/client/font/GlyphRenderer maxU F
+accessible field net/minecraft/client/font/GlyphRenderer minV F
+accessible field net/minecraft/client/font/GlyphRenderer maxV F
+accessible method net/minecraft/client/font/TextRenderer getFontStorage (Lnet/minecraft/util/Identifier;)Lnet/minecraft/client/font/FontStorage;

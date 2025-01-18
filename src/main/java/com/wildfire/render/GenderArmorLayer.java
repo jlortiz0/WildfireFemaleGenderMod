@@ -90,6 +90,8 @@ public class GenderArmorLayer<T extends LivingEntity, M extends BipedEntityModel
 		// rendering a pink box.
 		//noinspection UnstableApiUsage
 		if(ArmorRendererRegistryImpl.get(chestplate.getItem()) != null) return;
+		// The Cobblemon Fennekin chestplate doesn't have a proper texture but is also not using the armor renderer. Disable it manually.
+		if (chestplate.getItem().getTranslationKey().startsWith("item.cobblemonarmors.fennekin")) return;
 
 		try {
 			entityConfig = EntityConfig.getEntity(ent);
@@ -132,7 +134,8 @@ public class GenderArmorLayer<T extends LivingEntity, M extends BipedEntityModel
 			matrixStack.scale(1.05f, 1.05f, 1.05f);
 		}
 		matrixStack.translate(side.isLeft ? 0.001f : -0.001f, 0.015f, -0.015f);
-		matrixStack.scale(1.05f, 1, 1);
+		// HACK to support oversize breasts
+		matrixStack.scale(1.05f, 1, (breastSize > 1.5) ? 1.25f : 1);
 	}
 
 	// TODO eventually expose some way for mods to override this, maybe through a default impl in IGenderArmor or similar

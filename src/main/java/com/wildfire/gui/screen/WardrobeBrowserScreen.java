@@ -19,32 +19,25 @@
 package com.wildfire.gui.screen;
 
 import com.wildfire.gui.GuiUtils;
-import com.wildfire.main.Gender;
-import com.wildfire.main.WildfireGender;
-
-import java.util.Calendar;
-import java.util.Objects;
-import java.util.UUID;
-
 import com.wildfire.gui.WildfireButton;
+import com.wildfire.gui.WildfirePronounButton;
+import com.wildfire.main.WildfireGender;
 import com.wildfire.main.entitydata.PlayerConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+
+import java.util.Objects;
+import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public class WardrobeBrowserScreen extends BaseWildfireScreen {
-	private static final Identifier BACKGROUND_FEMALE = Identifier.of(WildfireGender.MODID, "textures/gui/wardrobe_bg2.png");
-	private static final Identifier BACKGROUND = Identifier.of(WildfireGender.MODID, "textures/gui/wardrobe_bg3.png");
-	private static final Identifier TXTR_RIBBON = Identifier.of(WildfireGender.MODID, "textures/bc_ribbon.png");
-	private static final UUID CREATOR_UUID = UUID.fromString("23b6feed-2dfe-4f2e-9429-863fd4adb946");
-	private static final boolean isBreastCancerAwarenessMonth = Calendar.getInstance().get(Calendar.MONTH) == Calendar.OCTOBER;
+	private static final Identifier BACKGROUND = Identifier.of(WildfireGender.MODID, "textures/gui/wardrobe_bg.png");
+
 
 	public WardrobeBrowserScreen(Screen parent, UUID uuid) {
 		super(Text.translatable("wildfire_gender.wardrobe.title"), parent, uuid);
@@ -55,34 +48,23 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 	    int y = this.height / 2;
 		PlayerConfig plr = Objects.requireNonNull(getPlayer(), "getPlayer()");
 
-		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, y - 52, 158, 20, getGenderLabel(plr.getGender()), button -> {
-			Gender gender = switch (plr.getGender()) {
-				case MALE -> Gender.FEMALE;
-				case FEMALE -> Gender.OTHER;
-				case OTHER -> Gender.MALE;
-			};
-			if (plr.updateGender(gender)) {
-				button.setMessage(getGenderLabel(gender));
-				PlayerConfig.saveGenderInfo(plr);
-				clearAndInit();
-			}
-		}));
+		this.addDrawableChild(new WildfirePronounButton(this.width / 2 - 42, y - 52, 158, 20, getPronounsLabel(plr.getPronouns()),
+			button -> client.setScreen(new WildfirePronounScreen(WardrobeBrowserScreen.this, this.playerUUID)), plr::getPronounColor));
 
-		if (plr.getGender().canHaveBreasts()) {
-			this.addDrawableChild(new WildfireButton(this.width / 2 - 42, y - 32, 158, 20, Text.translatable("wildfire_gender.appearance_settings.title").append("..."),
-					button -> MinecraftClient.getInstance().setScreen(new WildfireBreastCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
-		}
-		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, y - (plr.getGender().canHaveBreasts() ? 12 : 32), 158, 20, Text.translatable("wildfire_gender.char_settings.title").append("..."),
-				button -> MinecraftClient.getInstance().setScreen(new WildfireCharacterSettingsScreen(WardrobeBrowserScreen.this, this.playerUUID))));
+		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, this.height / 2 - 32, 158, 20, Text.translatable("wildfire_gender.appearance_settings.title").append("..."),
+				button -> client.setScreen(new WildfireBreastCustomizationScreen(WardrobeBrowserScreen.this, this.playerUUID))));
+
+		this.addDrawableChild(new WildfireButton(this.width / 2 - 42, y - 12, 158, 20, Text.translatable("wildfire_gender.char_settings.title").append("..."),
+				button -> client.setScreen(new WildfireCharacterSettingsScreen(WardrobeBrowserScreen.this, this.playerUUID))));
 
 		this.addDrawableChild(new WildfireButton(this.width / 2 + 111, y - 63, 9, 9, Text.literal("X"),
-			button -> MinecraftClient.getInstance().setScreen(parent)));
+				button -> client.setScreen(parent)));
 
 	    super.init();
   	}
 
-	private Text getGenderLabel(Gender gender) {
-		return Text.translatable("wildfire_gender.label.gender").append(" - ").append(gender.getDisplayName());
+	private Text getPronounsLabel(String pronouns) {
+		return Text.translatable("wildfire_gender.label.pronouns").append(" - ").append(pronouns);
 	}
 
 	@Override
@@ -90,17 +72,18 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		super.renderBackground(ctx, mouseX, mouseY, delta);
 		PlayerConfig plr = getPlayer();
 		if(plr == null) return;
-		Identifier backgroundTexture = plr.getGender().canHaveBreasts() ? BACKGROUND_FEMALE : BACKGROUND;
-		ctx.drawTexture(backgroundTexture, (this.width - 248) / 2, (this.height - 134) / 2, 0, 0, 248, 156);
+
+		ctx.drawTexture(BACKGROUND, (this.width - 248) / 2, (this.height - 134) / 2, 0, 0, 256, 124, 256, 256);
 
 		if(client != null && client.world != null) {
 			int xP = this.width / 2 - 82;
-			int yP = this.height / 2 + 40;
+			int yP = this.height / 2 + 32;
 			PlayerEntity ent = client.world.getPlayerByUuid(this.playerUUID);
 			if(ent != null) {
-				ctx.enableScissor(xP - 35, yP - 93, xP + 35, yP + 6);
-				GuiUtils.drawEntityOnScreen(ctx, xP, yP, 45, (xP - mouseX), (yP - 76 - mouseY), ent);
-				ctx.disableScissor();
+				GuiUtils.drawEntityOnScreen(ctx, xP, yP, 45, (xP - mouseX), (yP - 46 - mouseY), ent);
+			} else {
+				//player left, fallback
+				close();
 			}
 		}
 	}
@@ -110,24 +93,6 @@ public class WardrobeBrowserScreen extends BaseWildfireScreen {
 		super.render(ctx, mouseX, mouseY, delta);
 		int x = this.width / 2;
 	    int y = this.height / 2;
-		ctx.drawText(textRenderer, title, x - 118, y - 62, 4473924, false);
-
-		if(client != null && client.player != null) {
-			boolean withCreator = client.player.networkHandler.getPlayerList().stream()
-					.anyMatch((player) -> player.getProfile().getId().equals(CREATOR_UUID));
-			if(withCreator) {
-				int creatorY = y + 65;
-				// move down so we don't overlap with the breast cancer awareness month banner
-				if(isBreastCancerAwarenessMonth) creatorY += 30;
-				GuiUtils.drawCenteredText(ctx, this.textRenderer, Text.translatable("wildfire_gender.label.with_creator"), this.width / 2, creatorY, 0xFF00FF);
-			}
-		}
-
-		if(isBreastCancerAwarenessMonth) {
-			int bcaY = y - 45;
-			ctx.fill(x - 159, bcaY + 106, x + 159, bcaY + 136, 0x55000000);
-			ctx.drawTextWithShadow(textRenderer, Text.translatable("wildfire_gender.cancer_awareness.title").formatted(Formatting.BOLD, Formatting.ITALIC), this.width / 2 - 148, bcaY + 117, 0xFFFFFF);
-			ctx.drawTexture(TXTR_RIBBON, x + 130, bcaY + 109, 26, 26, 0, 0, 20, 20, 20, 20);
-		}
+		ctx.drawText(textRenderer, title, x - 42, y - 62, 4473924, false);
 	}
 }
