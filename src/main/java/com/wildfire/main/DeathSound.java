@@ -40,4 +40,6 @@ public enum DeathSound implements IWildfireSound {
     public float getPitch() {
         return 0;
     }
+
+    public static void register() {}
 }

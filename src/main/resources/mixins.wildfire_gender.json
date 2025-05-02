@@ -6,7 +6,8 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "EntityRendererMixin",
-    "ArsArmorRendererMixin"
+    "ArsArmorRendererMixin",
+    "PlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

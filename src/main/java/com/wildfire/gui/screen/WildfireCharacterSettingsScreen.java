@@ -24,7 +24,6 @@ import com.wildfire.gui.WildfireButton;
 import com.wildfire.gui.WildfireSlider;
 import com.wildfire.gui.WildfireToggleButton;
 import com.wildfire.main.GenderPlayer;
-import com.wildfire.main.HurtSound;
 import com.wildfire.main.WildfireGender;
 import com.wildfire.main.config.ClientConfiguration;
 import net.minecraft.ChatFormatting;
@@ -59,8 +58,8 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         int rxPos = this.width / 2;
         int y = this.height / 2;
 
-        yPos = y - 66;
-        int lxPos = rxPos - 240 / 2 - 1;
+        yPos = y - 48;
+        int lxPos = rxPos - 240 / 2;
 
         //Add 'Close' button at beginning
         this.addRenderableWidget(new WildfireButton(rxPos + 112, yPos - 12, 9, 9, Component.translatable("wildfire_gender.label.exit"),
@@ -74,7 +73,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
             }
         }, aPlr::hasBreastPhysics));
 
-        final WildfireButton armorButton, hitSoundButton;
+        final WildfireButton armorButton;
         this.addRenderableWidget(armorButton = new WildfireToggleButton(rxPos, yPos, 119, 20,
                 Component.translatable("wildfire_gender.char_settings.armor_physics"), button -> {
             boolean enablePhysicsArmor = !aPlr.hasArmorBreastPhysics();
@@ -84,7 +83,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, Component.translatable("wildfire_gender.tooltip.armor_physics"), mouseX, mouseY), aPlr::hasArmorBreastPhysics));
         armorButton.active = aPlr.showBreastsInArmor();
 
-        this.addRenderableWidget(new WildfireToggleButton(lxPos, yPos + 21, 119, 19,
+        this.addRenderableWidget(new WildfireToggleButton(lxPos, yPos + 21, 119, 20,
               Component.translatable("wildfire_gender.char_settings.hide_in_armor"), button -> {
             boolean enableShowInArmor = !aPlr.showBreastsInArmor();
             if (aPlr.updateShowBreastsInArmor(enableShowInArmor)) {
@@ -93,7 +92,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
             }
         }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, Component.translatable("wildfire_gender.tooltip.hide_in_armor"), mouseX, mouseY), aPlr::showBreastsInArmor));
 
-        this.addRenderableWidget(this.bounceSlider = new WildfireSlider(lxPos, yPos + 40, 240, 22, ClientConfiguration.BOUNCE_MULTIPLIER, aPlr.getBounceMultiplierRaw(), value -> {
+        this.addRenderableWidget(this.bounceSlider = new WildfireSlider(lxPos - 1, yPos + 41, 241, 22, ClientConfiguration.BOUNCE_MULTIPLIER, aPlr.getBounceMultiplierRaw(), value -> {
         }, value -> {
             float bounceText = 3 * value;
             float v = Math.round(bounceText * 100) / 100f;
@@ -110,36 +109,26 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
             }
         }));
 
-        this.addRenderableWidget(this.floppySlider = new WildfireSlider(lxPos, yPos + 61, 240, 22, ClientConfiguration.FLOPPY_MULTIPLIER, aPlr.getFloppiness(), value -> {
+        this.addRenderableWidget(this.floppySlider = new WildfireSlider(lxPos - 1, yPos + 62, 241, 22, ClientConfiguration.FLOPPY_MULTIPLIER, aPlr.getFloppiness(), value -> {
         }, value -> Component.translatable("wildfire_gender.slider.floppy", Math.round(value * 100)), value -> {
             if (aPlr.updateFloppiness(value)) {
                 GenderPlayer.saveGenderInfo(aPlr);
             }
         }));
 
-        this.addRenderableWidget(hitSoundButton = new WildfireToggleButton(rxPos, yPos + 83, 119, 20,
-                Component.translatable("wildfire_gender.char_settings.replace_hurt_sounds"), button -> {
-            boolean replaceHurtSounds = !aPlr.replaceHurtSounds();
-            if (aPlr.updateReplaceHurtSounds(replaceHurtSounds)) {
-                GenderPlayer.saveGenderInfo(aPlr);
-            }
-        }, (button, matrices, mouseX, mouseY) -> renderTooltip(matrices, Component.translatable("wildfire_gender.tooltip.replace_hurt_sounds"), mouseX, mouseY), () -> !aPlr.replaceHurtSounds()));
-        hitSoundButton.active = aPlr.getHurtSounds() != HurtSound.NOTHING;
-
-        this.addRenderableWidget(new WildfireButton(lxPos, yPos + 83, 119, 20,
+        this.addRenderableWidget(new WildfireButton(lxPos, yPos + 84, 119, 20,
               Component.translatable("wildfire_gender.char_settings.hurt_sounds", aPlr.getHurtSounds().getName()), button -> {
             minecraft.setScreen(new WildfireSoundListScreen<>(minecraft, aPlr.uuid, this, GenderPlayer::getHurtSounds, GenderPlayer::updateHurtSounds));
             button.setMessage(Component.translatable("wildfire_gender.char_settings.hurt_sounds", aPlr.getHurtSounds().getName()));
-            hitSoundButton.active = aPlr.getHurtSounds() != HurtSound.NOTHING;
         }));
 
-        this.addRenderableWidget(new WildfireButton(lxPos, yPos + 104, 119, 19,
+        this.addRenderableWidget(new WildfireButton(rxPos, yPos + 84, 119, 20,
                 Component.translatable("wildfire_gender.char_settings.death_sound", aPlr.getDeathSound().getName()), button -> {
             minecraft.setScreen(new WildfireSoundListScreen<>(minecraft, aPlr.uuid, this, GenderPlayer::getDeathSound, GenderPlayer::updateDeathSound));
             button.setMessage(Component.translatable("wildfire_gender.char_settings.death_sound", aPlr.getDeathSound().getName()));
         }));
 
-        this.addRenderableWidget(new WildfireToggleButton(rxPos, yPos + 104, 119, 19,
+        this.addRenderableWidget(new WildfireToggleButton(rxPos, yPos + 21, 119, 20,
                 Component.translatable("wildfire_gender.char_settings.bilkable"), button -> {
             boolean bilkable = !aPlr.isBilkable();
             if (aPlr.updateBilkable(bilkable)) {
@@ -160,7 +149,7 @@ public class WildfireCharacterSettingsScreen extends BaseWildfireScreen {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, BACKGROUND);
         int i = (this.width - 256) / 2;
-        int j = (this.height - 164) / 2;
+        int j = (this.height - 128) / 2;
         blit(m, i, j, 0, 0, 256, 184);
 
         int x = this.width / 2;

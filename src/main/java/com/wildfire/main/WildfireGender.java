@@ -71,6 +71,8 @@ public class WildfireGender {
 
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup); //common
 		MinecraftForge.EVENT_BUS.addListener(this::onPlayerLoginEvent);
+		HurtSound.register();
+		DeathSound.register();
     }
 
 	@Nullable

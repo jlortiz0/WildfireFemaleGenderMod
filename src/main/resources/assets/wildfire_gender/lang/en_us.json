@@ -33,10 +33,8 @@
 	"wildfire_gender.char_settings.hurt_sounds": "Hurt Sounds: %s",
 	"wildfire_gender.tooltip.hurt_sounds": "Select Hurt Sounds",
 	"wildfire_gender.char_settings.death_sound": "Death Sound: %s",
-	"wildfire_gender.char_settings.replace_hurt_sounds": "Hit Sound",
-	"wildfire_gender.tooltip.replace_hurt_sounds": "Enable Minecraft Hit Sound",
-	"wildfire_gender.char_settings.bilkable": "Cock",
-	"wildfire_gender.tooltip.bilkable": "It won't show, but you can still have it",
+	"wildfire_gender.char_settings.bilkable": "???",
+	"wildfire_gender.tooltip.bilkable": "What does this button do?",
 
 	"wildfire_gender.breast_customization.dual_physics": "Dual-Physics: %s",
 
